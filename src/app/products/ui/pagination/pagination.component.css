@@ -1,0 +1,12 @@
+#pag-mobile{
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    #pag-desktop{
+        display: none;
+    }
+    #pag-mobile{
+        display: block;
+    }
+}

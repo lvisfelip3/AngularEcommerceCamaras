@@ -1,0 +1,28 @@
+<section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Carrito</h2>
+
+        <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
+            <div class=" w-full flex-none lg:max-w-2xl xl:max-w-4xl">
+                <div class="space-y-6 min-h-96 max-h-[calc(100vh-15rem)] overflow-y-auto">
+                    @if(state.products().length === 0){
+                        <app-empty-cart class="block"></app-empty-cart>
+                    } @else {
+
+                        @for(cartItem of state.products(); track cartItem.product.id;){
+                            <app-cart-item class="block" 
+                            [productCartItem]="cartItem" 
+                            (onRemove)="onRemove($event)"
+                            (onDecrease)="onDecrease($event)"
+                            (onIncrease)="onIncrease($event)"
+                            ></app-cart-item>
+                        }
+                    }
+                </div>
+                <app-also-bougth></app-also-bougth>
+            </div>
+
+            <app-checkout></app-checkout>
+        </div>
+    </div>
+</section>

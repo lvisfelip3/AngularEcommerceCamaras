@@ -1,0 +1,35 @@
+<div class="container min-w-full">
+  <app-header-admin></app-header-admin>
+  <mat-sidenav-container class="h-full min-h-screen mt-16 flex flex-col justify-between items-center">
+    <mat-sidenav class="!rounded-none" [(opened)]="opened" mode="side">
+      <button mat-button
+        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+        Dashboard
+      </button>
+      <button mat-button
+        [matMenuTriggerFor]="menu"
+        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+        Mantenedores
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" class="menu">
+        <a mat-menu-item [routerLink]="['categorias']" routerLinkActive="active" >Categorias</a>
+        <a mat-menu-item [routerLink]="['productos']" routerLinkActive="active">Productos</a>
+        <a mat-menu-item [routerLink]="['usuarios']" routerLinkActive="active">Usuarios</a>
+      </mat-menu>
+      <button mat-button
+        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+        Cerrar Sesión
+      </button>
+    </mat-sidenav>
+    <mat-sidenav-content class="p-2">
+      <button mat-fab (click)="opened = !opened"
+        class="!bg-blue-600 hover:!bg-blue-700 !rounded-md"><mat-icon>menu</mat-icon>
+      </button>
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <app-footer-admin></app-footer-admin>
+</div>

@@ -1,0 +1,19 @@
+<div class="catalog">
+
+    @switch(productState.state().status){
+        @case('error'){
+        <p>Error</p>
+        }
+        @case('loading'){
+        <p>Cargando...</p>
+        }
+        @default{
+            @for(product of productState.state().products; track product;){
+                <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
+            }
+        }
+    }
+
+
+</div>
+<app-pagination></app-pagination>

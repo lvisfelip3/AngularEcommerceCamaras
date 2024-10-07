@@ -1,0 +1,8 @@
+.custom-badge .mat-badge-content {
+    transform: translate(15%, 20%);
+    background-color: rgb(255, 73, 73);
+    color: white;
+    border-radius: 50rem;
+    font-size: 12px;
+    font-weight: 500;
+  }

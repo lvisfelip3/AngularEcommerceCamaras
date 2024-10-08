@@ -2,14 +2,16 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { BaseHttpService } from '../shared/data-access/base-http.service';
 import { User } from '../shared/interfaces/interfaces';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService extends BaseHttpService{
   private userData = new BehaviorSubject<User | null>(null);
+  private readonly tokenKey = 'authToken';
 
-  constructor() {
+  constructor( private cookie: CookieService) {
     super();
     const token = this.getToken();
     if (token) {
@@ -26,7 +28,7 @@ export class AuthService extends BaseHttpService{
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return this.cookie.get(this.tokenKey) || null;
   }
 
   private setUserDataFromToken(token: string): void {
@@ -34,8 +36,12 @@ export class AuthService extends BaseHttpService{
     this.userData.next(decodedToken.data);
   }
 
+  getCurrentUser(): User | null {
+    return this.userData.getValue();
+  }
+
   saveToken(token: string): void {
-    localStorage.setItem('token', token);
+    this.cookie.set(this.tokenKey, token, 1, '/', '', false, 'Strict');
     this.setUserDataFromToken(token);
   }
 
@@ -49,7 +55,7 @@ export class AuthService extends BaseHttpService{
   }
 
   logout(): void {
-    localStorage.removeItem('token');
+    this.cookie.delete(this.tokenKey, '/');
     this.userData.next(null);
   }
 }

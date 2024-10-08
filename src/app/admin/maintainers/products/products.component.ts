@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { ProductosService } from './productos.service';
@@ -7,12 +7,25 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ProductDialogComponent } from './dialog-product.component';
+import { ProductImageDialogComponent } from './dialog-product-image.component';
 import { CategoriasService } from '../category/category.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackBarService } from '../../../shared/ui/snack-bar.service';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [MatTableModule, ReactiveFormsModule, MatDialogModule, MatButtonModule, MatInputModule],
+  imports: [MatTableModule, 
+    ReactiveFormsModule, 
+    MatDialogModule, 
+    MatButtonModule, 
+    MatInputModule, 
+    ProductDialogComponent, 
+    ProductImageDialogComponent, 
+    MatSnackBarModule,
+    MatPaginatorModule,
+    ],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
@@ -26,8 +39,9 @@ export class ProductComponent implements OnInit {
   selectedProductId: number | null = null;
   displayColumns: string[] = ['id', 'nombre', 'descripcion', 'precio', 'stock', 'creado_en', 'categoria_id', 'actions'];
   dataSource = new MatTableDataSource<Product>();
-  selectedImage: File | null = null;
-  imagePreview: string | null = null;
+  private readonly _snackBar = inject(SnackBarService);
+
+  @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
   constructor(
     private crudService: ProductosService, 
@@ -60,22 +74,32 @@ export class ProductComponent implements OnInit {
         descripcion: productos.descripcion,
         precio: productos.precio,
         stock: productos.stock,
-        categoria_id: productos.categoria_id
+        categoria_id: productos.categoria_id,
+        imagen: productos.imagen
       } : null
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (productos) {
-          this.crudService.updateProduct(productos.id, result).subscribe(() => {
+          this.crudService.updateProduct(productos.id, result, result.imagen).subscribe(() => {
+            this._snackBar.showSnackBar('Producto actualizado correctamente', 'OK');
             this.getProductos();
           });
         } else {
-          this.crudService.addProduct(result).subscribe(() => {
+          this.crudService.addProduct(result, result.imagen).subscribe(() => {
+            this._snackBar.showSnackBar('Producto agregado correctamente', 'OK');
             this.getProductos();
           });
         }
       }
+    });
+  }
+
+  verImagen(product: Product): void {
+    this.dialog.open(ProductImageDialogComponent, {
+      width: '500px',
+      data: product ? { nombre: product.nombre, imagen: product.imagen } : null
     });
   }
 
@@ -110,19 +134,27 @@ export class ProductComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error al obtener categorías:', error);
+      },
+      complete: () => {
+        this.dataSource.paginator = this.paginator;
       }
     });
   }
 
   deleteProducto(id: number): void {
     this.crudService.deleteProduct(id).subscribe({
-      next: (response) => {
-        console.log('Producto eliminado:', response);
+      next: () => {
+        this._snackBar.showSnackBar('Registro eliminado', 'OK');
         this.dataSource.data = this.dataSource.data.filter((products: Product) => products.id !== id);
       },
       error: (error) => {
         console.error('Error al eliminar producto:', error);
       }
     });
+  }
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

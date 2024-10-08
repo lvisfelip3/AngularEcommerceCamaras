@@ -4,11 +4,12 @@ import { ProductCardComponent } from '../ui/product-card/product-card.component'
 import { PaginationComponent } from "../ui/pagination/pagination.component";
 import { CartStateService } from '../../shared/data-access/cart-state.service';
 import { Product } from '../../shared/interfaces/interfaces';
+import { FilterComponent } from "../ui/filter/filter.component";
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [ProductCardComponent, PaginationComponent],
+  imports: [ProductCardComponent, PaginationComponent, FilterComponent],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
   providers: [ProductStateService],

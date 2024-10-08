@@ -1,19 +1,23 @@
-<div class="catalog">
-
-    @switch(productState.state().status){
-        @case('error'){
-        <p>Error</p>
-        }
-        @case('loading'){
-        <p>Cargando...</p>
-        }
-        @default{
-            @for(product of productState.state().products; track product;){
-                <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
+<div class="container-full w-full flex justify-center h-full">
+    <div class="container h-full">
+        <app-filter ></app-filter>
+        <div class="catalog">
+            @switch(productState.state().status){
+            @case('error'){
+            <p>Error</p>
             }
-        }
-    }
-
-
+            @case('loading'){
+            <p>Cargando...</p>
+            }
+            @default{
+            @for(product of productState.state().products; track product;){
+            <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
+            }
+            }
+            }
+<!-- 
+            <app-pagination></app-pagination> -->
+        </div>
+        
+    </div>
 </div>
-<app-pagination></app-pagination>

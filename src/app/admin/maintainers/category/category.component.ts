@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { CategoriasService } from './category.service';
@@ -7,11 +7,21 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CategoryDialogComponent } from './dialog-category.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackBarService } from '../../../shared/ui/snack-bar.service';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-add-category',
   standalone: true,
-  imports: [MatTableModule, ReactiveFormsModule, MatDialogModule, MatButtonModule, MatInputModule],
+  imports: [MatTableModule, 
+    ReactiveFormsModule, 
+    MatDialogModule, 
+    MatButtonModule, 
+    MatInputModule,
+    MatSnackBarModule,
+    MatPaginatorModule
+  ],
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.css']
 })
@@ -23,6 +33,9 @@ export class CategoryComponent implements OnInit {
   selectedCategoryId: number | null = null;
   displayColumns: string[] = ['id', 'nombre', 'descripcion', 'actions'];
   dataSource = new MatTableDataSource<Category>();
+  private readonly _snackBar = inject(SnackBarService);
+
+  @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
   constructor(
     private crudService: CategoriasService, 
@@ -49,13 +62,13 @@ export class CategoryComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (category) {
-          // Editar la categoría existente
           this.crudService.updateCategory(category.id, result).subscribe(() => {
+            this._snackBar.showSnackBar('Categoría actualizada correctamente', 'OK');
             this.getCategorias();
           });
         } else {
-          // Crear una nueva categoría
           this.crudService.addCategory(result).subscribe(() => {
+            this._snackBar.showSnackBar('Categoría agregada correctamente', 'OK');
             this.getCategorias();
           });
         }
@@ -79,6 +92,9 @@ export class CategoryComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error al obtener categorías:', error);
+      },
+      complete: () => {
+        this.dataSource.paginator = this.paginator;
       }
     });
   }
@@ -117,13 +133,18 @@ export class CategoryComponent implements OnInit {
 
   deleteCategory(id: number): void {
     this.crudService.deleteCategory(id).subscribe({
-      next: (response) => {
-        console.log('Categoría eliminada:', response);
+      next: () => {
+        this._snackBar.showSnackBar('Producto eliminado', 'OK');
         this.dataSource.data = this.dataSource.data.filter((category: Category) => category.id !== id);
       },
       error: (error) => {
         console.error('Error al eliminar categoría:', error);
       }
     });
+  }
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

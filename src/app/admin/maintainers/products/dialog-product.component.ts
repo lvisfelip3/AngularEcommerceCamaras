@@ -53,19 +53,11 @@ import { CategoriasService } from '../category/category.service';
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label class="!text-white">Precio</mat-label>
-            <input
-              matInput
-              formControlName="precio"
-              placeholder="$90.000"
-            />
+            <input matInput formControlName="precio" placeholder="$90.000" />
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label class="!text-white">Stock</mat-label>
-            <input
-              matInput
-              formControlName="stock"
-              placeholder="100"
-            />
+            <input matInput formControlName="stock" placeholder="100" />
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label class="!text-white">Categoria</mat-label>
@@ -77,15 +69,24 @@ import { CategoriasService } from '../category/category.service';
               }
             </mat-select>
           </mat-form-field>
+          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Imagen
+            <input
+              formControlName="imagen"
+              class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+              type="file"
+              (change)="onChangeImage($event)"
+              accept="image/png, image/jpeg"
+            />
+          </label>
+          @if (imagePreview) {
+            <img class="image-preview" [src]="imagePreview" alt="vista previa" />
+          }
         </form>
       </div>
       <div mat-dialog-actions class="footer">
         <button mat-button (click)="onCancel()">Cancelar</button>
-        <button
-          mat-button
-          [disabled]="!productForm.valid"
-          (click)="onSubmit()"
-        >
+        <button mat-button [disabled]="!productForm.valid" (click)="onSubmit()">
           Guardar
         </button>
       </div>
@@ -96,6 +97,9 @@ import { CategoriasService } from '../category/category.service';
 export class ProductDialogComponent implements OnInit {
   productForm: FormGroup;
   categorias: Category[] = [];
+  selectedImage: File | null = null;
+  imagePreview: string | undefined;
+
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ProductDialogComponent>,
@@ -108,7 +112,12 @@ export class ProductDialogComponent implements OnInit {
       precio: [data?.precio || '', Validators.required],
       stock: [data?.stock || '', Validators.required],
       categoria_id: [data?.categoria_id || '', Validators.required],
+      imagen: [data?.imagen],
     });
+
+    if (data) {
+      this.imagePreview = data.imagen;
+    }
   }
 
   ngOnInit(): void {
@@ -121,6 +130,7 @@ export class ProductDialogComponent implements OnInit {
 
   onSubmit(): void {
     if (this.productForm.valid) {
+      this.productForm.value.imagen = this.selectedImage;
       this.dialogRef.close(this.productForm.value);
     }
   }
@@ -129,5 +139,22 @@ export class ProductDialogComponent implements OnInit {
     this.crud.getCategories().subscribe((response) => {
       this.categorias = response;
     });
+  }
+
+  onChangeImage(event: Event): void {
+    const input = event.target as HTMLInputElement; // Asegura que el target es un HTMLInputElement
+    if (input?.files && input.files[0]) {
+      const file = input.files[0];
+      this.selectedImage = file;
+
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.imagePreview = e.target?.result as string; // Asegura que el target es un FileReader y el result es string
+      };
+      reader.readAsDataURL(file);
+    } else {
+      this.selectedImage = null;
+      this.imagePreview = undefined;
+    }
   }
 }

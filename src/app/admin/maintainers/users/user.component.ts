@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { UsersService } from './users.service';
@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { UserDialogComponent } from './dialog-users.component';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { SnackBarService } from '../../../shared/ui/snack-bar.service';
 
 @Component({
   selector: 'app-users',
@@ -34,6 +35,7 @@ export class UserComponent implements OnInit{
   dataSource = new MatTableDataSource<User>();
   selectedImage: File | null = null;
   imagePreview: string | null = null;
+  private readonly _snackBar = inject(SnackBarService);
   
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
   @ViewChild(MatSort) sort: MatSort | null = null;
@@ -71,10 +73,12 @@ export class UserComponent implements OnInit{
       if (result) {
         if (usuario) {
           this.crudService.updateUser(usuario.id, result).subscribe(() => {
+            this._snackBar.showSnackBar('Usuario actualizado correctamente', 'OK');
             this.getUsuarios();
           });
         } else {
           this.crudService.addUser(result).subscribe(() => {
+            this._snackBar.showSnackBar('Usuario agregado correctamente', 'OK');
             this.getUsuarios();
           });
         }
@@ -108,8 +112,8 @@ export class UserComponent implements OnInit{
 
   deleteUsuario(id: number): void {
     this.crudService.deleteUser(id).subscribe({
-      next: (response) => {
-        console.log('Producto eliminado:', response);
+      next: () => {
+        this._snackBar.showSnackBar('Registro eliminado', 'OK');
         this.dataSource.data = this.dataSource.data.filter((user: User) => user.id !== id);
       },
       error: (error) => {

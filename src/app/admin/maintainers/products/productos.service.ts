@@ -1,17 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../../../shared/interfaces/interfaces';
-import { HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BaseHttpService } from '../../../shared/data-access/base-http.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductosService extends BaseHttpService {
-  addProduct(product: Omit<Product, 'id'>): Observable<Product> {
-    const body = JSON.stringify(product);
-    console.log('body: ', body);
-    return this.http.post<Product>(this.apiUrl, body);
+
+  constructor(private cookie: CookieService) {
+    super();
+  }
+
+  addProduct(product: Omit<Product, 'id'>, image: File): Observable<Product> {
+    const formData = new FormData();
+    formData.append('nombre', product.nombre);
+    formData.append('descripcion', (product.descripcion ?? ''));
+    formData.append('precio', product.precio.toString());
+    formData.append('stock', product.stock.toString());
+    formData.append('categoria_id', (product.categoria_id ?? '').toString());
+    formData.append('imagen', image);
+
+    const token = this.cookie.get('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post<Product>(this.apiUrl, formData, { headers });
   }
 
   getProducts(): Observable<Product[]> {
@@ -20,7 +35,9 @@ export class ProductosService extends BaseHttpService {
 
   deleteProduct(id: number): Observable<Product> {
     const params = new HttpParams().set('id', id.toString());
-    return this.http.delete<Product>(this.apiUrl, { params });
+    const token = this.cookie.get('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete<Product>(this.apiUrl, { params, headers });
   }
 
   getProduct(id: number): Observable<Product> {
@@ -30,9 +47,21 @@ export class ProductosService extends BaseHttpService {
     });
   }
 
-  updateProduct(id: number, product: Omit<Product, 'id'>): Observable<Product> {
-    const body = JSON.stringify({ ...product, id });
-    console.log(body)
-    return this.http.put<Product>(this.apiUrl, body);
+  updateProduct(id: number, product: Omit<Product, 'id'>, image: File): Observable<Product> {
+    const formData = new FormData();
+    formData.append('id', id.toString());
+    formData.append('nombre', product.nombre);
+    formData.append('descripcion', (product.descripcion ?? ''));
+    formData.append('precio', product.precio.toString());
+    formData.append('stock', product.stock.toString());
+    formData.append('categoria_id', (product.categoria_id ?? '').toString());
+    if (image) {
+      formData.append('imagen', image);  
+    }
+
+    const token = this.cookie.get('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    return this.http.post<Product>(this.apiUrl, formData, { headers });
   }
 }

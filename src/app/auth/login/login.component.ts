@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
@@ -6,7 +6,8 @@ import { User } from '../../shared/interfaces/interfaces';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatDividerModule } from '@angular/material/divider';
+import { SnackBarService } from '../../shared/ui/snack-bar.service';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ import {MatDividerModule} from '@angular/material/divider';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  private readonly _snackBar = inject(SnackBarService);
   
   constructor(
     private fb: FormBuilder,
@@ -38,12 +40,23 @@ export class LoginComponent {
           if (response.token) {
             this.auth.saveToken(response.token); 
             this.router.navigate(['/']);
+            this._snackBar.showSnackBar('Inicio de sesión exitoso', 'OK');
           }
         },
-        (error) => {
-          console.error('Error en el inicio de sesión', error);
+        () => {
+          this._snackBar.showSnackBar('Usuario o contraseña incorrectos', 'OK');
         }
       );
+    } else {
+      this._snackBar.showSnackBar('Formulario inválido', 'OK');
     }
+  }
+
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
   }
 }

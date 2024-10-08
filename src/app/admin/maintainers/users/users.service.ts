@@ -1,16 +1,24 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../../shared/interfaces/interfaces';
-import { HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BaseHttpService } from '../../../shared/data-access/base-http.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService extends BaseHttpService {
+
+  constructor(private cookie: CookieService) {
+    super();
+  }
+
   addUser(user: Omit<User, 'id'>): Observable<User> {
     const body = JSON.stringify(user);
-    return this.http.post<User>(this.apiUrl + '/usuarios/usuarios.php', body);
+    const token = this.cookie.get('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post<User>(this.apiUrl + '/usuarios/usuarios.php', body, { headers });
   }
 
   getUsers(): Observable<User[]> {
@@ -19,7 +27,9 @@ export class UsersService extends BaseHttpService {
 
   deleteUser(id: number): Observable<User> {
     const params = new HttpParams().set('id', id.toString());
-    return this.http.delete<User>(this.apiUrl + '/usuarios/usuarios.php', { params });
+    const token = this.cookie.get('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete<User>(this.apiUrl + '/usuarios/usuarios.php', { params, headers });
   }
 
   getUser(id: number): Observable<User> {
@@ -31,7 +41,8 @@ export class UsersService extends BaseHttpService {
 
   updateUser(id: number, user: Omit<User, 'id'>): Observable<User> {
     const body = JSON.stringify({ ...user, id });
-    console.log(body);
-    return this.http.put<User>(this.apiUrl + '/usuarios/usuarios.php', body);
+    const token = this.cookie.get('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put<User>(this.apiUrl + '/usuarios/usuarios.php', body, { headers });
   }
 }

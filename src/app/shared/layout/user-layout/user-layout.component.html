@@ -2,32 +2,43 @@
   <app-header class="fixed top-0 w-full z-50"></app-header>
   <mat-sidenav-container class="h-full mt-16 flex flex-col justify-between items-center">
     <mat-sidenav class="!rounded-none" [(opened)]="opened" mode="side">
-      <button mat-button
+      <a mat-button
+        [routerLink]="['/']"
+        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+        Home
+        <mat-icon>home</mat-icon>
+      </a>
+      <a mat-button
+        [routerLink]="['/catalogo']"
+        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+        Catálogo
+        <mat-icon>list</mat-icon>
+      </a>
+      <a mat-button
+        [routerLink]="['/carrito']"
+        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+        Carrito
+        <mat-icon>shopping_cart</mat-icon>
+      </a>
+      @if(userRol === 'admin'){
+        <a mat-button
+        [routerLink]="['/dashboard']"
         class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
         Dashboard
-      </button>
-      <button mat-button
-        [matMenuTriggerFor]="menu"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
-        Mantenedores
-        <mat-icon>keyboard_arrow_down</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu" class="menu">
-        <a mat-menu-item [routerLink]="['categorias']" routerLinkActive="active" >Categorias</a>
-        <a mat-menu-item [routerLink]="['productos']" routerLinkActive="active">Productos</a>
-        <a mat-menu-item [routerLink]="['usuarios']" routerLinkActive="active">Usuarios</a>
-      </mat-menu>
+        <mat-icon>dashboard</mat-icon>
+      </a>
+      }
       @if(isLoggedIn){
-      <button mat-button
-        (click)="logout()"
+      <button mat-button (click)="logout()"
         class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
         Cerrar Sesión
+        <mat-icon>logout</mat-icon>
       </button>
       } @else {
-        <a mat-button
-        [routerLink]="['auth/login']"
+      <a mat-button [routerLink]="['auth/login']"
         class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
         Iniciar Sesión
+        <mat-icon>login</mat-icon>
       </a>
       }
     </mat-sidenav>

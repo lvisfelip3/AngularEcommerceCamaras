@@ -28,6 +28,7 @@ export class UserLayoutComponent implements OnInit{
   isLoggedIn = false;
   userName = '';
   userPhoto:string | undefined = '';
+  userRol = '';
 
   constructor(
     private auth: AuthService,
@@ -39,7 +40,8 @@ export class UserLayoutComponent implements OnInit{
       this.isLoggedIn = !!user;
       if (user) {
         this.userName = user.nombre;
-        this.userPhoto = user.imagen;  // Asegúrate de que los datos estén en el token
+        this.userPhoto = user.imagen;
+        this.userRol = user.rol;
       }
     })
   }

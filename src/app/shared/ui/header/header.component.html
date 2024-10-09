@@ -27,9 +27,10 @@
                     <p mat-menu-item>{{ user?.rol }}</p>
                 </mat-menu>
             } @else {
-                <a [routerLink]="['auth/login']"
-                class="bg-sky-700"
-                >Iniciar Sesión</a>
+                <button mat-button
+                [routerLink]="['auth/login']"
+                class="!rounded-lg"
+                >Iniciar Sesión</button>
             }
         </div>
         <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
@@ -54,7 +55,7 @@
                     <a [routerLink]="['/dashboard']"
                         routerLinkActive="!text-green-400 hover:!text-gray-900"
                         class="block py-2 px-3 rounded hover:bg-gray-100 hover:text-gray-900 transition-colors">
-                        dashboard
+                        Dashboard
                     </a>
                 </li>
                 }

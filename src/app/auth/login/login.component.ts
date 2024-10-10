@@ -8,11 +8,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
 import { SnackBarService } from '../../shared/ui/snack-bar.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ ReactiveFormsModule, MatInputModule, MatButtonModule, MatFormFieldModule, RouterLink, MatDividerModule],
+  imports: [ ReactiveFormsModule, 
+    MatInputModule, 
+    MatButtonModule, 
+    MatFormFieldModule, 
+    RouterLink, 
+    MatDividerModule,
+    MatIconModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

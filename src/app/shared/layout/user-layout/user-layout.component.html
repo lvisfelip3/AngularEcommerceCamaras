@@ -1,7 +1,7 @@
 <div class="container min-w-full">
-  <app-header class="fixed top-0 w-full z-50"></app-header>
+  <app-header class="fixed top-0 w-full z-50" (toggleSidenav)="opened = !opened"></app-header>
   <mat-sidenav-container class="h-full mt-16 flex flex-col justify-between items-center">
-    <mat-sidenav class="!rounded-none" [(opened)]="opened" mode="side">
+    <mat-sidenav class="!rounded-none" [(opened)]="opened" [mode]="mode">
       <a mat-button
         [routerLink]="['/']"
         class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
@@ -43,9 +43,6 @@
       }
     </mat-sidenav>
     <mat-sidenav-content class="p-2 !bg-gray-900">
-      <button mat-fab (click)="opened = !opened"
-        class="!bg-blue-600 hover:!bg-blue-700 !rounded-md"><mat-icon>menu</mat-icon>
-      </button>
       <main>
         <router-outlet></router-outlet>
       </main>

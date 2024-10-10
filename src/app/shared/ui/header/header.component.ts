@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { CartStateService } from '../../data-access/cart-state.service';
@@ -22,6 +22,8 @@ export class HeaderComponent implements OnInit{
   cartState = inject(CartStateService).state
   isLoggedIn = false;
   user: User | null = null
+
+  @Output() toggleSidenav = new EventEmitter<void>();
 
   constructor(private auth: AuthService) { 
     this.isLoggedIn = this.auth.isLoggedIn();

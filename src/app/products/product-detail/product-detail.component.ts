@@ -2,6 +2,7 @@ import { Component, effect, inject, input } from '@angular/core';
 import { ProductDetailStateService } from '../service/product-list-state.service'; 
 import { RouterLink } from '@angular/router';
 import { CartStateService } from '../../shared/data-access/cart-state.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-product-detail',
@@ -9,7 +10,7 @@ import { CartStateService } from '../../shared/data-access/cart-state.service';
   imports: [RouterLink],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css',
-  providers: [ProductDetailStateService],
+  providers: [ProductDetailStateService, MatButtonModule],
 })
 export default class ProductDetailComponent {
 

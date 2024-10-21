@@ -20,7 +20,17 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "baseUrl": "./src/app/",
+    "paths": {
+      "@shared/*": ["shared/*"],
+      "@admin/*": ["admin/*"],
+      "@products/*": ["products/*"],
+      "@auth/*": ["auth/*"],
+      "@home/*": ["home/*"]
+    },
+    "typeRoots": ["node_modules/@types"],
+    "types": ["swiper"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

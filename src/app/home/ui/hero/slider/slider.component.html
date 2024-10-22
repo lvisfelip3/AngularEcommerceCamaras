@@ -1,0 +1,50 @@
+<div class="slider relative w-full p-4" 
+(mousedown)="onDragStart($event)" 
+(mousemove)="onDrag($event)"
+(mouseup)="onDragEnd($event)" 
+(mouseleave)="onDragEnd($event)" 
+(touchstart)="onDragStart($event)"
+(touchmove)="onDrag($event)" 
+(touchend)="onDragEnd($event)" 
+(mouseover)="onMouseOver()" 
+(mouseout)="onMouseOut()"
+(focus)="onMouseOver()" 
+(blur)="onMouseOut()" 
+[class.hero-layout]="heroLayout">
+    <!-- Flechas de navegación -->
+    <div class="flex justify-between absolute top-1/2 left-0 right-0">
+        <button class="flex justify-center items-center" mat-flat-button (click)="prevSlide()">
+            <mat-icon class="!m-0">keyboard_arrow_left</mat-icon>
+        </button>
+        <button class="flex justify-center items-center" mat-flat-button (click)="nextSlide()">
+            <mat-icon class="!m-0">keyboard_arrow_right</mat-icon>
+        </button>
+    </div>
+
+    <!-- Imagen y detalles -->
+    <div class="transition-transform duration-300 ease-in-out"
+        [ngStyle]="{ transform: 'translateX(' + translateX + 'px)' }">
+
+        <img [src]="currentData?.imagen" 
+        class="object-cover w-full h-[470px] rounded-md" 
+        alt="imagen del producto {{ currentData?.nombre }}"
+        draggable="false">
+
+    </div>
+
+    <!-- Puntos de navegación -->
+    <div class="flex justify-center items-center gap-2 mt-3">
+        <button *ngFor="let slide of images; let i = index" (click)="goToSlide(i)" class="dot">
+            <mat-icon>{{ currentIndex === i ? 'radio_button_checked' : 'radio_button_unchecked' }}</mat-icon>
+        </button>
+    </div>
+
+    <!-- Información del producto -->
+    <div class="flex flex-col items-start absolute bottom-10 right-32 bg-slate-300 text-slate-900 px-8 py-4 rounded-md">
+        <h1 class="text-3xl font-black">{{ currentData?.nombre }}</h1>
+        <p class="text-lg font-medium">{{ currentData?.descripcion }}</p>
+        <p class="text-lg font-medium">{{ currentData?.precio | currency:'CLP' }}</p>
+        <a mat-button class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg"
+            routerLink="../catalogo/producto/{{ currentData?.id }}">Visitar</a>
+    </div>
+</div>

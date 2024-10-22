@@ -2,13 +2,13 @@ import { Component, OnInit} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductsService } from '@products/service/products.service';
 import { Product } from '@shared/interfaces/interfaces';
-import { SwiperComponent } from '@shared/ui/swiper/swiper.component';
+import { SliderComponent } from '@home/ui/hero/slider/slider.component';
 @Component({
   selector: 'app-hero',
   standalone: true,
   imports: [
     RouterLink,
-    SwiperComponent
+    SliderComponent
   ],
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.css'

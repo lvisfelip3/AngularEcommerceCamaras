@@ -29,8 +29,7 @@
       "@auth/*": ["auth/*"],
       "@home/*": ["home/*"]
     },
-    "typeRoots": ["node_modules/@types"],
-    "types": ["swiper"]
+    "typeRoots": ["node_modules/@types"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

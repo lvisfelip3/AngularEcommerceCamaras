@@ -17,4 +17,8 @@ export class ProductsService extends BaseHttpService {
   getProduct(id: string): Observable<Product> {
     return this.http.get<Product>(this.apiUrl, { params: { id } });
   }
+
+  searchProducts(search: string): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}?search=${search}`);
+  }
 }

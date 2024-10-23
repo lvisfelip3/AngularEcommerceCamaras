@@ -1,19 +1,29 @@
 <div class="container-full w-full flex justify-center h-full">
     <div class="container h-full">
-        <app-filter ></app-filter>
+        <app-filter [formControl]="searchControl"></app-filter>
         <div class="catalog">
             @switch(productState.state().status){
-            @case('error'){
-            <p>Error</p>
-            }
-            @case('loading'){
-            <p>Cargando...</p>
-            }
-            @default{
-            @for(product of productState.state().products; track product;){
-            <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
-            }
-            }
+                @case('error'){
+                    <p>Error</p>
+                }
+                @case('loading'){
+                    <p>Cargando...</p>
+                }
+                @default{
+                    @if(searchControl.value?.trim() !== ''){
+                        @if (filteredProducts.length === 0) {
+                            <p>No se encontraron resultados</p>
+                        } @else {
+                            @for(product of filteredProducts; track product;){
+                                <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
+                            }
+                        }
+                    } @else {
+                        @for(product of productState.state().products; track product;){
+                            <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
+                        }
+                    }
+                }
             }
 <!-- 
             <app-pagination></app-pagination> -->

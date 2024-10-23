@@ -13,10 +13,10 @@
 [class.hero-layout]="heroLayout">
     <!-- Flechas de navegación -->
     <div class="flex justify-between absolute top-1/2 left-0 right-0">
-        <button class="flex justify-center items-center" mat-flat-button (click)="prevSlide()">
+        <button class="flex justify-center items-center z-50" mat-flat-button (click)="prevSlide()">
             <mat-icon class="!m-0">keyboard_arrow_left</mat-icon>
         </button>
-        <button class="flex justify-center items-center" mat-flat-button (click)="nextSlide()">
+        <button class="flex justify-center items-center z-50" mat-flat-button (click)="nextSlide()">
             <mat-icon class="!m-0">keyboard_arrow_right</mat-icon>
         </button>
     </div>
@@ -34,9 +34,12 @@
 
     <!-- Puntos de navegación -->
     <div class="flex justify-center items-center gap-2 mt-3">
-        <button *ngFor="let slide of images; let i = index" (click)="goToSlide(i)" class="dot">
-            <mat-icon>{{ currentIndex === i ? 'radio_button_checked' : 'radio_button_unchecked' }}</mat-icon>
-        </button>
+        @for(product of images; track product.id){
+            <button mat-icon-button
+            (click)="goToSlide($index)">
+                <mat-icon>{{ currentIndex === $index ? 'radio_button_checked' : 'radio_button_unchecked' }}</mat-icon>
+            </button>
+        }
     </div>
 
     <!-- Información del producto -->

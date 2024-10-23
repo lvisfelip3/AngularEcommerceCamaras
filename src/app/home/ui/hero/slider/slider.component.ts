@@ -95,6 +95,7 @@ export class SliderComponent implements OnChanges, OnDestroy{
 
   onMouseOut(): void {
     this.resetAutoplay();
+    
   }
 
   
@@ -115,9 +116,9 @@ export class SliderComponent implements OnChanges, OnDestroy{
     this.isDragging = false;
     this.translateX = 0;
     const currentX = event instanceof MouseEvent ? event.clientX : event.changedTouches[0].clientX;
-    if (currentX - this.dragStartX > 50) {
+    if (currentX - this.dragStartX > 400) {
       this.prevSlide();
-    } else if (currentX - this.dragStartX < -50) {
+    } else if (currentX - this.dragStartX < -400) {
       this.nextSlide();
     }
     this.resetAutoplay();

@@ -5,6 +5,7 @@ import { EmptyCartComponent } from './ui/empty-cart/empty-cart.component';
 import { ProductItemCart } from '../shared/interfaces/interfaces';
 import { CheckoutComponent } from './ui/checkout/checkout.component';
 import { AlsoBougthComponent } from './ui/also-bougth/also-bougth.component';
+import { SnackBarService } from '@shared/ui/snack-bar.service';
 
 @Component({
   selector: 'app-cart',
@@ -15,9 +16,11 @@ import { AlsoBougthComponent } from './ui/also-bougth/also-bougth.component';
 })
 export class CartComponent {
   state = inject(CartStateService).state;
+  private readonly _snackBar = inject(SnackBarService);
 
   onRemove(id: number) {
     this.state.remove(id);
+    this._snackBar.showSnackBar('Producto eliminado', 'OK');
   }
 
   onIncrease(product: ProductItemCart) {
@@ -25,6 +28,8 @@ export class CartComponent {
       product: product.product,
       quantity: product.quantity + 1,
     });
+
+    this._snackBar.showSnackBar('Producto agregado', 'OK');
   }
 
   onDecrease(product: ProductItemCart) {
@@ -32,5 +37,6 @@ export class CartComponent {
       ...product,
       quantity: product.quantity - 1,
     });
+    this._snackBar.showSnackBar('Producto eliminado', 'OK');
   }
 }

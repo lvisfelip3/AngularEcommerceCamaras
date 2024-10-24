@@ -1,33 +1,33 @@
-<div class="container-full w-full flex justify-center h-full">
-    <div class="container h-full">
-        <app-filter [formControl]="searchControl"></app-filter>
-        <div class="catalog">
+<div class="bg-gray-900 py-4 antialiased md:py-12 w-full flex flex-col px-[18vw]">
+    <h2 class="text-xl font-semibold text-gray-100">Catálogo</h2>
+    <div class="flex w-full gap-4 flex-wrap md:flex-nowrap">
+        <app-filter class="w-full md:w-min" [formControl]="searchControl"></app-filter>
+        <div class="flex flex-col flex-nowrap gap-2 w-full">
             @switch(productState.state().status){
-                @case('error'){
-                    <p>Error</p>
-                }
-                @case('loading'){
-                    <p>Cargando...</p>
-                }
-                @default{
-                    @if(searchControl.value?.trim() !== ''){
-                        @if (filteredProducts.length === 0) {
-                            <p>No se encontraron resultados</p>
-                        } @else {
-                            @for(product of filteredProducts; track product;){
-                                <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
-                            }
-                        }
-                    } @else {
-                        @for(product of productState.state().products; track product;){
-                            <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
-                        }
-                    }
-                }
+            @case('error'){
+            <p>Error</p>
             }
-<!-- 
+            @case('loading'){
+            <p>Cargando...</p>
+            }
+            @default{
+            @if(searchControl.value?.trim() !== ''){
+            @if (filteredProducts.length === 0) {
+            <p>No se encontraron resultados</p>
+            } @else {
+            @for(product of filteredProducts; track product;){
+            <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
+            }
+            }
+            } @else {
+            @for(product of productState.state().products; track product;){
+            <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
+            }
+            }
+            }
+            }
+            <!-- 
             <app-pagination></app-pagination> -->
         </div>
-        
     </div>
 </div>

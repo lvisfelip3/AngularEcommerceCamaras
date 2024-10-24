@@ -8,7 +8,9 @@
             <p>Error</p>
             }
             @case('loading'){
-            <p>Cargando...</p>
+            <app-product-list-skeleton></app-product-list-skeleton>
+            <app-product-list-skeleton></app-product-list-skeleton>
+            <app-product-list-skeleton></app-product-list-skeleton>
             }
             @default{
             @if(searchControl.value?.trim() !== ''){

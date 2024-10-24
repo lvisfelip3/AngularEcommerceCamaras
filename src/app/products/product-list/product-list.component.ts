@@ -7,11 +7,17 @@ import { Product } from '../../shared/interfaces/interfaces';
 import { FilterComponent } from '../ui/filter/filter.component';
 import { debounceTime } from 'rxjs';
 import { FormControl } from '@angular/forms';
+import { ProductListSkeletonComponent } from '@products/ui/skeleton/product-list-skeleton/product-list-skeleton.component';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [ProductCardComponent, PaginationComponent, FilterComponent],
+  imports: [
+    ProductCardComponent, 
+    PaginationComponent, 
+    FilterComponent,
+    ProductListSkeletonComponent
+  ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
   providers: [ProductStateService],

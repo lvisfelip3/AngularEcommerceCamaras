@@ -1,44 +1,38 @@
-<div class="mx-auto mt-6 max-w-5xl flex-1 space-y-6 lg:mt-0 lg:w-full">
-    <div
-        class="space-y-6 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
-        <p class="text-xl font-semibold text-gray-900 dark:text-white">Resumen de Compra</p>
+<section class="bg-gray-800 p-6 antialiased md:min-w-56 lg:min-w-72 flex flex-col rounded-xl border border-gray-700 gap-5">
+    <p class="text-xl font-semibold text-white !m-0 !p-0">Resumen de Compra</p>
 
-        <div class="space-y-4">
-            <div class="space-y-2">
-                <dl class="flex items-center justify-between gap-4">
-                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Precio Original</dt>
-                    <dd class="text-base font-medium text-gray-900 dark:text-white">{{state.price() | currency:'CLP'}}</dd>
-                </dl>
+    <div class="flex flex-col gap-1">
+        <dl class="flex items-center justify-between gap-4">
+            <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Precio Original</dt>
+            <dd class="text-base font-medium text-gray-900 dark:text-white">{{state.price() | currency:'CLP'}}</dd>
+        </dl>
 
-                <dl class="flex items-center justify-between gap-4">
-                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Descuentos</dt>
-                    <dd class="text-base font-medium text-green-600">-$0</dd>
-                </dl>
-            </div>
-
-            <dl
-                class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
-                <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
-                <dd class="text-base font-bold text-gray-900 dark:text-white">{{state.price() | currency:'CLP'}}</dd>
-            </dl>
-        </div>
-
-        <a href="#"
-            class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 transition-colors">
-            Continuar al Pago
-        </a>
-
-        <div class="flex items-center justify-center gap-2">
-            <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> o </span>
-            <a routerLink="/catalogo" title="Ir a catálogo"
-                class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
-                Seguir comprando
-                <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
-                </svg>
-            </a>
-        </div>
+        <dl class="flex items-center justify-between gap-4">
+            <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Descuentos</dt>
+            <dd class="text-base font-medium text-green-600">-$0</dd>
+        </dl>
     </div>
-</div>
+
+    <dl class="flex items-center justify-between gap-1 border-t border-gray-600 pt-2">
+        <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
+        <dd class="text-base font-bold text-gray-900 dark:text-white">{{state.price() | currency:'CLP'}}</dd>
+    </dl>
+
+    <a href="#"
+        mat-flat-button
+        class="!bg-green-600 !text-white !py-6 !px-8 !rounded-md !hover:bg-green-800 !transition !font-medium !text-xl">
+        Pagar
+    </a>
+
+    <div class="flex items-center justify-center gap-2">
+        <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> o </span>
+        <a routerLink="/catalogo" title="Ir a catálogo"
+            class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
+            Seguir comprando
+            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 12H5m14 0-4 4m4-4-4-4" />
+            </svg>
+        </a>
+    </div>
+</section>

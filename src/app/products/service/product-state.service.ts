@@ -55,6 +55,22 @@ export class ProductStateService {
     });
   }
 
+  filterByCategory(categoryId: number | null): Observable<Product[]> {
+    return this.productsService.getProductsByCategory(categoryId as number).pipe(
+      map((products) => {
+        this.searchProducts.next({
+          type: 'searchProducts',
+          payload: { products },
+        });
+        return products;
+      }),
+      catchError(() => {
+        console.error('Error al filtrar productos por categoría');
+        return of([]);
+      })
+    );
+  }
+
   state = signalSlice({
     initialState: this.initialState,
     actionSources: {

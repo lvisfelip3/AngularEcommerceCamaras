@@ -8,6 +8,8 @@ import { FilterComponent } from '../ui/filter/filter.component';
 import { debounceTime } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ProductListSkeletonComponent } from '@products/ui/skeleton/product-list-skeleton/product-list-skeleton.component';
+import { ProductsService } from '@products/service/products.service';
+import { EmptyProductComponent } from '@products/ui/empty-product/empty-product.component';
 
 @Component({
   selector: 'app-product-list',
@@ -16,7 +18,8 @@ import { ProductListSkeletonComponent } from '@products/ui/skeleton/product-list
     ProductCardComponent, 
     PaginationComponent, 
     FilterComponent,
-    ProductListSkeletonComponent
+    ProductListSkeletonComponent,
+    EmptyProductComponent
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
@@ -24,25 +27,34 @@ import { ProductListSkeletonComponent } from '@products/ui/skeleton/product-list
 })
 export default class ProductListComponent implements OnInit{
   productState = inject(ProductStateService);
+  productService = inject(ProductsService);
   cartState = inject(CartStateService).state;
 
   searchControl = new FormControl('');
+  categoryControl = new FormControl<number | null>(null);
   filteredProducts: Product[] = [];
 
   ngOnInit(): void {
-    // Escuchar los cambios del searchControl para realizar la búsqueda
     this.searchControl.valueChanges
       .pipe(debounceTime(300))
       .subscribe((searchTerm: string | null) => {
         if (searchTerm !== null && searchTerm.trim() !== '') {
           this.productState.search(searchTerm);
+        } else {
+          this.filteredProducts = this.productState.state().products;
         }
       });
 
-    // Suscribirse a los productos filtrados
+    this.categoryControl.valueChanges.subscribe((categoryId) => {
+      this.productState.filterByCategory(categoryId).subscribe((products) => {
+        this.filteredProducts = products;
+      });
+    });
+
     this.productState.products$.subscribe((products) => {
       this.filteredProducts = products;
     });
+
   }
 
   addToCart(product: Product) {

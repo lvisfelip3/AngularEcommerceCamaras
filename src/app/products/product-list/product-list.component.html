@@ -1,32 +1,35 @@
 <div class="bg-gray-900 py-4 antialiased md:py-12 w-full flex flex-col px-[18vw]">
     <h2 class="text-xl font-semibold text-gray-100">Catálogo</h2>
     <div class="flex w-full gap-4 flex-wrap md:flex-nowrap">
-        <app-filter class="w-full md:w-min" [formControl]="searchControl"></app-filter>
+        <app-filter class="w-full md:w-min" 
+        [formControl]="searchControl"
+        (categoryChange)="categoryControl.setValue($event)"
+        ></app-filter>
         <div class="flex flex-col flex-nowrap gap-2 w-full">
             @switch(productState.state().status){
-            @case('error'){
-            <p>Error</p>
-            }
-            @case('loading'){
-            <app-product-list-skeleton></app-product-list-skeleton>
-            <app-product-list-skeleton></app-product-list-skeleton>
-            <app-product-list-skeleton></app-product-list-skeleton>
-            }
-            @default{
-            @if(searchControl.value?.trim() !== ''){
-            @if (filteredProducts.length === 0) {
-            <p>No se encontraron resultados</p>
-            } @else {
-            @for(product of filteredProducts; track product;){
-            <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
-            }
-            }
-            } @else {
-            @for(product of productState.state().products; track product;){
-            <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
-            }
-            }
-            }
+                @case('error') {
+                    <p>Error</p>
+                }
+                @case('loading') {
+                    <app-product-list-skeleton></app-product-list-skeleton>
+                    <app-product-list-skeleton></app-product-list-skeleton>
+                    <app-product-list-skeleton></app-product-list-skeleton>
+                }
+                @default{
+                    @if(searchControl.value?.trim() !== '' || categoryControl.value !== null) {
+                        @if (filteredProducts.length === 0) {
+                            <app-empty-product></app-empty-product>
+                        } @else {
+                            @for(product of filteredProducts; track product;) {
+                                <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
+                            }
+                        }
+                    } @else {
+                        @for(product of productState.state().products; track product;) {
+                            <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
+                        }
+                    }
+                }
             }
             <!-- 
             <app-pagination></app-pagination> -->

@@ -23,7 +23,11 @@ export class ProductsService extends BaseHttpService {
   }
 
   getProductsByCategory(id: number ): Observable<Product[]> {
-    console.log(id)
     return this.http.get<Product[]>(this.apiUrl, { params: { category_id: id } });
   }
+
+  getProductsByMaxPrice(maxPrice:number): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}?maxPrice=${maxPrice}`);
+  }
+
 }

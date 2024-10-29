@@ -71,6 +71,22 @@ export class ProductStateService {
     );
   }
 
+  filterByMaxPrice(maxPrice: number | null): Observable<Product[]> {
+    return this.productsService.getProductsByMaxPrice(maxPrice as number).pipe(
+      map((products) => {
+        this.searchProducts.next({
+          type: 'searchProducts',
+          payload: { products },
+        });
+        return products;
+      }),
+      catchError(() => {
+        console.error('Error al filtrar productos por precio');
+        return of([]);
+      })
+    );
+  }
+
   state = signalSlice({
     initialState: this.initialState,
     actionSources: {

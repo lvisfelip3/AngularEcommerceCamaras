@@ -4,6 +4,8 @@
         <app-filter class="w-full md:w-min" 
         [formControl]="searchControl"
         (categoryChange)="categoryControl.setValue($event)"
+        (maxPriceChange)="maxPriceControl.setValue($event)"
+        [maxValue]="maxValue()"       
         ></app-filter>
         <div class="flex flex-col flex-nowrap gap-2 w-full">
             @switch(productState.state().status){
@@ -20,12 +22,12 @@
                         @if (filteredProducts.length === 0) {
                             <app-empty-product></app-empty-product>
                         } @else {
-                            @for(product of filteredProducts; track product;) {
+                            @for(product of filteredProducts; track product.id;) {
                                 <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
                             }
                         }
                     } @else {
-                        @for(product of productState.state().products; track product;) {
+                        @for(product of productState.state().products; track product.id;) {
                             <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
                         }
                     }

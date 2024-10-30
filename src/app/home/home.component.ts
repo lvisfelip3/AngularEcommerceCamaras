@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { HeroComponent } from './ui/hero/hero.component';
 
 @Component({

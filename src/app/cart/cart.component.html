@@ -8,7 +8,7 @@
             <div class="w-full flex flex-col gap-5">
             @for(cartItem of state.products(); track cartItem.product.id;){
             <app-cart-item class="block" [productCartItem]="cartItem" (onRemove)="onRemove($event)"
-                (onDecrease)="onDecrease($event)" (onIncrease)="onIncrease($event)"></app-cart-item>
+                (onDecrease)="onDecrease($event)" (onIncrease)="onIncrease($event)" (onFav)="onFav($event)"></app-cart-item>
             }
             </div>
             }

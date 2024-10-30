@@ -1,15 +1,21 @@
-import { Component, input, LOCALE_ID, output } from '@angular/core';
-import { ProductItemCart } from '../../../shared/interfaces/interfaces';
+import { Component, input, output } from '@angular/core';
+import { ProductItemCart, Product } from '../../../shared/interfaces/interfaces';
 import { RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-cart-item',
   standalone: true,
-  imports: [RouterLink, CurrencyPipe],
+  imports: [
+    RouterLink, 
+    CurrencyPipe,
+    MatIconModule,
+    MatButtonModule
+  ],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.css',
-  providers: [{ provide: LOCALE_ID, useValue: 'es_CL' }],
 })
 export class CartItemComponent {
   productCartItem = input.required<ProductItemCart>();
@@ -19,4 +25,6 @@ export class CartItemComponent {
   onIncrease = output<ProductItemCart>();
 
   onDecrease = output<ProductItemCart>();
+
+  onFav = output<Product>();
 }

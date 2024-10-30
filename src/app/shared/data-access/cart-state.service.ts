@@ -20,7 +20,7 @@ export class CartStateService {
         loaded: false
     }
 
-    loadProducts = this.storageService.loadProducts().pipe(
+    loadProducts = this.storageService.loadProductsCart().pipe(
         map((products) => ({ products, loaded: true }))
     )
 
@@ -48,9 +48,8 @@ export class CartStateService {
         effects: (state) => ({
             load: () => {
                 if(state.loaded()){
-                    this.storageService.saveProducts(state.products());
+                    this.storageService.saveProductsCart(state.products());
                 }
-                console.log(state.products());
             }
         })
     })

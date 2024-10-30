@@ -1,19 +1,33 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { Observable, of } from "rxjs";
-import { ProductItemCart } from "../interfaces/interfaces";
+import { ProductItemCart, Product } from "../interfaces/interfaces";
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
     providedIn: 'root'
 })
-
 export class StorageService {
-    loadProducts(): Observable<ProductItemCart[]> {
-        const rawProducts = localStorage.getItem('products');
+    private cookieService = inject(CookieService);
+    private readonly COOKIE_CART_NAME = 'cartProducts';
+    private readonly COOKIE_FAV_NAME = 'favProducts';
 
-        return of(rawProducts ? JSON.parse(rawProducts) : []);
+    loadProductsCart(): Observable<ProductItemCart[]> {
+        const rawProducts = this.cookieService.get(this.COOKIE_CART_NAME);
+        return of(rawProducts ? JSON.parse(atob(rawProducts)) : []);
     }
 
-    saveProducts(products: ProductItemCart[]): void {
-        localStorage.setItem('products', JSON.stringify(products));
+    saveProductsCart(products: ProductItemCart[]): void {
+        const encodedProducts = btoa(JSON.stringify(products));
+        this.cookieService.set(this.COOKIE_FAV_NAME, encodedProducts, { path: '/', sameSite: 'Strict' });
+    }
+
+    loadProductsFav(): Observable<Product[]> {
+        const rawProducts = this.cookieService.get(this.COOKIE_CART_NAME);
+        return of(rawProducts ? JSON.parse(atob(rawProducts)) : []);
+    }
+
+    saveProductsFav(products: Product[]): void {
+        const encodedProducts = btoa(JSON.stringify(products));
+        this.cookieService.set(this.COOKIE_FAV_NAME, encodedProducts, { path: '/', sameSite: 'Strict' });
     }
 }

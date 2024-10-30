@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet} from '@angular/router';
 import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeEsCl from '@angular/common/locales/es-CL';
+registerLocaleData(localeEsCl, 'es-CL');
 
 @Component({
   selector: 'app-root',

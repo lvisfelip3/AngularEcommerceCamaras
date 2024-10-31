@@ -1,0 +1,59 @@
+<section class="w-full">
+    <mat-stepper orientation="vertical" [linear]="true" color="accent" class="!bg-gray-800 !rounded-xl !p-8" #stepper>
+        <mat-step [stepControl]="firstFormGroup" label="Datos del cliente">
+            <form [formGroup]="firstFormGroup">
+                <div class="flex flex-wrap md:flex-nowrap md:justify-between">
+                    <mat-form-field appearance="fill">
+                        <mat-label>RUT</mat-label>
+                        <input matInput id="rut" type="text" formControlName="rut" class="w-full">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput id="nombre" type="text" formControlName="nombre" class="w-full">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Email</mat-label>
+                        <input matInput id="email" formControlName="email" class="w-full" placeholder="ejemplo@camaras.com">
+                    </mat-form-field>
+                </div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Teléfono</mat-label>
+                    <input matInput id="telefono" formControlName="telefono" class="w-full">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Ciudad</mat-label>
+                    <mat-select appearance="fill" formControlName="ciudad" (selectionChange)="getComunas($event)">
+                        @for (city of cities; track city.id) {
+                            <mat-option [value]="city.id">
+                                {{city.nombre}}
+                            </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field >
+                    <mat-label>Comuna</mat-label>
+                    <mat-select appearance="fill" formControlName="comuna">
+                        @for (comuna of comunas; track comuna.id) {
+                            <mat-option [value]="comuna.id">
+                                {{comuna.nombre}}
+                            </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Dirección</mat-label>
+                    <input matInput id="direccion" formControlName="direccion" class="w-full">
+                </mat-form-field>
+                <button (click)="onSubmit(stepper)" mat-button matStepperNext>Continuar</button>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup" label="Opciones delivery">
+            <form [formGroup]="secondFormGroup">
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup" label="Método de pago">
+            <form [formGroup]="secondFormGroup">
+            </form>
+        </mat-step>
+    </mat-stepper>
+</section>

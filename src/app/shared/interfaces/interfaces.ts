@@ -30,3 +30,32 @@ export interface User {
   creado_en?: Date;
   imagen?: string;
 }
+
+export interface Ciudad {
+  id: number;
+  nombre: string;
+  estado: number;
+}
+export interface Comuna {
+  id: number;
+  nombre: string;
+  ciudad_id: Ciudad["id"];
+  estado: number;
+}
+
+export interface Client {
+  user: User | undefined;
+  rut: string;
+  nombre: string | User['nombre'];
+  apellido: string;
+  telefono: string;
+  email: string | User['email'];
+}
+
+export interface Adress {
+  id: number;
+  cliente: Client;
+  direccion: string;
+  ciudad: Ciudad;
+  comuna: Comuna;
+}

@@ -2,29 +2,42 @@ import { Injectable, inject } from '@angular/core';
 import { Product } from '../../shared/interfaces/interfaces';
 import { signalSlice } from 'ngxtension/signal-slice';
 import { ProductsService } from '../service/products.service';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 
 interface State {
   product: Product | null;
   status: 'pending' | 'loading' | 'success' | 'error';
+  error: string;
 }
 
 @Injectable()
 export class ProductDetailStateService {
-  private productsService = inject(ProductsService);
+  private readonly productsService = inject(ProductsService);
 
-  private initialState: State = {
+  private readonly initialState: State = {
     product: null,
-    status: 'loading' as const,
+    status: 'pending',
+    error: '',
   };
 
-  state = signalSlice({
+  readonly state = signalSlice({
     initialState: this.initialState,
     actionSources: {
-      getById: (_state, $:Observable<string>) => $.pipe(
-        switchMap((id) => this.productsService.getProduct(id)),
-        map((data) => ({ product: data, status: 'success' as const })),
-        catchError(() => of({ product: null, status: 'error' as const })),
+      getById: (_state, $: Observable<string>) => $.pipe(
+        tap(() => ({ status: 'loading' as const })),
+        switchMap((id) => 
+          this.productsService.getProduct(id).pipe(
+            map((data) => ({ 
+              product: data, 
+              status: 'success' as const 
+            })),
+            catchError((error) => of({ 
+              product: null, 
+              status: 'error' as const,
+              error: error.message || 'Error al cargar el producto'
+            }))
+          )
+        )
       )
     }
   });

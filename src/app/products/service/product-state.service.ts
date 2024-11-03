@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Product } from '../../shared/interfaces/interfaces';
 import { signalSlice } from 'ngxtension/signal-slice';
 import { ProductsService } from '../service/products.service';
-import { catchError, map, Observable, of, startWith, Subject, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, startWith, Subject, switchMap, tap } from 'rxjs';
 
 interface State {
   products: Product[];
@@ -45,14 +45,16 @@ export class ProductStateService {
     }),
   );
 
-  search(searchTerm: string) {
-    this.productsService.searchProducts(searchTerm).subscribe((products) => {
-      this.productsSubject.next(products);
-      this.searchProducts.next({
-        type: 'searchProducts',
-        payload: { products },
-      });
-    });
+  search(searchTerm: string): Observable<Product[]> {
+    return this.productsService.searchProducts(searchTerm).pipe(
+      tap((products) => {
+        this.productsSubject.next(products);
+        this.searchProducts.next({
+          type: 'searchProducts',
+          payload: { products },
+        });
+      })
+    );
   }
 
   filterByCategory(categoryId: number | null): Observable<Product[]> {

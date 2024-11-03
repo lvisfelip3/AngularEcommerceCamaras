@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
@@ -8,6 +8,8 @@ import { Category } from '@shared/interfaces/interfaces';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSliderModule } from '@angular/material/slider';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-filter',
@@ -20,6 +22,7 @@ import { MatSliderModule } from '@angular/material/slider';
     MatIconModule,
     MatButtonModule,
     MatSliderModule,
+    AsyncPipe,
   ],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.css',
@@ -36,10 +39,14 @@ export class FilterComponent implements OnInit {
   categories: Category[] = [];
   isFiltered = false;
 
-  constructor(private crudService: CategoriasService) {}
+  categories$: Observable<Category[]>
+
+  constructor(private crudService: CategoriasService, private cdr: ChangeDetectorRef) {
+
+    this.categories$ = this.crudService.getCategories();
+  }
 
   ngOnInit(): void {
-    this.getCategorias();
 
     this.categoryControl.valueChanges.subscribe((selectedCategory) => {
       this.isFiltered =
@@ -57,17 +64,6 @@ export class FilterComponent implements OnInit {
         this.isFiltered = true;
         this.maxPriceChange.emit(price);
       }
-    });
-  }
-
-  getCategorias(): void {
-    this.crudService.getCategories().subscribe({
-      next: (response) => {
-        this.categories = response;
-      },
-      error: (error) => {
-        console.error('Error al obtener categorías:', error);
-      },
     });
   }
 

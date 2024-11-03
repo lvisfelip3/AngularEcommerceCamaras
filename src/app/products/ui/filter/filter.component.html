@@ -1,3 +1,4 @@
+@if (categories$ | async; as categories){
 <section
     class="flex flex-col justify-start items-start w-full bg-gray-800 p-5 rounded-lg gap-10 mb-3 border border-gray-700">
     <div class="w-full flex justify-between">
@@ -30,15 +31,9 @@
 
     <!-- PRICE -->
     <mat-label>Precio</mat-label>
-    <mat-slider 
-    class="!w-full"
-    [formControl]="maxPriceControl" 
-    min="0" 
-    [max]="maxValue" 
-    step="1000" 
-    discrete="true" 
-    name="price" 
-    ngDefaultControl>
+    <mat-slider class="!w-full" [formControl]="maxPriceControl" min="0" [max]="maxValue" step="1000" discrete="true"
+        name="price" ngDefaultControl>
         <input matSliderThumb class="!w-full">
     </mat-slider>
 </section>
+}

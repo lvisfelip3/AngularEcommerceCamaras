@@ -1,4 +1,4 @@
-import { inject, Injectable, Signal } from "@angular/core";
+import { computed, effect, inject, Injectable, Signal } from "@angular/core";
 import { ProductItemCart } from "../interfaces/interfaces";
 import { signalSlice } from "ngxtension/signal-slice";
 import { StorageService } from "./storage.service";
@@ -12,82 +12,97 @@ interface State {
 @Injectable({
     providedIn: 'root'
 })
-export class CartStateService { 
-    private storageService = inject(StorageService)
+export class CartStateService {
+    private readonly storageService = inject(StorageService);
 
-    private initialState: State = {
+    private readonly initialState: State = {
         products: [],
         loaded: false
-    }
+    };
 
-    loadProducts = this.storageService.loadProductsCart().pipe(
+    private readonly loadProducts = this.storageService.loadProductsCart().pipe(
         map((products) => ({ products, loaded: true }))
-    )
+    );
 
-    state = signalSlice({
+    readonly state = signalSlice({
         initialState: this.initialState,
         sources: [this.loadProducts],
-        selectors:(state) => ({
-            count: () => state().products.reduce(
-                (acc, product) => acc + product.quantity, 0
-            ),
-            price: () => {
-                return state().products.reduce(
-                    (acc, product) => acc + product.product.precio * product.quantity, 0
+        selectors: (state) => ({
+            count: computed(() => 
+                state().products.reduce(
+                    (acc, product) => acc + product.quantity, 
+                    0
                 )
-            }
+            ),
+            price: computed(() => 
+                state().products.reduce(
+                    (acc, product) => acc + product.product.precio * product.quantity, 
+                    0
+                )
+            )
         }),
         actionSources: {
-            add: (state, actions$: Observable<ProductItemCart>) => actions$.pipe(
-                map((product) => this.add(state, product))),
-            remove: (state, actions$: Observable<number>) => actions$.pipe(
-                map((id) => this.remove(state, id))),
-            update: (state, actions$: Observable<ProductItemCart>) => actions$.pipe(
-                map((product) => this.update(state, product)))
-        },
-        effects: (state) => ({
-            load: () => {
-                if(state.loaded()){
-                    this.storageService.saveProductsCart(state.products());
-                }
-            }
-        })
-    })
-
-    private add(state: Signal<State>, product: ProductItemCart){
-
-        const isInCart = state().products.find((productInCart) => productInCart.product.id === product.product.id);
-
-        if(!isInCart){
-            return {
-                products: [...state().products, { ...product, quantity: 1 }],
-            }
+            add: (state, actions$: Observable<ProductItemCart>) => 
+                actions$.pipe(map((product) => this.add(state, product))),
+            
+            remove: (state, actions$: Observable<number>) => 
+                actions$.pipe(map((id) => this.remove(state, id))),
+            
+            update: (state, actions$: Observable<ProductItemCart>) => 
+                actions$.pipe(map((product) => this.update(state, product)))
         }
+    });
 
-        isInCart.quantity += 1;
-
-        return {
-            products: [...state().products],
-        }
+    constructor() {
+        effect(() => {
+            if (this.state.loaded()) {
+                this.storageService.saveProductsCart(this.state.products());
+            }
+        }, { allowSignalWrites: true });
     }
 
-    private remove(state: Signal<State>, id: number){
+    private add(state: Signal<State>, product: ProductItemCart): Partial<State> {
+        const currentProducts = [...state().products];
+        const existingProductIndex = currentProducts.findIndex(
+            (productInCart) => productInCart.product.id === product.product.id
+        );
+
+        if (existingProductIndex === -1) {
+            return {
+                products: [...currentProducts, { ...product, quantity: 1 }],
+            };
+        }
+
+        currentProducts[existingProductIndex] = {
+            ...currentProducts[existingProductIndex],
+            quantity: currentProducts[existingProductIndex].quantity + 1
+        };
+
         return {
-            products: state().products.filter((product) => product.product.id !== id),
+            products: currentProducts,
         };
     }
 
-    private update(state: Signal<State>, product: ProductItemCart) {
-        const updatedProducts = state().products.map((productInCart) => {
-            if (productInCart.product.id === product.product.id) {
-                if (product.quantity <= 0) {
-                    return null;
+    private remove(state: Signal<State>, id: number): Partial<State> {
+        return {
+            products: state().products.filter(
+                (product) => product.product.id !== id
+            ),
+        };
+    }
+
+    private update(state: Signal<State>, product: ProductItemCart): Partial<State> {
+        const updatedProducts = state().products
+            .map((productInCart) => {
+                if (productInCart.product.id === product.product.id) {
+                    return product.quantity <= 0 
+                        ? null 
+                        : { ...productInCart, quantity: product.quantity };
                 }
-                return { ...productInCart, quantity: product.quantity };
-            }
-            return productInCart;
-        }).filter((productInCart) => productInCart !== null);
-    
+                return productInCart;
+            })
+            .filter((product): product is ProductItemCart => product !== null);
+
         return { products: updatedProducts };
     }
 }

@@ -20,7 +20,9 @@
 
     <a routerLink="/pedidos"
         mat-flat-button
-        class="!bg-green-600 !text-white !py-6 !px-8 !rounded-md !hover:bg-green-800 !transition !font-medium !text-xl">
+        color="primary"
+        [disabled]="state().products.length === 0"
+        class="!py-6 !px-8 !rounded-md !font-medium !text-xl">
         Pagar
     </a>
 

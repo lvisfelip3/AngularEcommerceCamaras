@@ -13,7 +13,7 @@ import { SnackBarService } from '@shared/ui/snack-bar.service';
     MatIconModule, 
     RouterLink, 
     CurrencyPipe,
-    MatButtonModule,
+    MatButtonModule
   ],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.css',

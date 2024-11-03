@@ -1,5 +1,11 @@
-import { Component, effect, inject, input } from '@angular/core';
-import { ProductDetailStateService } from '../service/product-list-state.service'; 
+import { 
+  ChangeDetectionStrategy, 
+  Component, 
+  inject, 
+  input, 
+  effect
+} from '@angular/core';
+import { ProductDetailStateService } from '../service/product-list-state.service';
 import { RouterLink } from '@angular/router';
 import { CartStateService } from '../../shared/data-access/cart-state.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,32 +20,41 @@ import { SnackBarService } from '@shared/ui/snack-bar.service';
     RouterLink,
     MatButtonModule,
     CurrencyPipe,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css',
   providers: [
     ProductDetailStateService
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ProductDetailComponent {
+  readonly productDetailState = inject(ProductDetailStateService).state;
+  private readonly cartState = inject(CartStateService).state;
+  private readonly snackBar = inject(SnackBarService);
 
-  productDetailState = inject(ProductDetailStateService).state;
-  cartState = inject(CartStateService).state;
-
-  snackBar = inject(SnackBarService);
-
-  id = input.required<string>();
+  readonly id = input.required<string>();
 
   constructor() {
     effect(() => {
-      this.productDetailState.getById(this.id());
-    })
+      const currentId = this.id();
+      if (currentId) {
+        this.productDetailState.getById(currentId);
+      }
+    }, { allowSignalWrites: true });
   }
 
-  addToCart() {
+  addToCart(): void {
+    const currentProduct = this.productDetailState.product();
+    
+    if (!currentProduct) {
+      this.snackBar.showSnackBar('Error: Producto no disponible', 'OK');
+      return;
+    }
+
     this.cartState.add({
-      product: this.productDetailState.product()!,
+      product: currentProduct,
       quantity: 1,
     });
 

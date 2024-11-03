@@ -1,7 +1,10 @@
 <a [routerLink]="['/catalogo/producto', product().id]">
     <div class="border rounded-lg bg-gray-800 border-gray-700 shadow-sm shadow-gray-950 flex w-full">
         <div class="h-52 w-52 flex justify-center items-center border-r border-gray-600">
-            <img class="object-cover h-52 w-52 rounded-s-lg" [src]="product().imagen" [alt]="'Producto: ' + product().nombre" />
+            <img class="object-cover h-52 w-52 rounded-s-lg" 
+            [src]="product().imagen" 
+            [alt]="'Producto: ' + product().nombre"
+            />
         </div>
         <div class="flex flex-col justify-between items-start p-5 w-full">
             <h5 class="text-xl font-semibold tracking-tight text-white">{{product().nombre}}</h5>
@@ -30,8 +33,10 @@
                 <span class="text-3xl font-bold text-gray-900 dark:text-white">{{product().precio | currency:'CLP'}}</span>
                 <button 
                     mat-flat-button
+                    color="primary"
+                    [disabled]="product().stock <= 0"
                     (click)="addToCart($event)"
-                    class="!rounded-md !bg-blue-600 !text-white !py-6 !px-8 !hover:bg-blue-800 !transition !flex !items-center !justify-center !gap-3">
+                    class="!rounded-md  !py-6 !px-8 !flex !items-center !justify-center !gap-3">
                     <p class="!m-0 !p-0 hidden md:block">Agregar al carrito</p>
                     <mat-icon class="!m-0" aria-label="Cart icon" aria-hidden="false">shopping_cart</mat-icon>
                 </button>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FooterComponent } from '../../ui/footer/footer.component';
 import { HeaderComponent } from '../../ui/header/header.component';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
@@ -24,6 +24,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
   ],
   templateUrl: './user-layout.component.html',
   styleUrl: './user-layout.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserLayoutComponent implements OnInit {
   opened = false;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { StepperComponent } from "./ui/stepper/stepper.component";
 
 @Component({
@@ -6,7 +6,8 @@ import { StepperComponent } from "./ui/stepper/stepper.component";
   standalone: true,
   imports: [StepperComponent],
   templateUrl: './order.component.html',
-  styleUrl: './order.component.css'
+  styleUrl: './order.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderComponent {
 

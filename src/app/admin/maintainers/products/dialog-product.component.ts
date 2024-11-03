@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -93,6 +93,7 @@ import { CategoriasService } from '../category/category.service';
     </div>
   `,
   styleUrls: ['./dialog-product.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductDialogComponent implements OnInit {
   productForm: FormGroup;

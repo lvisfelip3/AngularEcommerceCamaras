@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CartItemComponent } from './ui/cart-item/cart-item.component';
 import { CartStateService } from '../shared/data-access/cart-state.service';
 import { EmptyCartComponent } from './ui/empty-cart/empty-cart.component';
@@ -14,6 +14,7 @@ import { FavoriteStateService } from '@shared/data-access/fav-state.service';
   imports: [CartItemComponent, EmptyCartComponent, CheckoutComponent, AlsoBougthComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartComponent {
   state = inject(CartStateService).state;

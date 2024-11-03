@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
@@ -14,7 +14,8 @@ import { IconComponent } from './icon.component';
     IconComponent
   ],
   templateUrl: './empty-cart.component.html',
-  styleUrl: './empty-cart.component.css'
+  styleUrl: './empty-cart.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmptyCartComponent {
 

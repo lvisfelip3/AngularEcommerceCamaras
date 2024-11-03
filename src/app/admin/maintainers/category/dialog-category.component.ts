@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -63,6 +63,7 @@ import { Category } from '../../../shared/interfaces/interfaces';
     </div>
   `,
   styleUrls: ['./dialog-category.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryDialogComponent {
   categoryForm: FormGroup;

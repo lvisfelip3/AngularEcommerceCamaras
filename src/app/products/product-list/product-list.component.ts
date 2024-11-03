@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { ProductStateService } from '../service/product-state.service';
 import { ProductCardComponent } from '../ui/product-card/product-card.component';
 import { PaginationComponent } from '../ui/pagination/pagination.component';
@@ -24,6 +24,7 @@ import { EmptyProductComponent } from '@products/ui/empty-product/empty-product.
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
   providers: [ProductStateService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ProductListComponent implements OnInit {
   productState = inject(ProductStateService);

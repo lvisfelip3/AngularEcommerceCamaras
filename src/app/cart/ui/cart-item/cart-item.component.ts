@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { ProductItemCart, Product } from '../../../shared/interfaces/interfaces';
 import { RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
   ],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartItemComponent {
   productCartItem = input.required<ProductItemCart>();

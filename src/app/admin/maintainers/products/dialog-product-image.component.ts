@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -64,6 +64,7 @@ import { MatSelectModule } from '@angular/material/select';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductImageDialogComponent {
   constructor(

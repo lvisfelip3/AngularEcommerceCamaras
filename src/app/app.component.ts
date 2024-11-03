@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet} from '@angular/router';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
@@ -12,6 +12,7 @@ registerLocaleData(localeEsCl, 'es-CL');
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [{ provide: LOCALE_ID, useValue: 'es-CL' }],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
   title = 'AngularEcommerceCamaras';

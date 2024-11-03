@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductsService } from '@products/service/products.service';
 import { Product } from '@shared/interfaces/interfaces';
@@ -11,7 +11,8 @@ import { SliderComponent } from '@home/ui/hero/slider/slider.component';
     SliderComponent
   ],
   templateUrl: './hero.component.html',
-  styleUrl: './hero.component.css'
+  styleUrl: './hero.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeroComponent implements OnInit{
 

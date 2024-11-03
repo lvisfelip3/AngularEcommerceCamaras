@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { Product } from '../../../shared/interfaces/interfaces';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
@@ -17,6 +17,7 @@ import { SnackBarService } from '@shared/ui/snack-bar.service';
   ],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductCardComponent {
   private readonly _snackBar = inject(SnackBarService);

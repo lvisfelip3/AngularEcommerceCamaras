@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -24,7 +24,8 @@ import { firstValueFrom, take } from 'rxjs';
   ],
   templateUrl: './stepper.component.html',
   styleUrl: './stepper.component.css',
-  providers: [RutPipePipe]
+  providers: [RutPipePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StepperComponent implements OnInit {
   private _formBuilder = inject(FormBuilder)

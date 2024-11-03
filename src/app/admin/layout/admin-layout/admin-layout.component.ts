@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { HeaderAdminComponent } from '../header/header.component';
 import { FooterAdminComponent } from '../footer/footer.component';
 import { RouterLink, RouterOutlet } from '@angular/router';
@@ -23,7 +23,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
     MatMenuModule, 
     RouterLink],
   templateUrl: './admin-layout.component.html',
-  styleUrl: './admin-layout.component.css'
+  styleUrl: './admin-layout.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminLayoutComponent implements OnInit{
   opened = true;

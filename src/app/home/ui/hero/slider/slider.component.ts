@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { ChangeDetectionStrategy, Component} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +16,7 @@ import { CarouselModule } from 'primeng/carousel';
   ],
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SliderComponent{
   images: string[] = [

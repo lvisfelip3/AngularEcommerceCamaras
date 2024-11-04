@@ -1,59 +1,90 @@
 <section class="w-full">
-    <mat-stepper orientation="vertical" [linear]="true" color="accent" class="!bg-gray-800 !rounded-xl !p-8" #stepper>
-        <mat-step [stepControl]="firstFormGroup" label="Datos del cliente">
-            <form [formGroup]="firstFormGroup">
-                <div class="flex flex-wrap md:flex-nowrap md:justify-between">
-                    <mat-form-field appearance="fill">
-                        <mat-label>RUT</mat-label>
-                        <input matInput id="rut" type="text" formControlName="rut" class="w-full">
-                    </mat-form-field>
-                    <mat-form-field appearance="fill">
-                        <mat-label>Nombre</mat-label>
-                        <input matInput id="nombre" type="text" formControlName="nombre" class="w-full">
-                    </mat-form-field>
-                    <mat-form-field appearance="fill">
-                        <mat-label>Email</mat-label>
-                        <input matInput id="email" formControlName="email" class="w-full" placeholder="ejemplo@camaras.com">
-                    </mat-form-field>
-                </div>
-                <mat-form-field appearance="fill">
+    <form [formGroup]="orderFormGroup">
+        <mat-stepper orientation="vertical" [linear]="true" color="accent" class="!bg-gray-800 !rounded-xl !p-8" #stepper>
+
+            <mat-step formGroupName="client" 
+            [stepControl]="orderFormGroup.controls.client" 
+            label="Datos del cliente"
+            >
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>RUT</mat-label>
+                    <input matInput id="rut" type="text" formControlName="rut" class="w-full">
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput id="nombre" type="text" formControlName="nombre" class="w-full">
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Apellido</mat-label>
+                    <input matInput id="apellido" type="text" formControlName="apellido" class="w-full">
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Email</mat-label>
+                    <input matInput id="email" formControlName="email" class="w-full" placeholder="ejemplo@camaras.com">
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="w-full">
                     <mat-label>Teléfono</mat-label>
                     <input matInput id="telefono" formControlName="telefono" class="w-full">
                 </mat-form-field>
-                <mat-form-field>
+
+                <button mat-button matStepperNext type="button">Continuar</button>
+            </mat-step>
+
+            <mat-step formGroupName="delivery" [stepControl]="orderFormGroup.controls.delivery"
+                label="Opciones delivery">
+                <mat-form-field class="w-full">
                     <mat-label>Ciudad</mat-label>
                     <mat-select appearance="fill" formControlName="ciudad" (selectionChange)="getComunas($event)">
                         @for (city of cities; track city.id) {
-                            <mat-option [value]="city.id">
-                                {{city.nombre}}
-                            </mat-option>
+                        <mat-option [value]="city.id">
+                            {{city.nombre}}
+                        </mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field >
+                <mat-form-field class="w-full">
                     <mat-label>Comuna</mat-label>
                     <mat-select appearance="fill" formControlName="comuna">
                         @for (comuna of comunas; track comuna.id) {
-                            <mat-option [value]="comuna.id">
-                                {{comuna.nombre}}
-                            </mat-option>
+                        <mat-option [value]="comuna.id">
+                            {{comuna.nombre}}
+                        </mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="fill" class="w-full">
                     <mat-label>Dirección</mat-label>
                     <input matInput id="direccion" formControlName="direccion" class="w-full">
                 </mat-form-field>
-                <button (click)="onSubmit(stepper)" mat-button matStepperNext>Continuar</button>
-            </form>
-        </mat-step>
-        <mat-step [stepControl]="secondFormGroup" label="Opciones delivery">
-            <form [formGroup]="secondFormGroup">
-            </form>
-        </mat-step>
-        <mat-step [stepControl]="secondFormGroup" label="Método de pago">
-            <form [formGroup]="secondFormGroup">
-            </form>
-        </mat-step>
-    </mat-stepper>
+                <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Nro. Depto (opcional)</mat-label>
+                    <input matInput id="depto" type="number" formControlName="depto" class="w-full">
+                </mat-form-field>
+
+                <div class="w-full flex gap-3">
+                    <button mat-button matStepperPrevious type="button">Atrás</button>
+                    <button mat-button matStepperNext type="button">Continuar</button>
+                </div>
+
+            </mat-step>
+
+            <mat-step [stepControl]="orderFormGroup.controls.payment" label="Método de pago">
+
+                <div class="w-full flex-wrap">
+                    @for (method of payMethod; track method.id){
+                    <div class="w-full p-3">
+                        <img [class]="method.id === selectedPaymentMethodId ? 'w-full h-32 object-cover rounded-lg border-2 border-green-500 scale-105 transition-all' : 'w-full h-32 object-cover rounded-lg hover:cursor-pointer hover:scale-105 hover:border-2 hover:border-green-500 transition-all'" 
+                        [src]="method.imageUrl"
+                        alt="Metodo de pago"
+                        tabindex="0"
+                        (click)="setPaymentMethod(method.name, method.id)"
+                        (keypress)="setPaymentMethod(method.name, method.id)"
+                        >
+                    </div>
+                    }
+                </div>
+                <button mat-button type="submit" (click)="onSubmit()">Pagar</button>
+            </mat-step>
+        </mat-stepper>
+    </form>
 </section>

@@ -1,0 +1,21 @@
+<section class="flex flex-col justify-start items-start md:w-80 bg-gray-800 p-5 rounded-lg gap-5">
+    <div class="flex justify-between items-center">
+        <h6 class="text-lg font-semibold text-gray-100">Resumen de Compra</h6>
+        <a routerLink="/carrito"
+            class="!text-gray-400 !text-sm !font-regular !underline hover:!text-gray-300 !transition"
+        >Modificar</a>
+    </div>
+    @for (item of products$; track item.product.id) {
+        <app-order-item [product]="item" class="w-full"></app-order-item>
+    }
+    <mat-divider class="w-full"/>
+    <div class="flex justify-between items-center w-full mt-1">
+        <span role="text" class="text-md font-regular text-gray-100 whitespace-nowrap">
+            Total
+        </span>
+        <span role="text" class="text-md font-semibold text-gray-100 whitespace-nowrap">
+            {{ cart_.price() | currency:'CLP' }}
+        </span>
+    </div>
+    <p class="text-sm font-regular text-gray-400 w-full">El valor del envío, impuestos y descuentos se aplicarán luego de proporcionar una dirección</p>
+</section>

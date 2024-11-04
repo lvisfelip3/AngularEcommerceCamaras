@@ -1,0 +1,17 @@
+<div class="flex items-center justify-between w-full">
+    <img
+        [src]="product().product.imagen"
+        [alt]="'producto ' + product().product.nombre"
+        class="object-cover h-20 w-20 rounded-md"
+    />
+    <span role="text" class="text-sm font-regular text-gray-100 text-center">
+        {{ product().product.nombre }}
+        @if (product().quantity > 1){
+            ({{ product().quantity }})
+        }
+    </span>
+
+    <span role="text" class="text-sm font-semibold text-gray-100 whitespace-nowrap">
+        {{ product().product.precio * product().quantity | currency:'CLP' }}
+    </span>
+</div>

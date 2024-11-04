@@ -44,7 +44,6 @@ export interface Comuna {
 }
 
 export interface Client {
-  user: User | undefined;
   rut: string;
   nombre: string | User['nombre'];
   apellido: string;
@@ -53,9 +52,13 @@ export interface Client {
 }
 
 export interface Adress {
-  id: number;
-  cliente: Client;
   direccion: string;
-  ciudad: Ciudad;
-  comuna: Comuna;
+  ciudad: string;
+  comuna: string;
+}
+
+export interface payMethod {
+  id: number;
+  name: string;
+  imageUrl: string;
 }

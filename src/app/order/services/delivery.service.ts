@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BaseHttpService } from '../../shared/data-access/base-http.service';
+import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { Observable } from 'rxjs';
-import { Comuna, Ciudad, Client, Adress } from '../../shared/interfaces/interfaces';
+import { Comuna, Ciudad, Client, Adress, ProductItemCart } from '@shared/interfaces/interfaces';
 import { HttpParams } from '@angular/common/http';
 
 @Injectable({
@@ -22,8 +22,9 @@ export class DeliveryService extends BaseHttpService {
     return this.http.get<Comuna[]>(this.apiUrl + 'comunas/comuna.php', { params });
   }
 
-  saveClient(client: Client): Observable<Client> {
-    return this.http.post<Client>(this.apiUrl + 'clientes/cliente.php', client);
+  saveClientForPayment(client: Client, Adress: Adress, payment: { method: string }, cart: ProductItemCart[]): Observable<Client> {
+    const body = JSON.stringify({ ...client, ...Adress, ...payment, ...cart });
+    return this.http.post<Client>(this.apiUrl + 'clientes/cliente.php', body);
   }
 
   saveShippingAddress(adress: Adress): Observable<Client> {

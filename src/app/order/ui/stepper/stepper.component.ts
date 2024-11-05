@@ -10,9 +10,10 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-import { DeliveryService } from '@shared/data-access/delivery.service';
-import { Adress, Ciudad, Client, Comuna, payMethod } from '@shared/interfaces/interfaces';
+import { DeliveryService } from '@order/services/delivery.service';
+import { Adress, Ciudad, Client, Comuna, payMethod} from '@shared/interfaces/interfaces';
 import { RutPipePipe } from '@order/utils/rut-pipe.pipe';
+import { CartStateService } from '@shared/data-access/cart-state.service';
 
 @Component({
   selector: 'app-stepper',
@@ -35,6 +36,7 @@ export class StepperComponent implements OnInit {
   private _formBuilder = inject(FormBuilder);
   private _deliveryService = inject(DeliveryService);
   private _rutPipe = inject(RutPipePipe);
+  private _cart = inject(CartStateService).state;
 
   cities: Ciudad[] = [];
   comunas: Comuna[] = [];
@@ -98,6 +100,14 @@ export class StepperComponent implements OnInit {
     const payment = {
       method: this.orderFormGroup.get('payment.method')?.value ?? '',
     };
+
+    const cartProducts = this._cart.products();
+    
+    this._deliveryService.saveClientForPayment(client, address, payment, cartProducts).subscribe(
+      response => {
+        alert('Compra realizada con exito' + response);
+      }
+    );
   }
 
   getComunas(event: MatSelectChange) {

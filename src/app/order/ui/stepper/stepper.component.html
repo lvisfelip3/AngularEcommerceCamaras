@@ -1,6 +1,6 @@
 <section class="w-full">
     <form [formGroup]="orderFormGroup">
-        <mat-stepper orientation="vertical" [linear]="true" color="accent" class="!bg-gray-800 !rounded-xl !p-8" #stepper>
+        <mat-stepper orientation="vertical" [linear]="true" color="accent" class="!bg-gray-800 !rounded-xl !p-4 md:!p-8" #stepper>
 
             <mat-step formGroupName="client" 
             [stepControl]="orderFormGroup.controls.client" 

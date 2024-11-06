@@ -1,19 +1,21 @@
 <section>
-    <h2 class="text-xl font-semibold text-gray-100">Carrito</h2>
-    <div class="w-full flex flex-wrap md:flex-nowrap gap-5">
+    <h2 class="text-xl font-semibold text-gray-100 w-full">Carrito</h2>
+    <div class="w-full flex flex-wrap gap-5 min-h-[calc(100vh-400px)]">
         <div class="w-full">
             @if(state.products().length === 0){
             <app-empty-cart class="block"></app-empty-cart>
             } @else {
-            <div class="w-full flex flex-col gap-5">
-            @for(cartItem of state.products(); track cartItem.product.id;){
-            <app-cart-item class="block w-full" [productCartItem]="cartItem" (onRemove)="onRemove($event)"
-                (onDecrease)="onDecrease($event)" (onIncrease)="onIncrease($event)" (onFav)="onFav($event)"></app-cart-item>
-            }
-            </div>
+                <div class="flex w-full flex-wrap gap-5">
+                    <div class="flex-1 w-full flex flex-col gap-5">
+                        @for(cartItem of state.products(); track cartItem.product.id;){
+                        <app-cart-item class="inline-block w-full" [productCartItem]="cartItem" (onRemove)="onRemove($event)"
+                            (onDecrease)="onDecrease($event)" (onIncrease)="onIncrease($event)" (onFav)="onFav($event)"></app-cart-item>
+                        }
+                    </div>
+                    <app-checkout class="w-full md:w-80 md:min-w-64"></app-checkout>
+                </div>
             }
         </div>
-        <app-checkout class="w-full"></app-checkout>
     </div>
     <app-also-bougth></app-also-bougth>
 </section>

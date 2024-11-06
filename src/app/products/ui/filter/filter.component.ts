@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSliderModule } from '@angular/material/slider';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { FilterSkeletonComponent } from '../skeleton/filter-skeleton/filter-skeleton.component';
 
 @Component({
   selector: 'app-filter',
@@ -23,6 +24,7 @@ import { AsyncPipe } from '@angular/common';
     MatButtonModule,
     MatSliderModule,
     AsyncPipe,
+    FilterSkeletonComponent
   ],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.css',

@@ -55,6 +55,7 @@ export interface Adress {
   direccion: string;
   ciudad: string;
   comuna: string;
+  depto?: string;
 }
 
 export interface payMethod {

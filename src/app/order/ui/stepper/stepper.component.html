@@ -1,4 +1,7 @@
 <section class="w-full">
+    <span class="flag fi fi-cl"></span>
+    <span class="flag fi fi-ar"></span>
+    <span class="flag fi fi-us"></span>
     <form [formGroup]="orderFormGroup">
         <mat-stepper orientation="vertical" [linear]="true" color="accent" class="!bg-gray-800 !rounded-xl !p-4 md:!p-8" #stepper>
 
@@ -9,22 +12,78 @@
                 <mat-form-field appearance="fill" class="w-full">
                     <mat-label>RUT</mat-label>
                     <input matInput id="rut" type="text" formControlName="rut" class="w-full">
+                    @if (orderFormGroup.get('client.rut')?.hasError('pattern')){
+                        <mat-error>RUT inválido</mat-error>
+                    }
+                    @if (orderFormGroup.get('client.rut')?.hasError('maxlength')){
+                        <mat-error>RUT inválido</mat-error>
+                    }
+                    @if (orderFormGroup.get('client.rut')?.hasError('minlength')){
+                        <mat-error>RUT inválido</mat-error>
+                    }
+                    @if (orderFormGroup.get('client.rut')?.hasError('required')){
+                        <mat-error>RUT requerido</mat-error>
+                    }
                 </mat-form-field>
                 <mat-form-field appearance="fill" class="w-full">
                     <mat-label>Nombre</mat-label>
                     <input matInput id="nombre" type="text" formControlName="nombre" class="w-full">
+                    @if (orderFormGroup.get('client.nombre')?.hasError('pattern')){
+                        <mat-error>Nombre inválido</mat-error>
+                    }
+                    @if (orderFormGroup.get('client.nombre')?.hasError('required')){
+                        <mat-error>Nombre requerido</mat-error>
+                    }
+                    @if (orderFormGroup.get('client.nombre')?.hasError('maxlength')){
+                        <mat-error>Nombre inválido (maximo 40 caracteres)</mat-error>
+                    }
+                    @if (orderFormGroup.get('client.nombre')?.hasError('minlength')){
+                        <mat-error>Nombre inválido (mínimo 3 caracteres)</mat-error>
+                    }
                 </mat-form-field>
                 <mat-form-field appearance="fill" class="w-full">
                     <mat-label>Apellido</mat-label>
                     <input matInput id="apellido" type="text" formControlName="apellido" class="w-full">
+                    @if (orderFormGroup.get('client.apellido')?.hasError('pattern')){
+                        <mat-error>Apellido inválido</mat-error>
+                    }
+                    @if (orderFormGroup.get('client.apellido')?.hasError('required')){
+                        <mat-error>Apellido requerido</mat-error>
+                    }
+                    @if (orderFormGroup.get('client.apellido')?.hasError('maxlength')){
+                        <mat-error>Apellido inválido (maximo 40 caracteres)</mat-error>
+                    }
+                    @if (orderFormGroup.get('client.apellido')?.hasError('minlength')){
+                        <mat-error>Apellido inválido (mínimo 3 caracteres)</mat-error>
+                    }
                 </mat-form-field>
                 <mat-form-field appearance="fill" class="w-full">
                     <mat-label>Email</mat-label>
                     <input matInput id="email" formControlName="email" class="w-full" placeholder="ejemplo@camaras.com">
+                    @if (orderFormGroup.get('client.email')?.hasError('email')){
+                        <mat-error>Email inválido</mat-error>
+                    }
+                    @if (orderFormGroup.get('client.email')?.hasError('required')){
+                        <mat-error>Email requerido</mat-error>
+                    }
+                    @if (orderFormGroup.get('client.email')?.hasError('maxlength')){
+                        <mat-error>Email invalido(máximo 40 caracteres)</mat-error>
+                    }
+                    @if (orderFormGroup.get('client.email')?.hasError('minlength')){
+                        <mat-error>Email invalido(mínimo 5 caracteres)</mat-error>
+                    }
                 </mat-form-field>
                 <mat-form-field appearance="fill" class="w-full">
                     <mat-label>Teléfono</mat-label>
-                    <input matInput id="telefono" formControlName="telefono" class="w-full">
+                    <span matPrefix class="pl-4">+56 &nbsp;</span>
+                    <input matInput id="telefono" type="tel" formControlName="telefono" class="w-full" placeholder="9 1234 5678">
+                    @if (
+                    orderFormGroup.get('client.telefono')?.hasError('pattern') ||
+                    orderFormGroup.get('client.telefono')?.hasError('maxlength') ||
+                    orderFormGroup.get('client.telefono')?.hasError('minlength')
+                    ) {
+                        <mat-error>Teléfono inválido</mat-error>
+                    }
                 </mat-form-field>
 
                 <button mat-button matStepperNext type="button">Continuar</button>
@@ -58,7 +117,15 @@
                 </mat-form-field>
                 <mat-form-field appearance="fill" class="w-full">
                     <mat-label>Nro. Depto (opcional)</mat-label>
-                    <input matInput id="depto" type="number" formControlName="depto" class="w-full">
+                    <input matInput id="depto" type="text" formControlName="depto" class="w-full">
+                    @if (
+                    orderFormGroup.get('delivery.depto')?.hasError('pattern')) {
+                        <mat-error>Nro. Depto inválido</mat-error>
+                    }
+                    @else if (
+                    orderFormGroup.get('delivery.depto')?.hasError('maxlength')) {
+                        <mat-error>Nro. Depto inválido</mat-error>
+                    }
                 </mat-form-field>
 
                 <div class="w-full flex gap-3">

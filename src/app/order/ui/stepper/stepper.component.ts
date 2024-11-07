@@ -14,6 +14,7 @@ import { DeliveryService } from '@order/services/delivery.service';
 import { Adress, Ciudad, Client, Comuna, payMethod} from '@shared/interfaces/interfaces';
 import { RutPipePipe } from '@order/utils/rut-pipe.pipe';
 import { CartStateService } from '@shared/data-access/cart-state.service';
+import { PhonePipePipe } from '@order/utils/phone-pipe.pipe';
 
 @Component({
   selector: 'app-stepper',
@@ -24,18 +25,21 @@ import { CartStateService } from '@shared/data-access/cart-state.service';
     MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatSelectModule,
-    RutPipePipe,
+    MatSelectModule
   ],
   templateUrl: './stepper.component.html',
   styleUrl: './stepper.component.css',
-  providers: [RutPipePipe],
+  providers: [
+    RutPipePipe,
+    PhonePipePipe
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StepperComponent implements OnInit {
   private _formBuilder = inject(FormBuilder);
   private _deliveryService = inject(DeliveryService);
   private _rutPipe = inject(RutPipePipe);
+  private _phonePipe = inject(PhonePipePipe);
   private _cart = inject(CartStateService).state;
 
   cities: Ciudad[] = [];
@@ -60,21 +64,56 @@ export class StepperComponent implements OnInit {
         .get('client.rut')
         ?.setValue(formattedRut, { emitEvent: false });
     });
+
+    this.orderFormGroup.get('client.telefono')?.valueChanges.subscribe((value) => {
+      const formattedTelefono = this._phonePipe.transform(value || '');
+      this.orderFormGroup
+        .get('client.telefono')
+        ?.setValue(formattedTelefono, { emitEvent: false });
+    });
   }
 
   orderFormGroup = this._formBuilder.group({
     client: this._formBuilder.group({
-      nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
-      rut: ['', Validators.required],
-      email: ['', Validators.required],
-      telefono: ['', Validators.required],
+      nombre: ['', [ 
+        Validators.required,
+        Validators.pattern(/^[a-zA-Z\u00f1\u00d1\s]+$/u),
+        Validators.maxLength(40),
+        Validators.minLength(3)
+      ]],
+      apellido: ['', [
+        Validators.required,
+        Validators.pattern(/^[a-zA-Z\u00f1\u00d1\s]+$/u),
+        Validators.maxLength(40),
+        Validators.minLength(3)
+      ]],
+      rut: ['', [
+        Validators.required,
+        Validators.pattern(/^\d{1,3}\.\d{1,3}\.\d{1,3}-[0-9kK]{1}$/),
+        Validators.maxLength(12),
+        Validators.minLength(11)
+      ]],
+      email: ['', [
+        Validators.required,
+        Validators.email,
+        Validators.maxLength(40),
+        Validators.minLength(5)
+      ]],
+      telefono: ['', [
+        Validators.pattern(/^[92]\d{8}$/),
+        Validators.maxLength(9),
+        Validators.minLength(9),
+      ]],
     }),
     delivery: this._formBuilder.group({
       ciudad: ['', Validators.required],
       comuna: [{ value: '', disabled: true }, Validators.required],
       direccion: ['', Validators.required],
-      depto: [''],
+      depto: ['', [
+        Validators.pattern(/^[0-9]+$/),
+        Validators.maxLength(4),
+        ]
+      ],
     }),
     payment: this._formBuilder.group({
       method: ['', Validators.required],
@@ -95,6 +134,7 @@ export class StepperComponent implements OnInit {
       direccion: this.orderFormGroup.get('delivery.direccion')?.value ?? '',
       ciudad: this.orderFormGroup.get('delivery.ciudad')?.value ?? '',
       comuna: this.orderFormGroup.get('delivery.comuna')?.value ?? '',
+      depto: this.orderFormGroup.get('delivery.depto')?.value ?? '',
     };
 
     const payment = {

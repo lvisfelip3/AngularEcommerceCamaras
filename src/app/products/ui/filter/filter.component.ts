@@ -36,9 +36,11 @@ export class FilterComponent implements OnInit {
 
   @Output() categoryChange = new EventEmitter<number | null>();
   @Output() maxPriceChange = new EventEmitter<number>();
+  @Output() orderByChange = new EventEmitter<string | null>();
 
   categoryControl = new FormControl('');
   maxPriceControl = new FormControl(0);
+  orderByControl = new FormControl('');
   categories: Category[] = [];
   isFiltered = false;
 
@@ -55,6 +57,10 @@ export class FilterComponent implements OnInit {
       this.isFiltered =
         !!selectedCategory || this.formControl.value?.trim().length > 0;
       this.categoryChange.emit(selectedCategory as number | null);
+    });
+
+    this.orderByControl.valueChanges.subscribe((orderBy) => {
+      this.orderByChange.emit(orderBy);
     });
 
     this.formControl.valueChanges.subscribe((searchValue) => {

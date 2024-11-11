@@ -10,6 +10,19 @@
         }
     </div>
 
+    <!-- ORDER BY -->
+    <mat-form-field>
+        <mat-label>Ordenar por</mat-label>
+        <mat-select [formControl]="orderByControl">
+            <mat-option value="precioAsc">Menor precio</mat-option>
+            <mat-option value="precioDesc">Mayor precio</mat-option>
+            <mat-option value="stockAsc">Menor stock</mat-option>
+            <mat-option value="stockDesc">Mayor stock</mat-option>
+            <mat-option value="nombreAsc">Nombre: A-Z</mat-option>
+            <mat-option value="nombreDesc">Nombre: Z-A</mat-option>
+        </mat-select>
+    </mat-form-field>
+
     <!-- SEARCH -->
     <mat-form-field class="w-full" appearance="fill">
         <mat-label>Buscar</mat-label>

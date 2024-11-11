@@ -1,7 +1,6 @@
 import { Component, inject, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { ProductStateService } from '../service/product-state.service';
 import { ProductCardComponent } from '../ui/product-card/product-card.component';
-import { PaginationComponent } from '../ui/pagination/pagination.component';
 import { CartStateService } from '../../shared/data-access/cart-state.service';
 import { Product } from '../../shared/interfaces/interfaces';
 import { FilterComponent } from '../ui/filter/filter.component';
@@ -10,30 +9,33 @@ import { FormControl } from '@angular/forms';
 import { ProductListSkeletonComponent } from '@products/ui/skeleton/product-list-skeleton/product-list-skeleton.component';
 import { ProductsService } from '@products/service/products.service';
 import { EmptyProductComponent } from '@products/ui/empty-product/empty-product.component';
+import { SortProductsPipe } from '@products/utils/sort-products.pipe';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
   imports: [
     ProductCardComponent,
-    PaginationComponent,
     FilterComponent,
     ProductListSkeletonComponent,
-    EmptyProductComponent
+    EmptyProductComponent,
+    SortProductsPipe
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
-  providers: [ProductStateService],
+  providers: [ProductStateService, SortProductsPipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ProductListComponent implements OnInit {
   productState = inject(ProductStateService);
   productService = inject(ProductsService);
   cartState = inject(CartStateService).state;
+  sortProducts_ = inject(SortProductsPipe);
 
   searchControl = new FormControl('');
   categoryControl = new FormControl<number | null>(null);
   maxPriceControl = new FormControl<number | null>(null);
+  orderByControl = new FormControl<string | null>(null);
   filteredProducts: Product[] = [];
 
   constructor(private cdr: ChangeDetectorRef) {}
@@ -45,7 +47,7 @@ export default class ProductListComponent implements OnInit {
         if (searchTerm) {
           this.updateFilteredProducts(searchTerm);
         } else {
-          this.filteredProducts = this.productState.state().products; // Restablece a los productos iniciales
+          this.filteredProducts = this.productState.state().products;
         }
       });
 
@@ -54,6 +56,12 @@ export default class ProductListComponent implements OnInit {
         this.updateFilteredProductsByCategory(categoryId);
       } else {
         this.filteredProducts = this.productState.state().products;
+      }
+    });
+
+    this.orderByControl.valueChanges.subscribe((orderBy) => {
+      if (orderBy) {
+        this.filteredProducts = this.sortProducts_.transform(this.filteredProducts, orderBy);
       }
     });
 
@@ -72,7 +80,7 @@ export default class ProductListComponent implements OnInit {
   private updateFilteredProducts(searchTerm: string): void {
     this.productState.search(searchTerm).subscribe((products) => {
       this.filteredProducts = products;
-      this.cdr.detectChanges(); // Trigger change detection manually
+      this.cdr.detectChanges();
     });
   }
 
@@ -80,7 +88,7 @@ export default class ProductListComponent implements OnInit {
     if (categoryId !== null) {
       this.productState.filterByCategory(categoryId).subscribe((products) => {
         this.filteredProducts = products;
-        this.cdr.detectChanges(); // Trigger change detection manually
+        this.cdr.detectChanges();
       });
     }
   }

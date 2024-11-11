@@ -1,56 +1,60 @@
 @if (categories$ | async; as categories){
-<section
-    class="flex flex-col justify-start items-start w-full bg-gray-800 p-5 rounded-lg gap-10 mb-3 border border-gray-700">
-    <div class="w-full flex justify-between">
-        <h3 class="text-xl font-bold text-white !mb-0 w-full">Filtrar</h3>
-        @if (isFiltered){
-        <button mat-icon-button (click)="resetFilter()">
-            <mat-icon>filter_alt_off</mat-icon>
-        </button>
-        }
-    </div>
-
-    <!-- ORDER BY -->
-    <mat-form-field>
-        <mat-label>Ordenar por</mat-label>
-        <mat-select [formControl]="orderByControl">
-            <mat-option value="precioAsc">Menor precio</mat-option>
-            <mat-option value="precioDesc">Mayor precio</mat-option>
-            <mat-option value="stockAsc">Menor stock</mat-option>
-            <mat-option value="stockDesc">Mayor stock</mat-option>
-            <mat-option value="nombreAsc">Nombre: A-Z</mat-option>
-            <mat-option value="nombreDesc">Nombre: Z-A</mat-option>
-        </mat-select>
-    </mat-form-field>
-
-    <!-- SEARCH -->
-    <mat-form-field class="w-full" appearance="fill">
-        <mat-label>Buscar</mat-label>
-        <input matInput [formControl]="formControl" id="search" type="text" class="w-full">
-    </mat-form-field>
-
-    <!-- CATEGORY -->
-    <mat-form-field class="w-full" appearance="fill">
-        <mat-label>Categoría</mat-label>
-        <mat-select [formControl]="categoryControl">
-            <mat-option value="">Todas las categorías</mat-option>
-            @for (cat of categories; track cat.id) {
-            <mat-option [value]="cat.id">
-                {{cat.nombre}}
-            </mat-option>
+<mat-accordion class="!w-full !bg-gray-800">
+    <mat-expansion-panel 
+    [expanded]="panelState()"
+    (opened)="panelState.set(true)" 
+    (closed)="panelState.set(false)"
+    class="!bg-gray-800 !flex !flex-col !justify-center !items-start !w-full">
+        <mat-expansion-panel-header class="!w-full !py-8 !bg-gray-800">
+            <h5 class="text-xl font-bold text-white !mb-0 w-full">Filtrar</h5>
+            @if (isFiltered){
+            <button mat-icon-button (click)="resetFilter()">
+                <mat-icon>filter_alt_off</mat-icon>
+            </button>
             }
-        </mat-select>
-    </mat-form-field>
+        </mat-expansion-panel-header>
+        <!-- ORDER BY -->
+        <mat-form-field class="w-full">
+            <mat-label>Ordenar por</mat-label>
+            <mat-select [formControl]="orderByControl">
+                <mat-option value="precioAsc">Menor precio</mat-option>
+                <mat-option value="precioDesc">Mayor precio</mat-option>
+                <mat-option value="stockAsc">Menor stock</mat-option>
+                <mat-option value="stockDesc">Mayor stock</mat-option>
+                <mat-option value="nombreAsc">Nombre: A-Z</mat-option>
+                <mat-option value="nombreDesc">Nombre: Z-A</mat-option>
+            </mat-select>
+        </mat-form-field>
 
-    <!-- PRICE -->
-    <div class="flex flex-col gap-1 w-full">
-        <mat-label>Precio</mat-label>
-        <mat-slider class="!w-full" [formControl]="maxPriceControl" min="0" [max]="maxValue" step="1000" discrete="true" [displayWith]="displayFormattedValue"
-            name="price" ngDefaultControl>
-            <input matSliderThumb class="!w-full">
-        </mat-slider>
-    </div>
-</section>
+        <!-- SEARCH -->
+        <mat-form-field class="w-full" appearance="fill">
+            <mat-label>Buscar</mat-label>
+            <input matInput [formControl]="formControl" id="search" type="text" class="w-full">
+        </mat-form-field>
+
+        <!-- CATEGORY -->
+        <mat-form-field class="w-full" appearance="fill">
+            <mat-label>Categoría</mat-label>
+            <mat-select [formControl]="categoryControl">
+                <mat-option value="">Todas las categorías</mat-option>
+                @for (cat of categories; track cat.id) {
+                <mat-option [value]="cat.id">
+                    {{cat.nombre}}
+                </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <!-- PRICE -->
+        <div class="flex flex-col gap-1 w-full">
+            <mat-label>Precio</mat-label>
+            <mat-slider class="!w-full" [formControl]="maxPriceControl" min="0" [max]="maxValue" step="1000"
+                discrete="true" [displayWith]="displayFormattedValue" name="price" ngDefaultControl>
+                <input matSliderThumb class="!w-full">
+            </mat-slider>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>
 } @else {
-    <app-filter-skeleton class="w-full"></app-filter-skeleton>
+<app-filter-skeleton class="w-full"></app-filter-skeleton>
 }

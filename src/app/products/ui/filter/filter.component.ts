@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
@@ -11,6 +11,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { FilterSkeletonComponent } from '../skeleton/filter-skeleton/filter-skeleton.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-filter',
@@ -24,7 +26,8 @@ import { FilterSkeletonComponent } from '../skeleton/filter-skeleton/filter-skel
     MatButtonModule,
     MatSliderModule,
     AsyncPipe,
-    FilterSkeletonComponent
+    FilterSkeletonComponent,
+    MatExpansionModule
   ],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.css',
@@ -44,14 +47,26 @@ export class FilterComponent implements OnInit {
   categories: Category[] = [];
   isFiltered = false;
 
+  readonly panelState = signal(false);
+
   categories$: Observable<Category[]>
 
-  constructor(private crudService: CategoriasService, private cdr: ChangeDetectorRef) {
+  constructor (
+    private crudService: CategoriasService, 
+    private cdr: ChangeDetectorRef,
+    private breakpointObserver: BreakpointObserver
+  ) {
 
     this.categories$ = this.crudService.getCategories();
   }
 
   ngOnInit(): void {
+
+    this.breakpointObserver.observe([
+      '(min-width: 770px)'
+    ]).subscribe(result => {
+      this.panelState.set(result.matches);
+    });
 
     this.categoryControl.valueChanges.subscribe((selectedCategory) => {
       this.isFiltered =

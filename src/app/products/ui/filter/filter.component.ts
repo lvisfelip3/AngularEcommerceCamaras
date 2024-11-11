@@ -61,6 +61,7 @@ export class FilterComponent implements OnInit {
 
     this.orderByControl.valueChanges.subscribe((orderBy) => {
       this.orderByChange.emit(orderBy);
+      this.isFiltered = !!orderBy;
     });
 
     this.formControl.valueChanges.subscribe((searchValue) => {
@@ -81,8 +82,15 @@ export class FilterComponent implements OnInit {
     this.categoryControl.setValue(null, { emitEvent: false });
     this.formControl.setValue('', { emitEvent: false });
     this.maxPriceControl.setValue(this.maxValue, { emitEvent: false });
+    this.orderByControl.setValue(null, { emitEvent: false });
+
+    this.orderByChange.emit(null);
 
     this.maxPriceControl.setValue(this.maxValue);
     this.maxPriceChange.emit(this.maxValue);
+  }
+
+  displayFormattedValue(value: number): string {
+    return `${Math.round(value / 1000)}K`;
   }
 }

@@ -43,11 +43,13 @@
     </mat-form-field>
 
     <!-- PRICE -->
-    <mat-label>Precio</mat-label>
-    <mat-slider class="!w-full" [formControl]="maxPriceControl" min="0" [max]="maxValue" step="1000" discrete="true"
-        name="price" ngDefaultControl>
-        <input matSliderThumb class="!w-full">
-    </mat-slider>
+    <div class="flex flex-col gap-1 w-full">
+        <mat-label>Precio</mat-label>
+        <mat-slider class="!w-full" [formControl]="maxPriceControl" min="0" [max]="maxValue" step="1000" discrete="true" [displayWith]="displayFormattedValue"
+            name="price" ngDefaultControl>
+            <input matSliderThumb class="!w-full">
+        </mat-slider>
+    </div>
 </section>
 } @else {
     <app-filter-skeleton class="w-full"></app-filter-skeleton>

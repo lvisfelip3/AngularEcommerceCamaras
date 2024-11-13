@@ -56,6 +56,7 @@ export class StepperComponent implements OnInit {
   ngOnInit(): void {
     this._deliveryService.getCiudades().subscribe((cities: Ciudad[]) => {
       this.cities = cities;
+      cities.sort((a, b) => a.nombre.localeCompare(b.nombre));
     });
 
     this.orderFormGroup.get('client.rut')?.valueChanges.subscribe((value) => {
@@ -155,6 +156,7 @@ export class StepperComponent implements OnInit {
       .getComunaByCiudad(event.value)
       .subscribe((comunas: Comuna[]) => {
         this.comunas = comunas;
+        comunas.sort((a, b) => a.nombre.localeCompare(b.nombre));
         this.orderFormGroup.get('delivery.comuna')?.enable();
       });
   }

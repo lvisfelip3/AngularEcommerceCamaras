@@ -4,39 +4,53 @@
     <mat-sidenav class="!rounded-none" [(opened)]="opened" mode="over">
       <a mat-button
         [routerLink]="['/']"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start"
+        (click)="opened = false"
+        >
         Home
         <mat-icon>home</mat-icon>
       </a>
       <a mat-button
         [routerLink]="['/catalogo']"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start"
+        (click)="opened = false"
+        >
         Catálogo
         <mat-icon>list</mat-icon>
       </a>
       <a mat-button
         [routerLink]="['/carrito']"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start"
+        (click)="opened = false"
+        >
         Carrito
         <mat-icon>shopping_cart</mat-icon>
       </a>
       @if(userRol === 'admin'){
         <a mat-button
         [routerLink]="['/dashboard']"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start"
+        (click)="opened = false"
+        >
         Dashboard
         <mat-icon>dashboard</mat-icon>
       </a>
       }
       @if(isLoggedIn){
-      <button mat-button (click)="logout()"
+      <button mat-button 
+        (click)="logout()"
+        (click)="opened = false"
         class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
         Cerrar Sesión
         <mat-icon>logout</mat-icon>
       </button>
       } @else {
-      <a mat-button [routerLink]="['auth/login']"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+      <a 
+        mat-button 
+        [routerLink]="['auth/login']"
+        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start"
+        (click)="opened = false"
+        >
         Iniciar Sesión
         <mat-icon>login</mat-icon>
       </a>

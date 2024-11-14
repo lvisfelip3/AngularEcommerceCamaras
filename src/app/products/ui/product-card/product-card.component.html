@@ -37,7 +37,9 @@
                     mat-fab
                     color="primary"
                     [disabled]="product().stock <= 0"
-                    (click)="addToCart($event)">
+                    (click)="addToCart($event)"
+                    class="!rounded-lg !shadow-md"
+                    >
                     <p class="sr-only">Agregar al carrito</p>
                     <mat-icon class="!m-0" aria-label="Cart icon" aria-hidden="false">shopping_cart</mat-icon>
                 </button>

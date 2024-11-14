@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { ProductsService } from '@products/service/products.service';
 import { Product } from '@shared/interfaces/interfaces';
 import { SliderComponent } from '@home/ui/hero/slider/slider.component';
@@ -7,7 +6,6 @@ import { SliderComponent } from '@home/ui/hero/slider/slider.component';
   selector: 'app-hero',
   standalone: true,
   imports: [
-    RouterLink,
     SliderComponent
   ],
   templateUrl: './hero.component.html',

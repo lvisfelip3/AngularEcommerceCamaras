@@ -1,17 +1,10 @@
 import { ChangeDetectionStrategy, Component} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { RouterLink } from '@angular/router';
 import { CarouselModule } from 'primeng/carousel';
 
 @Component({
   selector: 'app-slider',
   standalone: true,
-  imports: [CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    RouterLink,
+  imports: [
     CarouselModule
   ],
   templateUrl: './slider.component.html',

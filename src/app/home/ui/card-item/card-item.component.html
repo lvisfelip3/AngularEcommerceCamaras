@@ -1,0 +1,40 @@
+<article class="flex flex-col w-max h-auto border bg-gray-800 border-gray-600 rounded-lg relative">
+    @if (product().stock >= 10){
+
+        <div class="absolute top-2 left-2 text-sm bg-green-800 text-green-100 font-semibold px-2 py-1 rounded-lg w-min mb-2">
+            Stock
+        </div>
+
+    } @else if (product().stock <= 0){ 
+
+        <div
+        class="absolute top-2 left-2 text-sm bg-red-700 text-red-100 font-semibold px-2 py-1 rounded-lg w-20 mb-2">
+        Sin Stock
+        </div>
+
+    } @else {
+
+        <div class="absolute top-2 left-2 text-sm bg-yellow-700 text-yellow-100 font-semibold px-2 py-1 rounded-lg w-32 mb-2 text-center">
+            Pocas unidades
+        </div>
+    }
+    <img 
+    [src]="product().imagen" 
+    [alt]="'Producto: ' + product().nombre"
+    class="object-cover h-40 w-52 md:h-56 md:w-64 rounded-t-md border-b border-gray-600"
+    />
+    <div class="p-4">
+        <p>{{ product().nombre }}</p>
+        <div class="flex justify-between items-center">
+            <p class="text-lg font-semibold !m-0 !p-0">{{ product().precio | currency:'CLP' }}</p>
+            <div class="flex gap-2">
+                <button mat-mini-fab class="!bg-pink-300 !text-pink-800 !shadow-none !rounded-lg">
+                    <mat-icon>favorite</mat-icon>
+                </button>
+                <button mat-mini-fab color="primary" class="!shadow-none !rounded-lg">
+                    <mat-icon>shopping_cart</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</article>

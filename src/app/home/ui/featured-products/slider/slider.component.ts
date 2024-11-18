@@ -61,6 +61,16 @@ export class SliderComponent implements OnInit {
         breakpoint: '916px',
         numVisible: 1,
         numScroll: 1
+      },
+      {
+        breakpoint: '768px',
+        numVisible: 2,
+        numScroll: 1
+      },
+      {
+        breakpoint: '584px',
+        numVisible: 1,
+        numScroll: 1
       }
     ];
   }

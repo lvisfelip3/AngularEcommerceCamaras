@@ -1,4 +1,4 @@
-<section class="flex flex-col justify-self-end md:max-w-80 items-start md:w-80 bg-gray-800 p-5 rounded-lg gap-5">
+<section class="flex flex-col justify-self-end w-full items-start bg-gray-800 p-5 rounded-lg gap-5">
     <div class="flex justify-between items-center w-full">
         <h6 class="text-lg font-semibold text-gray-100 !mb-0">Resumen de Compra</h6>
         <a routerLink="/carrito"
@@ -17,5 +17,5 @@
             {{ cart_.price() | currency:'CLP' }}
         </span>
     </div>
-    <p class="text-sm font-regular text-gray-400 w-full">El valor del envío, impuestos y descuentos se aplicarán luego de proporcionar una dirección</p>
+    <p class="text-sm font-regular text-gray-400 w-full !mt-5">El valor del envío, impuestos y descuentos se aplicarán luego de proporcionar una dirección</p>
 </section>

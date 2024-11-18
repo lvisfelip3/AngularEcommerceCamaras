@@ -5,21 +5,18 @@
 <p>Error</p>
 }
 @case('loading') {
-<p>Cargando...</p>
+<app-product-detail-skeleton></app-product-detail-skeleton>
 }
 @default {
 <section>
     <div class="flex flex-wrap md:flex-nowrap justify-between w-full gap-10">
-        <img class="w-56 h-56 md:w-80 md:h-80 object-cover rounded-xl" 
+        <img class="w-full h-72 md:w-80 md:h-80 object-cover rounded-xl" 
         [src]="product?.imagen"
-        width="320"
-        height="320"
-        priority="1"
         [alt]="'Producto: ' + productDetailState.product()?.nombre" />
 
         <div class="flex flex-col justify-evenly items-start w-full">
             <div class="w-full flex flex-col gap-4 justify-start h-full">
-                <h1 class="text-xl font-semibold sm:text-2xl text-white !m-0 !p-0">
+                <h1 class="text-xl font-semibold sm:text-2xl text-white !m-0 !p-0 text-wrap overflow-clip">
                     {{ productDetailState.product()?.nombre }}
                 </h1>
                 <p class="text-sm text-gray-400">
@@ -46,10 +43,13 @@
                 </div>
             </div>
 
-            <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-                <button tittle="Favoritos" mat-flat-button
-                    class="!flex !justify-center !items-center !bg-pink-300 !text-gray-900">
+            <div class="mt-6 flex gap-4">
+                <button tittle="Favoritos" mat-mini-fab
+                    class="!rounded-md !flex !justify-center !items-center !bg-pink-300 !text-gray-900"
+                    (click)="addToFav()"
+                    >
                     <mat-icon class="!m-0 !p-0">favorite</mat-icon>
+                    <span class="sr-only">Añadir producto a favoritos</span>
                 </button>
 
                 <button mat-flat-button
@@ -58,11 +58,12 @@
                     (click)="addToCart()">
                     Añadir al carrito
                     <mat-icon>shopping_cart</mat-icon>
+                    <span class="sr-only">Agregar al carrito</span>
                 </button>
             </div>
         </div>
     </div>
-    <div class="w-full flex flex-col px-8">
+    <div class="w-full flex flex-col">
         <hr class="my-6 md:my-8 border-gray-800 w-full" />
 
         <p class="mb-6 text-gray-500 dark:text-gray-400">

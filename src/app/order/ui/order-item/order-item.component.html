@@ -4,7 +4,7 @@
         [alt]="'producto ' + product().product.nombre"
         class="object-cover h-20 w-20 rounded-md"
     />
-    <span role="text" class="text-sm font-regular text-gray-100 text-center">
+    <span role="text" class="text-sm font-regular text-gray-100 text-center text-wrap max-w-[30vw] md:max-w-32 overflow-clip">
         {{ product().product.nombre }}
         @if (product().quantity > 1){
             ({{ product().quantity }})

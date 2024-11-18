@@ -4,13 +4,13 @@
 
     <div class="flex justify-between items-start md:items-center flex-col md:flex-row p-2 md:p-4 w-full px-5 gap-10 md:gap-0">
         <div
-            class="w-full md:w-min md:max-w-96 h-full flex md:flex-col justify-between md:justify-evenly items-center md:items-start">
+            class="w-full md:w-max md:max-w-96 h-full flex md:flex-col justify-between md:justify-evenly items-center md:items-start">
             <a [routerLink]="['/catalogo/producto/', productCartItem().product.id]"
                 routerLinkActive="router-link-active"
-                class="text-lg md:text-2xl font-medium text-gray-900 hover:underline dark:text-white">{{
+                class="text-lg max-w-32 md:max-w-60 overflow-clip md:text-2xl font-medium text-gray-900 hover:underline text-wrap dark:text-white">{{
                 productCartItem().product.nombre }}</a>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
                 <button mat-icon-button (click)="onFav.emit(productCartItem().product)"
                     class="!p-3 !w-min !flex !justify-center !items-center !text-sm !font-medium !gap-2 !rounded-lg !bg-pink-200 !text-pink-900">
                     <mat-icon class="!m-0 !p-0">favorite</mat-icon>

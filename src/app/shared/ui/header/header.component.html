@@ -21,8 +21,8 @@
         </a>
         @if(isLoggedIn){
         <button type="button" mat-button [matMenuTriggerFor]="menu"
-            class=" text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-            id="user-menu-button">
+            class="!hidden md:!block"
+            >
             <span class="sr-only">Open user menu</span>
             <img class="w-8 h-8 rounded-full" alt="user photo">
         </button>

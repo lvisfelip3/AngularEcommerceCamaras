@@ -12,6 +12,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { CurrencyPipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { SnackBarService } from '@shared/ui/snack-bar.service';
+import { ProductDetailSkeletonComponent } from './product-detail-skeleton/product-detail-skeleton.component';
+import { FavoriteStateService } from '@shared/data-access/fav-state.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -21,6 +23,7 @@ import { SnackBarService } from '@shared/ui/snack-bar.service';
     MatButtonModule,
     CurrencyPipe,
     MatIconModule,
+    ProductDetailSkeletonComponent
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css',
@@ -33,6 +36,7 @@ export default class ProductDetailComponent {
   readonly productDetailState = inject(ProductDetailStateService).state;
   private readonly cartState = inject(CartStateService).state;
   private readonly snackBar = inject(SnackBarService);
+  private readonly favState = inject(FavoriteStateService).state;
 
   readonly id = input.required<string>();
 
@@ -58,6 +62,18 @@ export default class ProductDetailComponent {
       quantity: 1,
     });
 
+    this.snackBar.showSnackBar('Producto agregado', 'OK');
+  }
+
+  addToFav(): void {
+    const currentProduct = this.productDetailState.product();
+
+    if (!currentProduct) {
+      this.snackBar.showSnackBar('Error: Producto no disponible', 'OK');
+      return;
+    }
+
+    this.favState.add(currentProduct);
     this.snackBar.showSnackBar('Producto agregado', 'OK');
   }
 }

@@ -37,6 +37,13 @@
       </a>
       }
       @if(isLoggedIn){
+      <a mat-button
+        [routerLink]="['/account']"
+        (click)="opened = false"
+        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+        Mi cuenta
+        <mat-icon>account_box</mat-icon>
+      </a>
       <button mat-button 
         (click)="logout()"
         (click)="opened = false"

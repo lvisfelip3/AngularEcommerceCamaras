@@ -7,6 +7,7 @@ import { CartStateService } from '@shared/data-access/cart-state.service';
 import { FavoriteStateService } from '@shared/data-access/fav-state.service';
 import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { RouterLink } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-card-item',
@@ -15,7 +16,8 @@ import { RouterLink } from '@angular/router';
     CurrencyPipe,
     MatIconModule,
     MatButtonModule,
-    RouterLink
+    RouterLink,
+    MatTooltipModule
   ],
   templateUrl: './card-item.component.html',
   styleUrl: './card-item.component.css',

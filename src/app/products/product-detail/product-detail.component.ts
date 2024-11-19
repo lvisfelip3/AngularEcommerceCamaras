@@ -6,7 +6,6 @@ import {
   effect
 } from '@angular/core';
 import { ProductDetailStateService } from '../service/product-list-state.service';
-import { RouterLink } from '@angular/router';
 import { CartStateService } from '../../shared/data-access/cart-state.service';
 import { MatButtonModule } from '@angular/material/button';
 import { CurrencyPipe } from '@angular/common';
@@ -14,16 +13,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { ProductDetailSkeletonComponent } from './product-detail-skeleton/product-detail-skeleton.component';
 import { FavoriteStateService } from '@shared/data-access/fav-state.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
   imports: [
-    RouterLink,
     MatButtonModule,
     CurrencyPipe,
     MatIconModule,
-    ProductDetailSkeletonComponent
+    ProductDetailSkeletonComponent,
+    MatTooltipModule
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css',

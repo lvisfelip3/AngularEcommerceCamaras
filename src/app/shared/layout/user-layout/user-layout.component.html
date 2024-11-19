@@ -1,70 +1,80 @@
 <div class="container min-w-full">
   <app-header class="fixed top-0 w-full z-50" (toggleSidenav)="opened = !opened"></app-header>
   <mat-sidenav-container class="h-full mt-16 flex flex-col justify-between items-center">
-    <mat-sidenav class="!rounded-none" [(opened)]="opened" mode="over">
-      <a mat-button
-        [routerLink]="['/']"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start"
-        (click)="opened = false"
-        >
-        Home
-        <mat-icon>home</mat-icon>
-      </a>
-      <a mat-button
-        [routerLink]="['/catalogo']"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start"
-        (click)="opened = false"
-        >
-        Catálogo
-        <mat-icon>list</mat-icon>
-      </a>
-      <a mat-button
-        [routerLink]="['/carrito']"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start"
-        (click)="opened = false"
-        >
-        Carrito
-        <mat-icon>shopping_cart</mat-icon>
-      </a>
-      @if(userRol === 'admin'){
-        <a mat-button
-        [routerLink]="['/dashboard']"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start"
-        (click)="opened = false"
-        >
-        Dashboard
-        <mat-icon>dashboard</mat-icon>
-      </a>
-      }
-      @if(isLoggedIn){
-      <a mat-button
-        [routerLink]="['/account']"
-        (click)="opened = false"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
-        Mi cuenta
-        <mat-icon>account_box</mat-icon>
-      </a>
-      <button mat-button 
-        (click)="logout()"
-        (click)="opened = false"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
-        Cerrar Sesión
-        <mat-icon>logout</mat-icon>
-      </button>
-      } @else {
-      <a 
-        mat-button 
-        [routerLink]="['auth/login']"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start"
-        (click)="opened = false"
-        >
-        Iniciar Sesión
-        <mat-icon>login</mat-icon>
-      </a>
-      }
+    <mat-sidenav class="!rounded-none !bg-white dark:!bg-gray-800 transition-colors !fixed !top-12" [(opened)]="opened" mode="over">
+      <div class="!flex !flex-col !justify-between !h-full overflow-hidden">
+        <div>
+          <a mat-button
+            [routerLink]="['/']"
+            routerLinkActive="activeLink"
+            class="!bg-transparent  hover:bg-gray-300 dark:hover:!bg-gray-700 !text-gray-900 dark:!text-white !rounded-md !w-full !p-8 !text-lg !flex !items-center !justify-start"
+            (click)="opened = false"
+            >
+            Home
+            <mat-icon>home</mat-icon>
+          </a>
+          <a mat-button
+            [routerLink]="['/catalogo']"
+            routerLinkActive="activeLink"
+            class="!bg-transparent  hover:bg-gray-300 dark:hover:!bg-gray-700 !text-gray-900 dark:!text-white !rounded-md !w-full !p-8 !text-lg !flex !items-center !justify-start"
+            (click)="opened = false"
+            >
+            Catálogo
+            <mat-icon>list</mat-icon>
+          </a>
+          <a mat-button
+            [routerLink]="['/carrito']"
+            routerLinkActive="activeLink"
+            class="!bg-transparent  hover:bg-gray-300 dark:hover:!bg-gray-700 !text-gray-900 dark:!text-white !rounded-md !w-full !p-8 !text-lg !flex !items-center !justify-start"
+            (click)="opened = false"
+            >
+            Carrito
+            <mat-icon>shopping_cart</mat-icon>
+          </a>
+          @if(userRol === 'admin'){
+            <a mat-button
+            [routerLink]="['/dashboard']"
+            class="!bg-transparent !text-gray-900 dark:!text-white hover:!bg-gray-700 !rounded-md !w-full !p-8 !text-lg !flex !items-center !justify-start"
+            (click)="opened = false"
+            >
+            Dashboard
+            <mat-icon>dashboard</mat-icon>
+          </a>
+          }
+          @if(isLoggedIn){
+          <a mat-button
+            [routerLink]="['/account']"
+            routerLinkActive="activeLink"
+            (click)="opened = false"
+            class="!bg-transparent  hover:bg-gray-300 dark:hover:!bg-gray-700 !text-gray-900 dark:!text-white !rounded-md !w-full !p-8 !text-lg !flex !items-center !justify-start">
+            Mi cuenta
+            <mat-icon>account_box</mat-icon>
+          </a>
+          <button mat-button 
+            (click)="logout()"
+            (click)="opened = false"
+            class="!bg-transparent  hover:bg-gray-300 dark:hover:!bg-gray-700 !text-gray-900 dark:!text-white !rounded-md !w-full !p-8 !text-lg !flex !items-center !justify-start">
+            Cerrar Sesión
+            <mat-icon>logout</mat-icon>
+          </button>
+          } @else {
+          <a 
+            mat-button 
+            [routerLink]="['auth/login']"
+            routerLinkActive="activeLink"
+            class="!bg-transparent dark:!bg-gray-800 hover:bg-gray-300 dark:hover:!bg-gray-700 !text-gray-900 dark:!text-white !rounded-md !w-full !p-8 !text-lg !flex !items-center !justify-start"
+            (click)="opened = false"
+            >
+            Iniciar Sesión
+            <mat-icon>login</mat-icon>
+          </a>
+          }
+        </div>
+        <app-theme-toggler></app-theme-toggler>
+      </div>
     </mat-sidenav>
-    <mat-sidenav-content class="!bg-gray-900">
-      <main class="bg-gray-900 py-4 antialiased md:py-12 w-full flex flex-col px-8 md:px-[20vw]">
+    <mat-sidenav-content class="bg-gray-100 dark:!bg-gray-900 transition-colors">
+      <main class="bg-gray-100 dark:bg-gray-900 py-4 antialiased md:py-12 w-full flex flex-col px-8 md:px-[20vw]">
         <router-outlet></router-outlet>
       </main>
     </mat-sidenav-content>

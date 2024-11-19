@@ -15,7 +15,7 @@ const THUMBUP_ICON =
   ],
   template: `
     <mat-icon 
-    class="!w-36 !h-36  md:!w-48 md:!h-48 text-gray-600 !px-3 !mr-8"
+    class="!w-36 !h-36  md:!w-48 md:!h-48 text-gray-400 dark:text-gray-600 !px-3 !mr-8"
     svgIcon="thumbs-up" aria-hidden="false" aria-label="empty cart"></mat-icon>
   `,
   styles: ``,

@@ -1,0 +1,9 @@
+<button
+    mat-icon-button
+    class="!shadow-none !rounded-lg !text-gray-900 dark:!text-gray-100"
+    (click)="toggleTheme()"
+    matTooltip="Cambiar Tema"
+>
+    <mat-icon>{{themeService.themeSignal() === 'dark' ? 'dark_mode' : 'light_mode'}}</mat-icon>
+    <span class="sr-only">Cambiar tema del sitio</span>
+</button>

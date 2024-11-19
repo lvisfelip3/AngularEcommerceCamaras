@@ -1,4 +1,4 @@
-<article class="rounded-lg border shadow-sm border-gray-700 bg-gray-800 flex flex-col md:flex-row">
+<article class="rounded-lg border shadow-lg dark:shadow-sm border-gray-200 dark:border-gray-700 bg-slate-100 dark:bg-gray-800 flex flex-col md:flex-row">
     <img class="h-32 w-full md:h-44 md:w-44 min-w-28 md:min-w-44 object-cover md:!rounded-s-lg md:!rounded-e-none !rounded-t-lg border-b md:border-e md:border-b-0 border-gray-600"
         [src]="productCartItem().product.imagen" [alt]="'producto ' + productCartItem().product.nombre" />
 
@@ -7,17 +7,19 @@
             class="w-full md:w-max md:max-w-96 h-full flex md:flex-col justify-between md:justify-evenly items-center md:items-start">
             <a [routerLink]="['/catalogo/producto/', productCartItem().product.id]"
                 routerLinkActive="router-link-active"
-                class="text-lg max-w-32 md:max-w-60 overflow-clip md:text-2xl font-medium text-gray-900 hover:underline text-wrap dark:text-white">{{
-                productCartItem().product.nombre }}</a>
+                class="text-lg max-w-32 md:max-w-60 overflow-clip md:text-2xl font-medium text-gray-900 hover:underline text-wrap dark:text-white"
+                matTooltip="Ver producto"
+                >
+                {{productCartItem().product.nombre }}</a>
 
             <div class="flex items-center gap-2">
-                <button mat-icon-button (click)="onFav.emit(productCartItem().product)"
-                    class="!p-3 !w-min !flex !justify-center !items-center !text-sm !font-medium !gap-2 !rounded-lg !bg-pink-200 !text-pink-900">
+                <button mat-icon-button (click)="onFav.emit(productCartItem().product)" matTooltip="Agregar a favoritos"
+                    class="!p-3 !w-min !flex !justify-center !items-center !text-sm !font-medium !gap-2 !rounded-lg !bg-pink-800 !text-pink-200 dark:!bg-pink-200 dark:!text-pink-900">
                     <mat-icon class="!m-0 !p-0">favorite</mat-icon>
                     <span class="sr-only">Añadir producto a favoritos</span>
                 </button>
 
-                <button mat-icon-button (click)="onRemove.emit(productCartItem().product.id)"
+                <button mat-icon-button (click)="onRemove.emit(productCartItem().product.id)" matTooltip="Eliminar del carrito"
                     class="!p-3 !w-min !flex !justify-center !items-center !text-sm !font-medium !gap-2 !bg-red-500 !rounded-lg !text-white">
                     <mat-icon class="!m-0 !p-0">delete</mat-icon>
                     <span class="sr-only">Eliminar Producto</span>
@@ -25,20 +27,21 @@
             </div>
         </div>
         <div class="flex md:flex-col items-center justify-between md:gap-5 w-full md:w-min">
-            <p class="flex text-xl font-semibold text-white !m-0 !p-0">{{ productCartItem().product.precio *
+            <p class="flex text-xl font-semibold text-gray-900 dark:text-gray-100 !m-0 !p-0"><span class="sr-only">Total</span>{{ productCartItem().product.precio *
                 productCartItem().quantity|
                 currency:'CLP' }}
             </p>
             <div class="flex items-center justify-center">
-                <button (click)="onDecrease.emit(productCartItem())" mat-icon-button
-                    class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-600 bg-gray-700 hover:bg-gray-600 focus:ring-gray-700">
-                    <mat-icon>remove</mat-icon>
+                <button (click)="onDecrease.emit(productCartItem())" mat-icon-button matTooltip="Disminuir">
+                    <mat-icon class="!m-0 !p-0 !text-gray-900 dark:!text-gray-100">remove</mat-icon>
+                    <span class="sr-only">Quitar producto del carrito</span>
                 </button>
                 <input type="text" [value]="productCartItem().quantity" data-input-counter
-                    class="w-10 shrink-0 text-center text-lg font-medium bg-gray-800 border-gray-600 text-white focus:ring-gray-700" />
-                <button (click)="onIncrease.emit(productCartItem())" mat-icon-button
-                    class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ">
-                    <mat-icon>add</mat-icon>
+                    class="w-10 shrink-0 text-center text-lg font-medium bg-transparent text-gray-900 dark:text-gray-100" />
+                    <span class="sr-only">Cantidad de productos: {{ productCartItem().quantity }}</span>
+                <button (click)="onIncrease.emit(productCartItem())" mat-icon-button matTooltip="Incremetar">
+                    <mat-icon class="!text-gray-900 dark:!text-gray-100">add</mat-icon>
+                    <span class="sr-only">Añadir producto al carrito</span>
                 </button>
             </div>
         </div>

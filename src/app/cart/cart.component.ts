@@ -4,14 +4,21 @@ import { CartStateService } from '../shared/data-access/cart-state.service';
 import { EmptyCartComponent } from './ui/empty-cart/empty-cart.component';
 import { ProductItemCart, Product } from '../shared/interfaces/interfaces';
 import { CheckoutComponent } from './ui/checkout/checkout.component';
-import { AlsoBougthComponent } from './ui/also-bougth/also-bougth.component';
+import { FeaturedProductsComponent } from '@home/ui/featured-products/featured-products.component';
 import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { FavoriteStateService } from '@shared/data-access/fav-state.service';
+import { CartItemSkeletonComponent } from '@cart/ui/cart-item-skeleton/cart-item-skeleton.component';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CartItemComponent, EmptyCartComponent, CheckoutComponent, AlsoBougthComponent],
+  imports: [
+    CartItemComponent, 
+    EmptyCartComponent, 
+    CheckoutComponent,
+    FeaturedProductsComponent,
+    CartItemSkeletonComponent
+  ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

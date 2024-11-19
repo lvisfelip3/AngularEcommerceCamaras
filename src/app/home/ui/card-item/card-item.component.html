@@ -1,5 +1,5 @@
 <a [routerLink]="['/catalogo/producto', product().id]">
-    <article class="flex flex-col w-max h-auto border bg-gray-800 border-gray-600 rounded-lg relative">
+    <article class="flex flex-col w-max h-auto border bg-slate-100 border-gray-200 shadow-md dark:shadow-none dark:bg-gray-800 dark:border-gray-600 rounded-lg relative">
         @if (product().stock >= 10){
 
         <div
@@ -21,20 +21,22 @@
             }
             <div class="h-40 w-52 max-w-52 md:h-56 md:w-64 md:max-w-64">
                 <img [src]="product().imagen" [alt]="'Producto: ' + product().nombre"
-                class="object-cover w-full h-full rounded-t-md border-b border-gray-600" />
+                class="object-cover w-full h-full rounded-t-md border-b border-gray-200 dark:border-gray-600" />
             </div>
             <div class="p-4">
-                <p class="text-wrap overflow-clip max-w-48">{{ product().nombre }}</p>
+                <p class="text-wrap overflow-clip max-w-48 text-gray-900 dark:text-gray-100">{{ product().nombre }}</p>
                 <div class="flex justify-between items-center">
-                    <p class="text-lg font-semibold !m-0 !p-0">{{ product().precio | currency:'CLP' }}</p>
+                    <p class="text-lg font-semibold !m-0 !p-0 text-gray-900 dark:text-gray-100">{{ product().precio | currency:'CLP' }}</p>
                     <div class="flex gap-2">
-                        <button mat-mini-fab class="!bg-pink-300 !text-pink-800 !shadow-none !rounded-lg"
-                            (click)="addToFav($event)">
+                        <button mat-mini-fab class="!bg-pink-800 !text-pink-200 dark:!bg-pink-300 dark:!text-pink-800 !shadow-none !rounded-lg"
+                            (click)="addToFav($event)" matTooltip='Agregar a favoritos'>
                             <mat-icon>favorite</mat-icon>
+                            <span class="sr-only">Agregar a favoritos</span>
                         </button>
-                        <button mat-mini-fab color="primary" class="!shadow-none !rounded-lg"
-                            (click)="addToCart($event)">
+                        <button mat-mini-fab color="primary" class="!shadow-none !rounded-lg !bg-gray-900 !text-gray-100 dark:!bg-green-500 dark:!text-gray-900"
+                            (click)="addToCart($event)" matTooltip='Agregar al carrito'>
                             <mat-icon>shopping_cart</mat-icon>
+                            <span class="sr-only">Agregar al carrito</span>
                         </button>
                     </div>
                 </div>

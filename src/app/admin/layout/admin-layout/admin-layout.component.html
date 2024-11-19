@@ -1,6 +1,6 @@
 <div class="container min-w-full">
   <app-header-admin (toggleSidenav)="opened = !opened"></app-header-admin>
-  <mat-sidenav-container class="h-full min-h-screen mt-16 flex flex-col justify-between items-center dark:!bg-gray-900">
+  <mat-sidenav-container class="h-full min-h-screen mt-16 flex flex-col justify-between items-center !bg-gray-900">
     <mat-sidenav class="!rounded-none" [(opened)]="opened" [mode]="mode">
       <button mat-button
         [routerLink]="['/dashboard']"
@@ -33,7 +33,7 @@
         <mat-icon>logout</mat-icon>
       </button>
     </mat-sidenav>
-    <mat-sidenav-content class="p-2 dark:!bg-gray-900">
+    <mat-sidenav-content class="p-2 !bg-gray-900">
       <main>
         <router-outlet></router-outlet>
       </main>

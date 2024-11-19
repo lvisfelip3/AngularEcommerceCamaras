@@ -30,6 +30,7 @@
       "@home/*": ["home/*"],
       "@cart/*": ["cart/*"],
       "@order/*": ["order/*"],
+      "@account/*": ["account/*"]
     },
     "typeRoots": ["node_modules/@types"]
   },

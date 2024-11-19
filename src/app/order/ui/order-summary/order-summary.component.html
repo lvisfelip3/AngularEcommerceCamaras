@@ -1,19 +1,21 @@
-<section class="flex flex-col justify-self-end w-full items-start bg-gray-800 p-5 rounded-lg gap-5">
+<section class="flex flex-col justify-self-end w-full items-start border bg-slate-100 border-gray-200 shadow-lg dark:bg-gray-800 dark:border-gray-700 dark:shadow-none p-5 rounded-lg gap-5">
     <div class="flex justify-between items-center w-full">
-        <h6 class="text-lg font-semibold text-gray-100 !mb-0">Resumen de Compra</h6>
+        <h6 class="text-lg font-semibold text-gray-900 dark:text-gray-100 !mb-0">Resumen de Compra</h6>
         <a routerLink="/carrito"
-            class="!text-gray-400 !text-sm !font-regular !underline hover:!text-gray-300 !transition"
+            class="!text-gray-500 dark:!text-gray-400 !text-sm !font-regular !underline hover:!text-gray-600 dark:hover:!text-gray-300 !transition"
         >Modificar</a>
     </div>
     @for (item of products$; track item.product.id) {
         <app-order-item [product]="item" class="w-full"></app-order-item>
     }
-    <mat-divider class="w-full"/>
+
+    <div class="w-full border-b border-gray-300 dark:border-gray-600"></div>
+
     <div class="flex justify-between items-center w-full mt-1">
-        <span role="text" class="text-md font-regular text-gray-100 whitespace-nowrap">
+        <span role="text" class="text-md font-regular text-gray-900 dark:text-gray-100 whitespace-nowrap">
             Total
         </span>
-        <span role="text" class="text-md font-semibold text-gray-100 whitespace-nowrap">
+        <span role="text" class="text-md font-semibold text-gray-900 dark:text-gray-100 whitespace-nowrap">
             {{ cart_.price() | currency:'CLP' }}
         </span>
     </div>

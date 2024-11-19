@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-cart-item',
@@ -12,7 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
     RouterLink, 
     CurrencyPipe,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTooltipModule
   ],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.css',

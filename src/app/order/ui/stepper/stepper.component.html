@@ -1,9 +1,6 @@
 <section class="w-full">
-    <span class="flag fi fi-cl"></span>
-    <span class="flag fi fi-ar"></span>
-    <span class="flag fi fi-us"></span>
     <form [formGroup]="orderFormGroup">
-        <mat-stepper orientation="vertical" [linear]="true" color="accent" class="!bg-gray-800 !rounded-xl !p-4 md:!p-8" #stepper>
+        <mat-stepper orientation="vertical" [linear]="true" color="accent" class="!bg-slate-100 dark:!bg-gray-800 !border !border-gray-200 dark:!border-gray-700 !shadow-lg dark:!shadow-none !rounded-xl !p-4 md:!p-8" #stepper>
 
             <mat-step formGroupName="client" 
             [stepControl]="orderFormGroup.controls.client" 
@@ -86,7 +83,7 @@
                     }
                 </mat-form-field>
 
-                <button mat-button matStepperNext type="button">Continuar</button>
+                <button mat-button matStepperNext type="button" class="stepperButton">Continuar</button>
             </mat-step>
 
             <mat-step formGroupName="delivery" [stepControl]="orderFormGroup.controls.delivery"
@@ -129,8 +126,8 @@
                 </mat-form-field>
 
                 <div class="w-full flex gap-3">
-                    <button mat-button matStepperPrevious type="button">Atrás</button>
-                    <button mat-button matStepperNext type="button">Continuar</button>
+                    <button mat-button matStepperPrevious type="button" class="stepperButton">Atrás</button>
+                    <button mat-button matStepperNext type="button" class="stepperButton">Continuar</button>
                 </div>
 
             </mat-step>
@@ -150,7 +147,7 @@
                     </div>
                     }
                 </div>
-                <button mat-button type="submit" (click)="onSubmit()">Pagar</button>
+                <button mat-button type="submit" (click)="onSubmit()" class="stepperButton">Pagar</button>
             </mat-step>
         </mat-stepper>
     </form>

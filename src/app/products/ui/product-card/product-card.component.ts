@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { SnackBarService } from '@shared/ui/snack-bar.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-product-card',
@@ -13,7 +14,8 @@ import { SnackBarService } from '@shared/ui/snack-bar.service';
     MatIconModule, 
     RouterLink, 
     CurrencyPipe,
-    MatButtonModule
+    MatButtonModule,
+    MatTooltipModule
   ],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.css',

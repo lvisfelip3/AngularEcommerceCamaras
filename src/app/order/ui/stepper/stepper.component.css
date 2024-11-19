@@ -1,0 +1,11 @@
+::ng-deep .mat-step-label {
+    @apply !text-gray-900 dark:!text-gray-100
+}
+
+::ng-deep .mat-step-header {
+    @apply hover:!bg-gray-300 transition-colors !rounded-lg dark:hover:!bg-slate-700
+}
+
+.stepperButton {
+    @apply !text-white !bg-blue-600 rounded-lg dark:!bg-green-700
+}

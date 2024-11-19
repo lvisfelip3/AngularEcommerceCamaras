@@ -1,19 +1,19 @@
-<section class="bg-gray-800 p-6 antialiased flex flex-col rounded-xl border border-gray-700 gap-5">
-    <p class="text-xl font-semibold text-white !m-0 !p-0">Resumen de Compra</p>
+<section class="bg-slate-100 dark:bg-gray-800 p-6 antialiased flex flex-col rounded-xl border shadow-md dark:shadow-none border-gray-200 dark:border-gray-700 gap-5">
+    <p class="text-xl font-semibold text-gray-900 dark:text-gray-100 !m-0 !p-0">Resumen de Compra</p>
 
     <div class="flex flex-col gap-1">
         <dl class="flex items-center justify-between gap-4">
-            <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Precio Original</dt>
+            <dt class="text-base font-normal text-gray-600 dark:text-gray-400">Precio Original</dt>
             <dd class="text-base font-medium text-gray-900 dark:text-white">{{state.price() | currency:'CLP'}}</dd>
         </dl>
 
         <dl class="flex items-center justify-between gap-4">
-            <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Descuentos</dt>
-            <dd class="text-base font-medium text-green-600">-$0</dd>
+            <dt class="text-base font-normal text-gray-600 dark:text-gray-400">Descuentos</dt>
+            <dd class="text-base font-medium text-blue-600 dark:text-green-600">-$0</dd>
         </dl>
     </div>
 
-    <dl class="flex items-center justify-between gap-1 border-t border-gray-600 pt-2">
+    <dl class="flex items-center justify-between gap-1 border-t border-gray-300 dark:border-gray-600 pt-2">
         <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
         <dd class="text-base font-bold text-gray-900 dark:text-white">{{state.price() | currency:'CLP'}}</dd>
     </dl>
@@ -22,14 +22,14 @@
         mat-flat-button
         color="primary"
         [disabled]="state().products.length === 0"
-        class="!py-6 !px-8 !rounded-md !font-medium !text-xl">
+        class="!py-6 !px-8 !rounded-md !font-medium !text-xl !bg-blue-600 !text-white dark:!bg-green-600">
         Pagar
     </a>
 
     <div class="flex items-center justify-center gap-2">
-        <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> o </span>
+        <span class="text-sm font-normal text-gray-700 dark:text-gray-400"> o </span>
         <a routerLink="/catalogo" title="Ir a catálogo"
-            class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
+            class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline text-gray-600 dark:text-gray-300">
             Seguir comprando
             <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

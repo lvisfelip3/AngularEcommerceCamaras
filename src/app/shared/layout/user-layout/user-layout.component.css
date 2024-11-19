@@ -18,3 +18,7 @@ mat-sidenav{
     @apply bg-gray-400 !important;
     color: black !important;
 }
+
+.activeLink {
+    @apply !text-blue-600 dark:!text-green-400 hover:!text-gray-900 dark:hover:!text-gray-900
+}

@@ -1,12 +1,12 @@
 @if (categories$ | async; as categories){
-<mat-accordion class="!w-full !bg-gray-800">
+<mat-accordion class="!w-full !bg-slate-100 dark:!bg-gray-800">
     <mat-expansion-panel 
     [expanded]="panelState()"
     (opened)="panelState.set(true)" 
     (closed)="panelState.set(false)"
-    class="!bg-gray-800 !flex !flex-col !justify-center !items-start !w-full">
-        <mat-expansion-panel-header class="!w-full !py-8 !bg-gray-800">
-            <h5 class="text-xl font-bold text-white !mb-0 w-full">Filtrar</h5>
+    class="!bg-slate-100 dark:!bg-gray-800 !flex !flex-col !justify-center !items-start !w-full !shadow-md !shadow-gray-400 dark:!shadow-none">
+        <mat-expansion-panel-header class="!w-full !py-8 !bg-slate-100 dark:!bg-gray-800">
+            <h5 class="text-xl font-bold text-gray-900 dark:text-white !mb-0 w-full">Filtrar</h5>
             @if (isFiltered){
             <button mat-icon-button (click)="resetFilter()">
                 <mat-icon>filter_alt_off</mat-icon>
@@ -47,7 +47,7 @@
 
         <!-- PRICE -->
         <div class="flex flex-col gap-1 w-full">
-            <mat-label>Precio</mat-label>
+            <mat-label class="text-gray-900 dark:text-white">Precio</mat-label>
             <mat-slider class="!w-full" [formControl]="maxPriceControl" min="0" [max]="maxValue" step="1000"
                 discrete="true" [displayWith]="displayFormattedValue" name="price" ngDefaultControl>
                 <input matSliderThumb class="!w-full">

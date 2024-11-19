@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet} from '@angular/router';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeEsCl from '@angular/common/locales/es-CL';
+import { ThemeService } from '@account/services/theme.service';
+
 registerLocaleData(localeEsCl, 'es-CL');
 
 @Component({
@@ -16,5 +18,5 @@ registerLocaleData(localeEsCl, 'es-CL');
 })
 export class AppComponent {
   title = 'AngularEcommerceCamaras';
-
+  themeService = inject(ThemeService)
 }

@@ -1,20 +1,20 @@
 import { effect, Injectable, signal } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ThemeService {
   themeSignal = signal<string>(
-    JSON.parse(window.localStorage.getItem('theme') ?? 'light')
+    window.localStorage.getItem('theme') ?? 'light'
   );
 
   updateTheme() {
     this.themeSignal.update((value) => (value === 'dark' ? 'light' : 'dark'));
   }
 
-  constructor() { 
+  constructor() {
     effect(() => {
-      window.localStorage.setItem('theme', JSON.stringify(this.themeSignal()));
-    })
+      window.localStorage.setItem('theme', this.themeSignal());
+    });
   }
 }

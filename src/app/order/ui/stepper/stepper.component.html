@@ -89,7 +89,7 @@
             <mat-step formGroupName="delivery" [stepControl]="orderFormGroup.controls.delivery"
                 label="Opciones delivery">
                 <mat-form-field class="w-full">
-                    <mat-label>Ciudad</mat-label>
+                    <mat-label>Región</mat-label>
                     <mat-select appearance="fill" formControlName="ciudad" (selectionChange)="getComunas($event)">
                         @for (city of cities; track city.id) {
                         <mat-option [value]="city.id">
@@ -101,6 +101,7 @@
                 <mat-form-field class="w-full">
                     <mat-label>Comuna</mat-label>
                     <mat-select appearance="fill" formControlName="comuna">
+                        <mat-option value="">Seleccione</mat-option>
                         @for (comuna of comunas; track comuna.id) {
                         <mat-option [value]="comuna.id">
                             {{comuna.nombre}}

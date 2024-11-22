@@ -1,0 +1,8 @@
+<article class="flex flex-col gap-5 py-5">
+    @for (item of products; track item.id;){
+        <app-confirmed-item [item]="item"></app-confirmed-item>
+    }
+    <span class="mt-3 flex justify-end text-2xl font-semibold text-gray-900 dark:text-gray-100 whitespace-nowrap">
+        Total: {{ Total() | currency:'CLP' }}
+    </span>
+</article>

@@ -4,6 +4,11 @@ import { Observable } from 'rxjs';
 import { Comuna, Ciudad, Client, Adress, ProductItemCart } from '@shared/interfaces/interfaces';
 import { HttpParams } from '@angular/common/http';
 
+interface response {
+  message: string,
+  orderId: string
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,13 +27,13 @@ export class DeliveryService extends BaseHttpService {
     return this.http.get<Comuna[]>(this.apiUrl + 'comunas/comuna.php', { params });
   }
 
-  saveClientForPayment(client: Client, Adress: Adress, payment: { method: string }, cart: ProductItemCart[]): Observable<Client> {
-    const body = JSON.stringify({ ...client, ...Adress, ...payment, ...cart });
-    return this.http.post<Client>(this.apiUrl + 'clientes/cliente.php', body);
+  saveClientForPayment(client: Client, Adress: Adress, payment: { method: string }, cart: ProductItemCart[]): Observable<response> {
+    const body = JSON.stringify({ ...client, ...Adress, ...payment, products: cart });
+    return this.http.post<response>(this.apiUrl + 'clientes/cliente.php', body);
   }
 
-  saveShippingAddress(adress: Adress): Observable<Client> {
-    return this.http.post<Client>(this.apiUrl + 'clientes/cliente.php', adress);
+  getOrderDetails(orderId: string): Observable<any> {
+    return this.http.get<any>(this.apiUrl + 'pedidos/pedido.php', { params: { id: orderId } });
   }
 
 }

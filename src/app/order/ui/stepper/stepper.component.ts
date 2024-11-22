@@ -15,6 +15,7 @@ import { Adress, Ciudad, Client, Comuna, payMethod} from '@shared/interfaces/int
 import { RutPipePipe } from '@order/utils/rut-pipe.pipe';
 import { CartStateService } from '@shared/data-access/cart-state.service';
 import { PhonePipePipe } from '@order/utils/phone-pipe.pipe';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stepper',
@@ -52,6 +53,8 @@ export class StepperComponent implements OnInit {
     {id: 2, name:'Flow' , imageUrl:'img/payMethod/flow.webp'},
     {id: 3, name:'Paypal' , imageUrl:'img/payMethod/paypal.webp'}
   ]
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this._deliveryService.getCiudades().subscribe((cities: Ciudad[]) => {
@@ -145,8 +148,9 @@ export class StepperComponent implements OnInit {
     const cartProducts = this._cart.products();
     
     this._deliveryService.saveClientForPayment(client, address, payment, cartProducts).subscribe(
-      response => {
-        alert('Compra realizada con exito' + response);
+      (response) => {
+        this._cart.clear();
+        this.router.navigate([`pedidos/confirmed/${response.orderId}`]);
       }
     );
   }

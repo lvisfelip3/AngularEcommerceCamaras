@@ -1,0 +1,23 @@
+<div
+    class="bg-slate-100 dark:bg-gray-800 flex flex-wrap lg:flex-nowrap gap-2 jusitfy-between items-center border border-gray-200 shadow-lg dark:shadow-none dark:border-gray-600 rounded-lg">
+    <img src="{{item?.imagen}}" alt="Producto : {{item?.nombre}}"
+        class="object-cover h-36 w-full lg:h-44 lg:w-44 rounded-t-lg lg:rounded-s-lg lg:rounded-e-none border-b lg:border-r border-gray-200 dark:border-gray-600">
+    <div class="flex justify-between w-full p-3">
+        <div class="flex flex-col gap-3">
+            <h6 class="text-lg text-wrap font-semibold text-gray-900 dark:text-gray-100 !mb-0">
+                {{item?.nombre}}
+            </h6>
+            <span class="text-sm font-regular text-gray-900 dark:text-gray-100 whitespace-nowrap">
+                {{item?.precio | currency:'CLP'}}
+            </span>
+            <span class="text-sm font-regular text-gray-900 dark:text-gray-100 whitespace-nowrap">
+                Cantidad: {{item?.cantidad}}
+            </span>
+        </div>
+        <div class="flex items-center">
+            <p class="text-sm font-regular text-gray-700  dark:text-gray-400 whitespace-nowrap !p-0 !m-0">
+                Subtotal: {{ Subtotal() | currency:'CLP' }}
+            </p>
+        </div>
+    </div>
+</div>

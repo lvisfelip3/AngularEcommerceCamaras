@@ -10,6 +10,7 @@ import { ProductListSkeletonComponent } from '@products/ui/skeleton/product-list
 import { ProductsService } from '@products/service/products.service';
 import { EmptyProductComponent } from '@products/ui/empty-product/empty-product.component';
 import { SortProductsPipe } from '@products/utils/sort-products.pipe';
+import { CartMobileButtonComponent } from '@shared/components/cart-mobile-button/cart-mobile-button.component';
 
 @Component({
   selector: 'app-product-list',
@@ -19,7 +20,8 @@ import { SortProductsPipe } from '@products/utils/sort-products.pipe';
     FilterComponent,
     ProductListSkeletonComponent,
     EmptyProductComponent,
-    SortProductsPipe
+    SortProductsPipe,
+    CartMobileButtonComponent
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
@@ -42,7 +44,7 @@ export default class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchControl.valueChanges
-      .pipe(debounceTime(300))
+      .pipe(debounceTime(200))
       .subscribe((searchTerm: string | null) => {
         if (searchTerm) {
           this.updateFilteredProducts(searchTerm);

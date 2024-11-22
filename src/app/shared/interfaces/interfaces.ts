@@ -9,9 +9,18 @@ export interface Product {
   creado_en?: Date;
 }
 
+
 export interface ProductItemCart {
   product: Product;
   quantity: number;
+}
+
+export interface ProductItemOrder {
+  id: number;
+  cantidad: number;
+  nombre: string;
+  imagen: string;
+  precio: string;
 }
 
 export interface Category {
@@ -62,4 +71,12 @@ export interface payMethod {
   id: number;
   name: string;
   imageUrl: string;
+}
+
+export interface Payment {
+  method: string;
+  total: number;
+  reference: string;
+  payment_state: number;
+  shipping_state: number;
 }

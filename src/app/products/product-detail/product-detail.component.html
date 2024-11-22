@@ -10,7 +10,7 @@
 @default {
 <section>
     <div class="flex flex-wrap md:flex-nowrap justify-between w-full gap-10">
-        <img class="w-full h-72 md:w-80 md:h-80 object-cover rounded-xl border shadow-lg dark:border-gray-600 border-gray-200 dark:shadow-none" 
+        <img [class.!grayscale]="(product?.stock ?? 0) <= 0" class="w-full h-72 md:w-80 md:h-80 object-cover rounded-xl border shadow-lg dark:border-gray-600 border-gray-200 dark:shadow-none" 
         [src]="product?.imagen"
         [alt]="'Producto: ' + productDetailState.product()?.nombre" />
 
@@ -22,6 +22,8 @@
                 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
                     @if ((product?.stock ?? 0) >= 10) {
                     +10 unidades disponibles
+                    } @else if ((product?.stock ?? 0) <= 0) { 
+                        Sin stock 
                     } @else if ((product?.stock ?? 0) >= 20){
                     +20 unidades disponibles
                     } @else if ((product?.stock ?? 0) >= 30){
@@ -34,7 +36,9 @@
                     +200 unidades disponibles
                     } @else if ((product?.stock ?? 0) >= 500){
                     +500 unidades disponibles
-                    } @else if ((product?.stock ?? 0) <= 10){ Pocas unidades } @else { Sin stock }
+                    } @else if ((product?.stock ?? 0) <= 10){ 
+                        Pocas unidades 
+                    }
                 </p>
                 <div class="sm:items-center sm:gap-4 sm:flex">
                     <p class="text-2xl font-extrabold sm:text-3xl text-gray-900 dark:text-white">
@@ -54,7 +58,7 @@
                 </button>
 
                 <button mat-flat-button
-                    class="!shadow-lg dark:!shadow-none !rounded-lg !flex !gap-2 !justify-center !items-center !bg-blue-600 !text-white dark:!bg-green-500 dark:!text-gray-900"
+                    class="!shadow-lg disabled:dark:!bg-gray-600 disabled:!bg-gray-400 dark:!shadow-none !rounded-lg !flex !gap-2 !justify-center !items-center !bg-blue-600 !text-white dark:!bg-green-500 dark:!text-gray-900"
                     [disabled]="(product?.stock ?? 0) <= 0"
                     matTooltip="Agregar al carrito"
                     (click)="addToCart()">

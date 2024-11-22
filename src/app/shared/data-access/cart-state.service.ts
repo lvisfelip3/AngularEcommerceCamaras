@@ -3,6 +3,7 @@ import { ProductItemCart } from "../interfaces/interfaces";
 import { signalSlice } from "ngxtension/signal-slice";
 import { StorageService } from "./storage.service";
 import { map, Observable } from "rxjs";
+import { SnackBarService } from "@shared/ui/snack-bar.service";
 
 interface State {
     products: ProductItemCart[];
@@ -14,6 +15,7 @@ interface State {
 })
 export class CartStateService {
     private readonly storageService = inject(StorageService);
+    snackBarService = inject(SnackBarService);
 
     private readonly initialState: State = {
         products: [],
@@ -39,7 +41,13 @@ export class CartStateService {
                     (acc, product) => acc + product.product.precio * product.quantity, 
                     0
                 )
-            )
+            ),
+            clear: () => {
+                return {
+                    products: [],
+                    loaded: true
+                };
+            }
         }),
         actionSources: {
             add: (state, actions$: Observable<ProductItemCart>) => 
@@ -49,7 +57,7 @@ export class CartStateService {
                 actions$.pipe(map((id) => this.remove(state, id))),
             
             update: (state, actions$: Observable<ProductItemCart>) => 
-                actions$.pipe(map((product) => this.update(state, product)))
+                actions$.pipe(map((product) => this.update(state, product))),
         }
     });
 
@@ -66,20 +74,32 @@ export class CartStateService {
         const existingProductIndex = currentProducts.findIndex(
             (productInCart) => productInCart.product.id === product.product.id
         );
-
-        if (existingProductIndex === -1) {
-            return {
-                products: [...currentProducts, { ...product, quantity: 1 }],
+    
+        if (existingProductIndex !== -1) {
+            const existingProduct = currentProducts[existingProductIndex];
+            const newQuantity = existingProduct.quantity + 1;
+    
+            if (newQuantity > product.product.stock) {
+                this.snackBarService.showSnackBar('No hay suficiente stock disponible', 'OK');
+                return {};
+            }
+    
+            currentProducts[existingProductIndex] = {
+                ...existingProduct,
+                quantity: newQuantity,
             };
+            
+            this.snackBarService.showSnackBar('Producto agregado', 'OK');
+            return { products: currentProducts };
         }
-
-        currentProducts[existingProductIndex] = {
-            ...currentProducts[existingProductIndex],
-            quantity: currentProducts[existingProductIndex].quantity + 1
-        };
-
+    
+        if (product.quantity > product.product.stock) {
+            this.snackBarService.showSnackBar('No hay suficiente stock disponible', 'OK');
+            return {};
+        }
+        
         return {
-            products: currentProducts,
+            products: [...currentProducts, { ...product, quantity: 1 }],
         };
     }
 
@@ -95,6 +115,15 @@ export class CartStateService {
         const updatedProducts = state().products
             .map((productInCart) => {
                 if (productInCart.product.id === product.product.id) {
+                    if (product.quantity > productInCart.product.stock) {
+                        const mensaje = `Stock insuficiente para el producto: ${product.product.id}`;
+                        return {
+                            ...productInCart,
+                            quantity: productInCart.product.stock,
+                            message: mensaje
+                        };
+                    }
+    
                     return product.quantity <= 0 
                         ? null 
                         : { ...productInCart, quantity: product.quantity };
@@ -102,7 +131,9 @@ export class CartStateService {
                 return productInCart;
             })
             .filter((product): product is ProductItemCart => product !== null);
-
+    
         return { products: updatedProducts };
     }
+
+    
 }

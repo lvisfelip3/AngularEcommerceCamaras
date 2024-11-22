@@ -33,7 +33,6 @@ export class CardItemComponent {
     e.stopPropagation();
     e.preventDefault();
     this.cartState.add({ product: this.product(), quantity: 1 });
-    this._snackBar.showSnackBar('Producto agregado', 'OK');
   }
 
   addToFav(e: Event) {

@@ -33,7 +33,5 @@ export class ProductCardComponent {
     e.preventDefault();
 
     this.add.emit(this.product());
-    this._snackBar.showSnackBar('Producto agregado', 'OK');
-
   }
 }

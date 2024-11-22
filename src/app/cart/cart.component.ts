@@ -34,9 +34,16 @@ export class CartComponent {
   }
 
   onIncrease(product: ProductItemCart) {
+    const newQuantity = product.quantity + 1;
+    
+    if (newQuantity > product.product.stock) {
+        this._snackBar.showSnackBar('No hay suficiente stock disponible', 'OK');
+        return;
+    }
+
     this.state.update({
-      product: product.product,
-      quantity: product.quantity + 1,
+        product: product.product,
+        quantity: newQuantity,
     });
 
     this._snackBar.showSnackBar('Producto agregado', 'OK');

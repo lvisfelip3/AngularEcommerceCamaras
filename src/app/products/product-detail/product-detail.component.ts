@@ -61,8 +61,6 @@ export default class ProductDetailComponent {
       product: currentProduct,
       quantity: 1,
     });
-
-    this.snackBar.showSnackBar('Producto agregado', 'OK');
   }
 
   addToFav(): void {

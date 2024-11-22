@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { AuthService } from '@auth/auth.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
-import { User } from '../../shared/interfaces/interfaces';
+import { User } from '@shared/interfaces/interfaces';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
-import { SnackBarService } from '../../shared/ui/snack-bar.service';
+import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({

@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+
+$light-theme: mat.define-theme(
+  (
+    color: (
+      use-system-variables: true,
+    ),
+    typography: (
+      use-system-variables: true,
+    ),
+  )
+);
+
+$dark-theme: mat.define-theme(
+  (
+    color: (
+      use-system-variables: true,
+    ),
+    typography: (
+      use-system-variables: true,
+    ),
+  )
+);

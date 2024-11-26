@@ -6,9 +6,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import { AuthService } from '../../../auth/auth.service';
+import { AuthService } from '@auth/auth.service';
 import { Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { ThemeTogglerComponent } from '@account/ui/theme-toggler/theme-toggler.component';
 
 
 @Component({
@@ -21,7 +22,9 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
     MatSidenavModule, 
     MatButtonModule, 
     MatMenuModule, 
-    RouterLink],
+    RouterLink,
+    ThemeTogglerComponent
+  ],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

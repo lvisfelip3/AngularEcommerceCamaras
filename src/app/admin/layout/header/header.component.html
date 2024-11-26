@@ -1,46 +1,24 @@
-<header class="antialiased fixed top-0 left-0 z-50 w-full bg-gray-800 border-b border-gray-700">
-    <nav class="bg-gray-800 border-gray-700 px-4 lg:px-6 py-2.5">
+<header class="antialiased fixed top-0 left-0 z-50 w-full bg-white dark:bg-gray-800">
+    <nav class=" px-4 lg:px-6 py-2.5">
         <div class="flex flex-wrap justify-between items-center">
             <div class="flex justify-start items-center gap-10">
-                <button mat-fab (click)="toggleSidenav.emit()" class="!bg-blue-600 hover:!bg-blue-700 !rounded-md">
+                <button mat-icon-button (click)="toggleSidenav.emit()" class="!text-gray-900 dark:!text-white">
                     <mat-icon>menu</mat-icon>
                 </button>
                 <a [routerLink]="['/']" class="flex mr-4">
-                    <img src="#" class="mr-3 h-8" alt="Camaras Logo" />
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">Camaras</span>
+                    <img src="favicon.ico" class="mr-3 h-8" alt="Camaras Logo" />
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">Camaras</span>
                 </a>
             </div>
             <div class="flex items-center lg:order-2">
-                <a [routerLink]="['/home']" class="sm:inline-flex items-center justify-center text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-800 font-medium rounded-lg text-xs px-3 py-1.5 mr-2">
+                <a 
+                mat-flat-button
+                [routerLink]="['/home']"
+                class="!bg-gray-900 !text-white dark:!bg-slate-100 dark:!text-gray-900 !rounded-lg"
+                >
+                    <mat-icon>store</mat-icon>
                     Tienda
                 </a>
-                <button type="button" data-dropdown-toggle="apps-dropdown" class="p-2 text-gray-400 rounded-lg hover:text-white hover:bg-gray-700 focus:ring-4 focus:ring-gray-600">
-                    <span class="sr-only">View notifications</span>
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                        <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
-                    </svg>
-                </button>
-                <div class="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-gray-700 rounded divide-y divide-gray-600" id="apps-dropdown">
-                    <div class="block py-2 px-4 text-base font-medium text-center text-gray-400 bg-gray-700">
-                        Apps
-                    </div>
-                    <div class="grid grid-cols-3 gap-4 p-4">
-                        <a href="#" class="block p-4 text-center rounded-lg hover:bg-gray-600 group">
-                            <svg class="mx-auto mb-2 w-5 h-5 text-gray-400 group-hover:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                                <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
-                            </svg>
-                            <div class="text-sm font-medium text-white">Sales</div>
-                        </a>
-                        <a href="#" class="block p-4 text-center rounded-lg hover:bg-gray-600 group">
-                            <svg class="mx-auto mb-2 w-5 h-5 text-gray-400 group-hover:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 19">
-                                <path d="M14.5 0A3.987 3.987 0 0 0 11 2.1a4.977 4.977 0 0 1 3.9 5.858A3.989 3.989 0 0 0 14.5 0ZM9 13h2a4 4 0 0 1 4 4v2H5v-2a4 4 0 0 1 4-4Z" />
-                                <path d="M5 19h10v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2ZM5 7a5.008 5.008 0 0 1 4-4.9 3.988 3.988 0 1 0-3.9 5.859A4.974 4.974 0 0 1 5 7Zm5 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm5-1h-.424a5.016 5.016 0 0 1-1.942 2.232A6.007 6.007 0 0 1 17 17h2a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5ZM5.424 9H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h2a6.007 6.007 0 0 1 4.366-5.768A5.016 5.016 0 0 1 5.424 9Z" />
-                            </svg>
-                            <div class="text-sm font-medium text-white">Users</div>
-                        </a>
-                        <!-- Continúa con este formato para los demás elementos -->
-                    </div>
-                </div>
             </div>
         </div>
     </nav>

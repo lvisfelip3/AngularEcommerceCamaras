@@ -13,7 +13,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Category } from '../../../shared/interfaces/interfaces';
+import { Category } from '@shared/interfaces/interfaces';
 
 @Component({
   selector: 'app-category-dialog',
@@ -23,7 +23,7 @@ import { Category } from '../../../shared/interfaces/interfaces';
     ReactiveFormsModule,
     MatButtonModule,
     MatInputModule,
-    MatFormFieldModule,
+    MatFormFieldModule
   ],
   template: `
     <div class="dialog">
@@ -51,9 +51,11 @@ import { Category } from '../../../shared/interfaces/interfaces';
         </form>
       </div>
       <div mat-dialog-actions class="footer">
-        <button mat-button (click)="onCancel()">Cancelar</button>
+        <button mat-button (click)="onCancel()"
+        class="!rounded-lg">Cancelar</button>
         <button
-          mat-button
+          mat-flat-button
+          class="!rounded-lg"
           [disabled]="!categoryForm.valid"
           (click)="onSubmit()"
         >

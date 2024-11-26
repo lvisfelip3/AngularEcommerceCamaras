@@ -1,11 +1,11 @@
 ::ng-deep mat-dialog-content,
 .title,
 .footer {
-  @apply bg-slate-700;
+  @apply bg-slate-900;
 }
 
 .dialog {
-  @apply bg-slate-700;
+  @apply bg-slate-900;
   height: min-content !important;
   display: flex !important;
   flex-direction: column !important;

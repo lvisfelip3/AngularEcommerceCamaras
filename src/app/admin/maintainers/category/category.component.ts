@@ -2,14 +2,16 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { CategoriasService } from './category.service';
-import { Category } from '../../../shared/interfaces/interfaces';
+import { Category } from '@shared/interfaces/interfaces';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CategoryDialogComponent } from './dialog-category.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { SnackBarService } from '../../../shared/ui/snack-bar.service';
+import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-add-category',
@@ -20,7 +22,9 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
     MatButtonModule, 
     MatInputModule,
     MatSnackBarModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatIconModule,
+    MatTooltipModule
   ],
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.css'],

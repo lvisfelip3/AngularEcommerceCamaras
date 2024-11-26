@@ -17,4 +17,8 @@ export default [
         path: 'usuarios',
         loadComponent: () => import('./maintainers/users/user.component').then(m => m.UserComponent),
     },
+    {
+        path: 'envios',
+        loadComponent: () => import('./shipping/shipping.component').then(m => m.ShippingComponent),
+    }
 ] as Routes;

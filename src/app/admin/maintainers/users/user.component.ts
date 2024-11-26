@@ -10,6 +10,8 @@ import { UserDialogComponent } from './dialog-users.component';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { SnackBarService } from '../../../shared/ui/snack-bar.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-users',
@@ -21,6 +23,8 @@ import { SnackBarService } from '../../../shared/ui/snack-bar.service';
     MatInputModule,
     MatPaginatorModule,
     MatSortModule,
+    MatIconModule,
+    MatTooltipModule
   ],
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],

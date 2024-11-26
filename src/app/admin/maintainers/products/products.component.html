@@ -1,70 +1,95 @@
-<div class="lista !bg-gray-900">
-    <h1>Productos</h1>
-    <button mat-button (click)="openDialog()">Añadir Producto</button>
-
-    <mat-form-field>
-        <mat-label>Filtrar</mat-label>
-        <input matInput  
-            (keyup)="applyFilter($event)" 
-            placeholder="Filtrar por..." 
-            >
-    </mat-form-field>
-
-    <div class="tablecss">
-        @if(dataSource.data.length > 0){
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-            <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef> ID </th>
-                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="nombre">
-                <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="descripcion">
-                <th mat-header-cell *matHeaderCellDef> Descripción </th>
-                <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="precio">
-                <th mat-header-cell *matHeaderCellDef> Precio </th>
-                <td mat-cell *matCellDef="let element"> {{element.precio}} </td>
-            </ng-container>
-            
-            <ng-container matColumnDef="stock">
-                <th mat-header-cell *matHeaderCellDef> Stock </th>
-                <td mat-cell *matCellDef="let element"> {{element.stock}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="creado_en">
-                <th mat-header-cell *matHeaderCellDef> Fecha Creación </th>
-                <td mat-cell *matCellDef="let element"> {{element.creado_en}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="categoria_id">
-                <th mat-header-cell *matHeaderCellDef> Categoría </th>
-                <td mat-cell *matCellDef="let element"> {{ getNombreCategoria(element.categoria_id) }} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef> Opciones </th>
-                <td mat-cell *matCellDef="let element">
-                    @if (element.imagen){ 
-                    <button mat-button (click)="verImagen(element)">Ver Imagen</button>
-                    }
-                    <button mat-button (click)="openDialog(element)">Editar</button>
-                    <button mat-button (click)="deleteProducto(element.id)">Eliminar</button>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
-        </table>
-        } @else {
-        <h1>No hay Productos</h1>
-        }
+<div class="bg-gray-100 dark:bg-gray-900">
+    <h1 class="!text-gray-900 dark:!text-gray-100 !font-semibold">Productos</h1>
+    <div class="flex justify-between w-full">
+        <button mat-button (click)="openDialog()" class="!rounded-lg !text-gray-100 dark:!text-gray-900 dark:!bg-slate-100 !bg-gray-900">
+            <mat-icon>add</mat-icon>
+            Añadir Categoría
+        </button>
+        <mat-form-field>
+            <mat-label>Filtrar</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar por...">
+        </mat-form-field>
     </div>
-    <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 25, 50, 100]" showFirstLastButtons ></mat-paginator>
+
+    @if(dataSource.data.length > 0){
+    @defer (on viewport){
+    <table mat-table [dataSource]="dataSource" class="!bg-slate-100 dark:!bg-gray-900">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> ID </th>
+            <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Nombre </th>
+            <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element.nombre}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Descripción </th>
+            <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element.descripcion}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="precio">
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Precio </th>
+            <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element.precio}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="stock">
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Stock </th>
+            <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element.stock}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="creado_en">
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Fecha Creación </th>
+            <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element.creado_en}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="categoria_id">
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Categoría </th>
+            <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{ getNombreCategoria(element.categoria_id) }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100 !text-center"> Opciones </th>
+            <td mat-cell *matCellDef="let element" class="!text-center">
+                @if (element.imagen){
+                <button mat-mini-fab 
+                (click)="verImagen(element)"
+                class="!bg-gray-900 !text-white dark:!bg-slate-100 dark:!text-gray-900"
+                matTooltip="Ver Imagen"
+                >
+                    <mat-icon>image</mat-icon>
+                    <span class="sr-only">Ver Imagen</span>
+                </button>
+                }
+                <button mat-mini-fab 
+                (click)="openDialog(element)" 
+                class="!text-white !bg-blue-400 !ml-2"
+                matTooltip="Editar">
+                    <mat-icon>edit</mat-icon>
+                    <span class="sr-only">Editar</span>
+                </button>
+
+                <button mat-mini-fab 
+                (click)="deleteProducto(element.id)" 
+                class="!text-white !bg-red-500 !ml-2"
+                matTooltip="Eliminar"
+                >
+                    <mat-icon>delete</mat-icon>
+                    <span class="sr-only">Eliminar</span>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+    </table>
+    }@placeholder {
+    <h1>Cargando...</h1>
+    }
+    } @else {
+    <h1>No hay Productos</h1>
+    }
+    <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 25, 50, 100]" class="!bg-slate-100 dark:!bg-gray-900 !text-gray-900 dark:!text-gray-100"
+        showFirstLastButtons></mat-paginator>
 </div>

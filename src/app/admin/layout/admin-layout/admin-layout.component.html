@@ -1,39 +1,50 @@
 <div class="container min-w-full">
   <app-header-admin (toggleSidenav)="opened = !opened"></app-header-admin>
-  <mat-sidenav-container class="h-full min-h-screen mt-16 flex flex-col justify-between items-center !bg-gray-900">
-    <mat-sidenav class="!rounded-none" [(opened)]="opened" [mode]="mode">
-      <button mat-button
-        [routerLink]="['/dashboard']"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
-        Dashboard
-        <mat-icon>dashboard</mat-icon>
-      </button>
-      <button mat-button [matMenuTriggerFor]="menu"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start relative">
-        Mantenedores
-        <mat-icon>keyboard_arrow_down</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu" class="menu">
-        <a mat-menu-item [routerLink]="['categorias']" routerLinkActive="active">
-          Categorias
-          <mat-icon>category</mat-icon>
-        </a>
-        <a mat-menu-item [routerLink]="['productos']" routerLinkActive="active">
-          Productos
-          <mat-icon>inventory_2</mat-icon>
-        </a>
-        <a mat-menu-item [routerLink]="['usuarios']" routerLinkActive="active">
-          Usuarios
-          <mat-icon>person</mat-icon>
-        </a>
-      </mat-menu>
-      <button mat-button (click)="logout()"
-        class="!bg-gray-800 hover:!bg-gray-700 !rounded-md !text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
-        Cerrar Sesión
-        <mat-icon>logout</mat-icon>
-      </button>
+  <mat-sidenav-container
+    class="h-full min-h-screen mt-14 flex flex-col justify-between items-center !bg-gray-100 dark:!bg-gray-900">
+    <mat-sidenav class="!rounded-none !bg-white dark:!bg-gray-800 transition-colors !fixed !left-0 !top-14" [(opened)]="opened" [mode]="mode">
+      <div class="flex flex-col justify-between h-full overflow-hidden">
+        <div>
+        <button mat-button [routerLink]="['/dashboard']"
+          class="!bg-transparent !rounded-lg !text-gray-900 dark:!text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+          Dashboard
+          <mat-icon>dashboard</mat-icon>
+        </button>
+        <button mat-button [matMenuTriggerFor]="menu"
+          class="!bg-transparent !rounded-lg !text-gray-900 dark:!text-white !w-full !p-8 !text-lg !flex !items-center !justify-start relative">
+          Mantenedores
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" class="menu">
+          <a mat-menu-item [routerLink]="['categorias']" route
+          rLinkActive="active">
+            Categorias
+            <mat-icon>category</mat-icon>
+          </a>
+          <a mat-menu-item [routerLink]="['productos']" routerLinkActive="active">
+            Productos
+            <mat-icon>inventory_2</mat-icon>
+          </a>
+          <a mat-menu-item [routerLink]="['usuarios']" routerLinkActive="active">
+            Usuarios
+            <mat-icon>person</mat-icon>
+          </a>
+        </mat-menu>
+        <button mat-button [routerLink]="['envios']"
+          class="!bg-transparent !rounded-lg !text-gray-900 dark:!text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+          Envios
+          <mat-icon>local_shipping</mat-icon>
+        </button>
+        <button mat-button (click)="logout()"
+          class="!bg-transparent !rounded-lg !text-gray-900 dark:!text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
+          Cerrar Sesión
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+      <app-theme-toggler></app-theme-toggler>
+    </div>
     </mat-sidenav>
-    <mat-sidenav-content class="p-2 !bg-gray-900">
+    <mat-sidenav-content class="!px-14 py-12 !bg-gray-100 dark:!bg-gray-900">
       <main>
         <router-outlet></router-outlet>
       </main>

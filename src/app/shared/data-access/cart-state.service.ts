@@ -97,7 +97,7 @@ export class CartStateService {
             this.snackBarService.showSnackBar('No hay suficiente stock disponible', 'OK');
             return {};
         }
-        
+        this.snackBarService.showSnackBar('Producto agregado', 'OK');
         return {
             products: [...currentProducts, { ...product, quantity: 1 }],
         };
@@ -123,15 +123,14 @@ export class CartStateService {
                             message: mensaje
                         };
                     }
-    
                     return product.quantity <= 0 
                         ? null 
-                        : { ...productInCart, quantity: product.quantity };
+                        : { ...productInCart, quantity: product.quantity};
                 }
                 return productInCart;
             })
             .filter((product): product is ProductItemCart => product !== null);
-    
+        
         return { products: updatedProducts };
     }
 

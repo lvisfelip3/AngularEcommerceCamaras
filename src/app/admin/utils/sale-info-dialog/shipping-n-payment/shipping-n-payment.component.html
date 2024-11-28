@@ -1,0 +1,17 @@
+@if(delivery){
+    <article class="w-full lg:px-20 flex flex-col py-5 dark:text-gray-900 text-gray-100">
+        <p><strong>Direccion:</strong> {{ delivery.direccion }}</p>
+        <p><strong>Ciudad:</strong> {{ delivery.ciudad }}</p>
+        <p><strong>Comuna:</strong> {{ delivery.comuna }}</p>
+        <p><strong>Depto:</strong> {{ delivery.depto ?? 'N/A' }}</p>
+    </article>
+}
+
+@if(payment){
+    <article class="flex lg:px-20 flex-col py-5 dark:text-gray-900 text-gray-100">
+        <p><strong>Metodo de pago: </strong>{{ payment.method }}</p>
+        <p><strong>Referencia: </strong>{{ payment.reference }}</p>
+        <p><strong>Estado del pago: </strong>{{ PaymentState(payment.payment_state) }}</p>
+        <p><strong>Estado del envío: </strong>{{ ShippingState(payment.shipping_state) }}</p>
+    </article>
+}

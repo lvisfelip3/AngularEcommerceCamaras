@@ -1,1 +1,11 @@
-<p>sale-info-dialog works!</p>
+<mat-tab-group>
+    <mat-tab label="Productos">
+        <app-products [products]="saleInfoProducts"></app-products>
+    </mat-tab>
+    <mat-tab label="Cliente"> 
+        <app-client [client]="saleInfoClient"></app-client>
+    </mat-tab>
+    <mat-tab label="Envío y Pago"> 
+        <app-shipping-n-payment [delivery]="saleInfoAddress" [payment]="saleInfoPayment"></app-shipping-n-payment>
+    </mat-tab>
+</mat-tab-group>

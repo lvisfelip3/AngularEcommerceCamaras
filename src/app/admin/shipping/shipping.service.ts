@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { Shipping } from '@shared/interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,11 @@ export class ShippingService extends BaseHttpService {
     super();
   }
 
-  getShipping(): Observable<any> {
-    return this.http.get<any[]>(this.apiUrl + 'shipping/shipping.php');
+  getShipping(): Observable<Shipping[]> {
+    return this.http.get<Shipping[]>(this.apiUrl + 'shipping/shipping.php');
   }
 
-  switchStatus(shipping_id: number, status: number): Observable<any> {
+  switchStatus(shipping_id: number, status: number): Observable<Shipping> {
     const token = this.cookie.get('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     const params = new HttpParams()
@@ -26,7 +27,12 @@ export class ShippingService extends BaseHttpService {
 
     const options = { headers, params };
 
-    return this.http.post<any>(this.apiUrl + 'shipping/shipping.php', null, options);
-}
+    return this.http.post<Shipping>(this.apiUrl + 'shipping/shipping.php', null, options);
+  }
+
+  getShippingByStatus(status: number): Observable<Shipping[]> {
+    const params = new HttpParams().set('status', status.toString());
+    return this.http.get<Shipping[]>(this.apiUrl + 'shipping/shipping.php', { params });
+  }
 
 }

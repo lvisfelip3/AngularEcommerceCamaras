@@ -80,3 +80,13 @@ export interface Payment {
   payment_state: number;
   shipping_state: number;
 }
+
+export interface Shipping {
+  id: number;
+  nombre_cliente: Client['nombre'];
+  rut_cliente: Client['rut'];
+  direccion: Adress['direccion'];
+  ciudad: Adress['ciudad'];
+  comuna: Adress['comuna'];
+  status: number;
+}

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { SnackBarService } from '@shared/ui/snack-bar.service';
+import { Shipping } from '@shared/interfaces/interfaces';
 
 
 @Component({
@@ -35,19 +36,18 @@ import { SnackBarService } from '@shared/ui/snack-bar.service';
 export class ShippingComponent implements OnInit {
   selected = '0';
   displayColumns: string[] = ['id', 'nombre_cliente', 'rut_cliente', 'direccion', 'ciudad', 'comuna', 'status', 'actions'];
-  dataSource = new MatTableDataSource<any>();
+  dataSource = new MatTableDataSource<Shipping>();
   private readonly _snackBar = inject(SnackBarService);
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
   constructor(
     private shipping: ShippingService,
-    private dialog: MatDialog,
-    private cdr: ChangeDetectorRef
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
-    this.getShipping();
+    this.getShipping();    
   }
 
   getShipping() {
@@ -77,7 +77,7 @@ export class ShippingComponent implements OnInit {
     }
   }
 
-  openDialog(shipping?: any): void{
+  openDialog(shipping?: Shipping): void{
     this.dialog.open(SaleInfoDialogComponent, {
       width: '500px',
       data: shipping ? shipping.id : null
@@ -91,8 +91,22 @@ export class ShippingComponent implements OnInit {
 
   switchStatus(shipping_id: number, status: number): void {
     this.shipping.switchStatus(shipping_id, status).subscribe(() => {
-      this.getShipping();
+      this.statusFilter(Number(this.selected));
       this._snackBar.showSnackBar('Estado actualizado');
     });
   } 
+
+  statusFilter(status: number): void {
+    this.shipping.getShippingByStatus(status).subscribe({
+      next: (response) => {
+        this.dataSource.data = response;
+      },
+      error: (error) => {
+        console.error('Error al obtener envios:', error);
+      },
+      complete: () => {
+        this.dataSource.paginator = this.paginator;
+      }
+    })
+  }
 }

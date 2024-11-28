@@ -3,7 +3,7 @@
     <div class="flex justify-between w-full">
         <mat-form-field>
             <mat-label>Estado Envío</mat-label>
-            <mat-select [(value)]="selected">
+            <mat-select [(value)]="selected" (selectionChange)="statusFilter($event.value)">
                 <mat-option value="0">Ver Todos</mat-option>
                 <mat-option value="1">Entregados</mat-option>
                 <mat-option value="2">Asignados</mat-option>
@@ -25,32 +25,32 @@
         </ng-container>
 
         <ng-container matColumnDef="nombre_cliente">
-            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Nombre </th>
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Nombre Cliente </th>
             <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element.client.nombre}} </td>
         </ng-container>
 
         <ng-container matColumnDef="rut_cliente">
-            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Descripción </th>
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Rut Cliente </th>
             <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element.client.rut}} </td>
         </ng-container>
 
         <ng-container matColumnDef="direccion">
-            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Precio </th>
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Dirección </th>
             <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element.address.direccion}} </td>
         </ng-container>
 
         <ng-container matColumnDef="ciudad">
-            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Stock </th>
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Región </th>
             <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element.address.ciudad}} </td>
         </ng-container>
 
         <ng-container matColumnDef="comuna">
-            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Fecha Creación </th>
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Comuna </th>
             <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element.address.comuna}} </td>
         </ng-container>
 
         <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Categoría </th>
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Estado Envío </th>
             <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{status(element.status)}} </td>
         </ng-container>
 

@@ -20,5 +20,9 @@ export default [
     {
         path: 'envios',
         loadComponent: () => import('./shipping/shipping.component').then(m => m.ShippingComponent),
+    },
+    {
+        path: 'pagos',
+        loadComponent: () => import('./payment/payment.component').then(m => m.PaymentComponent),
     }
 ] as Routes;

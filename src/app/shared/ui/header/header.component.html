@@ -41,9 +41,13 @@
             }
         </a>
         @if(isLoggedIn){
-        <button type="button" mat-icon-button [matMenuTriggerFor]="menu" class="!hidden lg:!block" matTooltip="Perfil">
+        <button 
+        type="button" 
+        mat-icon-button 
+        [matMenuTriggerFor]="menu" 
+        class="!hidden lg:!flex !items-center !rounded-md dark:!text-white !text-gray-900" matTooltip="Perfil">
             <span class="sr-only">Open user menu</span>
-            <img class="w-8 h-8 rounded-full" alt="user photo">
+            <mat-icon class="!m-0 !p-0 !w-min">person</mat-icon>
         </button>
 
         <mat-menu #menu="matMenu" class="menu">

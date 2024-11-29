@@ -1,7 +1,7 @@
 <section>
-    <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Catálogo</h2>
-    <div class="flex w-full gap-4 flex-wrap md:flex-nowrap">
-        <app-filter class="w-full h-full md:w-min md:relative" 
+    <h2 class="text-xl !font-semibold text-gray-900 dark:text-gray-100">Catálogo</h2>
+    <div class="flex w-full gap-4 flex-wrap lg:flex-nowrap">
+        <app-filter class="w-full lg:w-min" 
         [formControl]="searchControl"
         (categoryChange)="categoryControl.setValue($event)"
         (orderByChange)="orderByControl.setValue($event)"

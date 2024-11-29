@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSliderModule } from '@angular/material/slider';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { FilterSkeletonComponent } from '../skeleton/filter-skeleton/filter-skeleton.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { BreakpointObserver } from '@angular/cdk/layout';
 
@@ -26,7 +25,6 @@ import { BreakpointObserver } from '@angular/cdk/layout';
     MatButtonModule,
     MatSliderModule,
     AsyncPipe,
-    FilterSkeletonComponent,
     MatExpansionModule
   ],
   templateUrl: './filter.component.html',
@@ -48,6 +46,7 @@ export class FilterComponent implements OnInit {
   isFiltered = false;
 
   readonly panelState = signal(false);
+  isLargeScreen = false;
 
   categories$: Observable<Category[]>
 
@@ -66,6 +65,8 @@ export class FilterComponent implements OnInit {
       '(min-width: 770px)'
     ]).subscribe(result => {
       this.panelState.set(result.matches);
+      this.isLargeScreen = result.matches;
+      this.cdr.markForCheck(); 
     });
 
     this.categoryControl.valueChanges.subscribe((selectedCategory) => {

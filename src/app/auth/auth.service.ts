@@ -4,6 +4,11 @@ import { BaseHttpService } from '../shared/data-access/base-http.service';
 import { User } from '../shared/interfaces/interfaces';
 import { CookieService } from 'ngx-cookie-service';
 
+interface response {
+  message: string;
+  status: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -52,6 +57,10 @@ export class AuthService extends BaseHttpService{
   isLoggedIn(): boolean {
     const token = this.getToken();
     return token !== null;
+  }
+
+  verifyCaptcha(token: string): Observable<response> {
+    return this.http.post<response>(this.apiUrl + 'auth/verify_captcha.php', { token });
   }
 
   logout(): void {

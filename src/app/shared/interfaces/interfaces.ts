@@ -7,6 +7,7 @@ export interface Product {
   imagen: string;
   categoria_id?: number;
   creado_en?: Date;
+  slug?: string;
 }
 
 

@@ -38,13 +38,13 @@ export default class ProductDetailComponent {
   private readonly snackBar = inject(SnackBarService);
   private readonly favState = inject(FavoriteStateService).state;
 
-  readonly id = input.required<string>();
+  readonly name = input.required<string>();
 
   constructor() {
     effect(() => {
-      const currentId = this.id();
-      if (currentId) {
-        this.productDetailState.getById(currentId);
+      const currentName = this.name();
+      if (currentName) {
+        this.productDetailState.getByName(currentName);
       }
     }, { allowSignalWrites: true });
   }

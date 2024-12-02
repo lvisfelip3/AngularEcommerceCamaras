@@ -1,4 +1,4 @@
-<a [class.cursor-default]="product().stock <= 0" [routerLink]="['/catalogo/producto', product().id]">
+<a [class.cursor-default]="product().stock <= 0" [routerLink]="['/catalogo/producto', product().slug]">
     <div class="border rounded-lg bg-slate-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-sm dark:shadow-gray-950 flex flex-col md:flex-row w-full">
         <div class="min-h-52 h-52 md:h-auto md:max-h-60 w-full md:min-w-52 flex justify-start items-center">
             <img [class.!grayscale]="product().stock <= 0" class="object-cover h-full w-full md:min-w-52 rounded-t-lg md:rounded-e-none md:rounded-s-lg border-b md:border-r md:border-b-0 border-gray-200 dark:border-gray-600" 

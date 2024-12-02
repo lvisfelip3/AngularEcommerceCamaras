@@ -23,10 +23,10 @@ export class ProductDetailStateService {
   readonly state = signalSlice({
     initialState: this.initialState,
     actionSources: {
-      getById: (_state, $: Observable<string>) => $.pipe(
+      getByName: (_state, $: Observable<string>) => $.pipe(
         tap(() => ({ status: 'loading' as const })),
-        switchMap((id) => 
-          this.productsService.getProduct(id).pipe(
+        switchMap((name) => 
+          this.productsService.getProductByName(name).pipe(
             map((data) => ({ 
               product: data, 
               status: 'success' as const 

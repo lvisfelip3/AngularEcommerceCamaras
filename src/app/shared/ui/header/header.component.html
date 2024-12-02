@@ -40,7 +40,6 @@
             <span class="text-md ml-2">{{ cartState.count()}}</span>
             }
         </a>
-        @if(isLoggedIn){
         <button 
         type="button" 
         mat-icon-button 
@@ -51,18 +50,30 @@
         </button>
 
         <mat-menu #menu="matMenu" class="menu">
+            @if(isLoggedIn){
             <p mat-menu-item>{{ user?.nombre }}</p>
             <p mat-menu-item>{{ user?.email }}</p>
             <p mat-menu-item>{{ user?.rol }}</p>
+            <a mat-menu-item>
+                <mat-icon>local_shipping</mat-icon>
+                Mis Compras
+            </a>
             <mat-divider></mat-divider>
-            <button mat-menu-item (click)="logout()">Cerrar sesión</button>
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                Cerrar sesión
+            </button>
+            } @else {
+            <button mat-menu-item (click)="openAuthDialog()">
+                <mat-icon>logout</mat-icon>
+                Iniciar sesión
+            </button>
+            <a mat-menu-item>
+                <mat-icon>local_shipping</mat-icon>
+                Estado de Compra
+            </a>
+            }
         </mat-menu>
-        } @else {
-        <button mat-flat-button [routerLink]="['auth/login']" 
-        class="!rounded-lg !hidden lg:!block !bg-slate-900 !text-white dark:!bg-slate-100 dark:!text-gray-900">
-            Iniciar Sesión
-        </button>
-        }
         <app-theme-toggler class="!hidden lg:!block"></app-theme-toggler>
     </div>
 </nav>

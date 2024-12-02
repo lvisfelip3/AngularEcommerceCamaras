@@ -58,16 +58,16 @@
             <mat-icon>logout</mat-icon>
           </button>
           } @else {
-          <a 
-            mat-button 
-            [routerLink]="['auth/login']"
+          <button 
+            mat-button
             routerLinkActive="activeLink"
             class="!bg-transparent dark:!bg-gray-800 hover:bg-gray-300 dark:hover:!bg-gray-700 !text-gray-900 dark:!text-white !rounded-md !w-full !p-8 !text-lg !flex !items-center !justify-start"
             (click)="opened = false"
+            (click)="openAuthDialog()"
             >
             Iniciar Sesión
             <mat-icon>login</mat-icon>
-          </a>
+          </button>
           }
         </div>
         <app-theme-toggler></app-theme-toggler>

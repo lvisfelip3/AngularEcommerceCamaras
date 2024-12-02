@@ -9,6 +9,8 @@ import { User } from '@shared/interfaces/interfaces';
 import { ThemeTogglerComponent } from "@account/ui/theme-toggler/theme-toggler.component";
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
+import { AuthDialogComponent } from '@auth/index'
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-header',
@@ -34,13 +36,23 @@ export class HeaderComponent implements OnInit{
 
   @Output() toggleSidenav = new EventEmitter<void>();
 
-  constructor(private auth: AuthService, private router: Router) { 
+  constructor(
+    private auth: AuthService, 
+    private router: Router,
+    private dialog: MatDialog
+  ) { 
     this.isLoggedIn = this.auth.isLoggedIn();
   }
 
   ngOnInit(): void {
     this.auth.getUserData().subscribe((userData: User | null) => {
       this.user = userData;
+    });
+  }
+
+  openAuthDialog(): void {
+    this.dialog.open(AuthDialogComponent, {
+      width: '500px',
     });
   }
 

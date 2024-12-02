@@ -10,6 +10,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '@auth/auth.service';
 import { ThemeService } from '@account/services/theme.service';
 import { ThemeTogglerComponent } from "@account/ui/theme-toggler/theme-toggler.component";
+import { MatDialog } from '@angular/material/dialog';
+import { AuthDialogComponent } from '@auth/index';
 
 @Component({
   selector: 'app-user-layout',
@@ -42,7 +44,8 @@ export class UserLayoutComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +56,12 @@ export class UserLayoutComponent implements OnInit {
         this.userPhoto = user.imagen;
         this.userRol = user.rol;
       }
+    });
+  }
+
+  openAuthDialog(): void {
+    this.dialog.open(AuthDialogComponent, {
+      width: '500px',
     });
   }
 

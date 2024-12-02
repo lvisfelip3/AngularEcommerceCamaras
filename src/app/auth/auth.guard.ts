@@ -7,19 +7,17 @@ export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  // Verifica si el usuario está logeado
   if (authService.isLoggedIn()) {
-    const user = authService.getCurrentUser(); // Obtiene los datos del usuario actual
+    const user = authService.getCurrentUser();
     
-    // Verifica si el usuario tiene el rol de administrador
     if (user?.rol === 'admin') {
       return true;
     } else {
-      router.navigate(['/unauthorized']); // Redirige si no es admin
+      router.navigate(['/unauthorized']);
       return false;
     }
   } else {
-    router.navigate(['/login']); // Redirige si no está logeado
+    router.navigate(['/login']);
     return false;
   }
 };

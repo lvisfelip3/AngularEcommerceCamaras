@@ -20,7 +20,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withComponentInputBinding(), inMemoryScrollingFeature),
     provideHttpClient(withFetch()), provideAnimationsAsync(),
-    provideExperimentalZonelessChangeDetection(),
+    provideExperimentalZonelessChangeDetection()
     // provideClientHydration(), only with SSR
   ]
 };

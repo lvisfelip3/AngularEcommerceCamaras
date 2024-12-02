@@ -23,9 +23,5 @@ export const routes: Routes = [
         ],
         canActivate: [authGuard]
     },
-    {
-        path: 'auth',
-        loadChildren: () => import('./auth/auth.routes')
-    },
     { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];

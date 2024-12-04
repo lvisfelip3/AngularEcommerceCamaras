@@ -37,12 +37,12 @@ export class SaleInfoDialogComponent implements OnInit{
   }
 
   getSaleInfo(): void {
-    this.saleInfoService.getSaleInfo(this.data).subscribe((response) => {
-      console.log(response);
-      this.saleInfoClient = response.client;
-      this.saleInfoAddress = response.address;
-      this.saleInfoPayment = response.payment;
-      this.saleInfoProducts = response.productos;
+    this.saleInfoService.getSaleInfo(this.data).subscribe((data) => {
+      const { client, address, payment, productos } = data;
+      this.saleInfoClient = client;
+      this.saleInfoAddress = address;
+      this.saleInfoPayment = payment;
+      this.saleInfoProducts = productos;
 
       this.cdr.detectChanges();
     })

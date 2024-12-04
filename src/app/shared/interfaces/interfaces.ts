@@ -91,3 +91,10 @@ export interface Shipping {
   comuna: Adress['comuna'];
   status: number;
 }
+
+export interface Order {
+  client: Client;
+  address: Adress;
+  payment: Payment;
+  productos: ProductItemOrder[];
+}

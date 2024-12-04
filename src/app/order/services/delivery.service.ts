@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { Observable } from 'rxjs';
-import { Comuna, Ciudad, Client, Adress, ProductItemCart } from '@shared/interfaces/interfaces';
+import { Comuna, Ciudad, Client, Adress, ProductItemCart, Order } from '@shared/interfaces/interfaces';
 import { HttpParams } from '@angular/common/http';
 
 interface response {
@@ -32,8 +32,8 @@ export class DeliveryService extends BaseHttpService {
     return this.http.post<response>(this.apiUrl + 'clientes/cliente.php', body);
   }
 
-  getOrderDetails(orderId: string): Observable<any> {
-    return this.http.get<any>(this.apiUrl + 'pedidos/pedido.php', { params: { id: orderId } });
+  getOrderDetails(orderId: string): Observable<Order> {
+    return this.http.get<Order>(this.apiUrl + 'pedidos/pedido.php', { params: { id: orderId } });
   }
 
 }

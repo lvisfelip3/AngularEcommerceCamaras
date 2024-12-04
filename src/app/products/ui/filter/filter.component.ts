@@ -95,7 +95,7 @@ export class FilterComponent implements OnInit {
 
   resetFilter(): void {
     this.isFiltered = false;
-    this.categoryControl.setValue("", { emitEvent: false });
+    this.categoryControl.setValue("", { emitEvent: true });
     this.formControl.setValue('', { emitEvent: false });
     this.maxPriceControl.setValue(this.maxValue, { emitEvent: false });
     this.orderByControl.setValue(null, { emitEvent: false });
@@ -104,6 +104,8 @@ export class FilterComponent implements OnInit {
 
     this.maxPriceControl.setValue(this.maxValue);
     this.maxPriceChange.emit(this.maxValue);
+    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   displayFormattedValue(value: number): string {

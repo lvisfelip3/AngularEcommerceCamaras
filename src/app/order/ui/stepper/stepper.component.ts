@@ -49,9 +49,11 @@ export class StepperComponent implements OnInit {
   selectedPaymentMethodId: number | null = null;
 
   payMethod: payMethod[] = [
-    {id: 1, name:'Webpay' , imageUrl:'img/payMethod/webpay.webp'},
-    {id: 2, name:'Flow' , imageUrl:'img/payMethod/flow.webp'},
-    {id: 3, name:'Paypal' , imageUrl:'img/payMethod/paypal.webp'}
+    // {id: 1, name:'Webpay' , imageUrl:'img/payMethod/webpay.webp'},
+    // {id: 2, name:'Flow' , imageUrl:'img/payMethod/flow.webp'},
+    // {id: 3, name:'Paypal' , imageUrl:'img/payMethod/paypal.webp'},
+    {id: 4, name:'Transferencia' , imageUrl:'img/payMethod/transferencia.webp'},
+    {id: 5, name:'Contra Pago' , imageUrl:'img/payMethod/contraentrega.webp'}
   ]
 
   constructor(private router: Router) {}

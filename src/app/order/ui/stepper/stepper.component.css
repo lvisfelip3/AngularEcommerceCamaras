@@ -13,3 +13,15 @@
 ::ng-deep .mat-mdc-form-field-error{
     @apply !text-red-600 dark:!text-red-300
 }
+
+::ng-deep .mdc-text-field--disabled {
+    @apply !bg-gray-400 dark:!bg-gray-600
+}
+
+::ng-deep .mdc-text-field--disabled .mdc-floating-label {
+    @apply !text-gray-300 dark:!text-gray-400
+}
+
+.onTouchPayment {
+    @apply scale-105 transition-all dark:outline-green-500 outline-blue-600
+}

@@ -95,7 +95,7 @@ export class FilterComponent implements OnInit {
 
   resetFilter(): void {
     this.isFiltered = false;
-    this.categoryControl.setValue(null, { emitEvent: false });
+    this.categoryControl.setValue("", { emitEvent: false });
     this.formControl.setValue('', { emitEvent: false });
     this.maxPriceControl.setValue(this.maxValue, { emitEvent: false });
     this.orderByControl.setValue(null, { emitEvent: false });

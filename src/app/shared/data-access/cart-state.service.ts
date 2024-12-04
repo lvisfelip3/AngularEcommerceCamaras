@@ -14,6 +14,7 @@ interface State {
     providedIn: 'root'
 })
 export class CartStateService {
+
     private readonly storageService = inject(StorageService);
     snackBarService = inject(SnackBarService);
 
@@ -41,13 +42,7 @@ export class CartStateService {
                     (acc, product) => acc + product.product.precio * product.quantity, 
                     0
                 )
-            ),
-            clear: () => {
-                return {
-                    products: [],
-                    loaded: true
-                };
-            }
+            )
         }),
         actionSources: {
             add: (state, actions$: Observable<ProductItemCart>) => 
@@ -58,6 +53,8 @@ export class CartStateService {
             
             update: (state, actions$: Observable<ProductItemCart>) => 
                 actions$.pipe(map((product) => this.update(state, product))),
+            clear: (state, actions$: Observable<void>) => 
+                actions$.pipe(map(() => this.clear(state))),
         }
     });
 
@@ -134,5 +131,7 @@ export class CartStateService {
         return { products: updatedProducts };
     }
 
-    
+    private clear(state: Signal<State>): Partial<State> {
+        return { products: [] };
+    }
 }

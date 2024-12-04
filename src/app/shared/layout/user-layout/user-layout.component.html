@@ -31,17 +31,17 @@
             Carrito
             <mat-icon>shopping_cart</mat-icon>
           </a>
-          @if(userRol === 'admin'){
-            <a mat-button
-            [routerLink]="['/dashboard']"
-            class="!bg-transparent !text-gray-900 dark:!text-white hover:!bg-gray-700 !rounded-md !w-full !p-8 !text-lg !flex !items-center !justify-start"
-            (click)="opened = false"
-            >
-            Dashboard
-            <mat-icon>dashboard</mat-icon>
-          </a>
-          }
           @if(isLoggedIn){
+            @if(userRol === 'admin'){
+              <a mat-button
+              [routerLink]="['/dashboard']"
+              class="!bg-transparent !text-gray-900 dark:!text-white !rounded-md !w-full !p-8 !text-lg !flex !items-center !justify-start"
+              (click)="opened = false"
+              >
+              Dashboard
+              <mat-icon>dashboard</mat-icon>
+            </a>
+            }
           <a mat-button
             [routerLink]="['/account']"
             routerLinkActive="activeLink"

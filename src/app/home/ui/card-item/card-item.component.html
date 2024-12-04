@@ -1,4 +1,4 @@
-<a [routerLink]="['/catalogo/producto', product().id]">
+<a [routerLink]="['/catalogo/producto', product().slug]">
     <article class="flex flex-col w-max h-auto border bg-slate-100 border-gray-200 shadow-md dark:shadow-none dark:bg-gray-800 dark:border-gray-600 rounded-lg relative">
         @if (product().stock >= 10){
 

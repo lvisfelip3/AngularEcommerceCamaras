@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component} from '@angular/core';
-import { CarouselModule } from 'primeng/carousel';
+import { AfterViewInit, ChangeDetectionStrategy, Component} from '@angular/core';
+import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
 
 @Component({
   selector: 'app-slider',
@@ -11,7 +11,7 @@ import { CarouselModule } from 'primeng/carousel';
   styleUrl: './slider.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SliderComponent{
+export class SliderComponent implements AfterViewInit {
   images: string[] = [
     'img/heroSection/alhuatecnology.webp',
     'img/heroSection/hikvision.webp',
@@ -35,4 +35,27 @@ export class SliderComponent{
       numScroll: 1
     }
   ];
+
+  ngAfterViewInit() {
+    const indicators = document.querySelectorAll('.heroIndicator');
+    indicators.forEach((indicator, index) => {
+      if (index === 0) {
+        indicator.classList.add('!bg-blue-500');
+        indicator.classList.add('dark:!bg-white');
+      }
+    });
+  }
+
+  updateIndicatorStyle(event:CarouselPageEvent) {
+    const indicators = document.querySelectorAll('.heroIndicator');
+    indicators.forEach((indicator, index) => {
+    if (index === event.page) {
+      indicator.classList.add('!bg-blue-500');
+      indicator.classList.add('dark:!bg-white');
+    } else {
+      indicator.classList.remove('!bg-blue-500');
+      indicator.classList.remove('dark:!bg-white');
+    }
+  });
+  }
 }

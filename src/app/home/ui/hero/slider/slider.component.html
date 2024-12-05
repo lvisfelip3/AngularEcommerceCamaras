@@ -3,9 +3,12 @@
 [circular]="true"
 [showNavigators]="true"
 [showIndicators]="true"
-
+[indicatorsContentClass]="'bg-transparent p-2 flex items-center justify-center gap-3'"
+[indicatorStyleClass]="'heroIndicator dark:bg-green-500 bg-gray-900 rounded-full p-1 !z-50 !w-3 !h-3 focus:bg-green-600 active:bg-green-600'"
+(onPage)="updateIndicatorStyle($event)"
 [responsiveOptions]="responsiveOptions"
-autoplayInterval="3000">
+[autoplayInterval]="5000"
+>
 
     <ng-template let-image pTemplate="item">
         <div class="relative border border-gray-200 dark:border-gray-600 rounded-lg shadow-md m-3 dark:shadow-none">

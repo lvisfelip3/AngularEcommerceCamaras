@@ -41,7 +41,7 @@ export class SliderComponent implements AfterViewInit {
     indicators.forEach((indicator, index) => {
       if (index === 0) {
         indicator.classList.add('!bg-blue-500');
-        indicator.classList.add('dark:!bg-white');
+        indicator.classList.add('dark:!bg-green-500');
       }
     });
   }
@@ -51,10 +51,10 @@ export class SliderComponent implements AfterViewInit {
     indicators.forEach((indicator, index) => {
     if (index === event.page) {
       indicator.classList.add('!bg-blue-500');
-      indicator.classList.add('dark:!bg-white');
+      indicator.classList.add('dark:!bg-green-500');
     } else {
       indicator.classList.remove('!bg-blue-500');
-      indicator.classList.remove('dark:!bg-white');
+      indicator.classList.remove('dark:!bg-green-500');
     }
   });
   }

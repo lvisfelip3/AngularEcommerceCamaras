@@ -54,6 +54,7 @@ export interface Comuna {
 }
 
 export interface Client {
+  tipoDocumento: string;
   rut: string;
   nombre: string | User['nombre'];
   apellido: string;

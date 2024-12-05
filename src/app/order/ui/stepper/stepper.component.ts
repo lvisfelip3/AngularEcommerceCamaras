@@ -81,6 +81,7 @@ export class StepperComponent implements OnInit {
 
   orderFormGroup = this._formBuilder.group({
     client: this._formBuilder.group({
+      tipoDocumento: ['', Validators.required],
       nombre: ['', [ 
         Validators.required,
         Validators.pattern(/^[a-zA-Z\u00f1\u00d1\s]+$/u),
@@ -129,6 +130,7 @@ export class StepperComponent implements OnInit {
   onSubmit() {
 
     const client: Client = {
+      tipoDocumento: this.orderFormGroup.get('client.tipoDocumento')?.value ?? '',
       nombre: this.orderFormGroup.get('client.nombre')?.value ?? '',
       apellido: this.orderFormGroup.get('client.apellido')?.value ?? '',
       rut: this.orderFormGroup.get('client.rut')?.value ?? '',

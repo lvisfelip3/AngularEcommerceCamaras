@@ -7,6 +7,14 @@
             label="Datos del cliente"
             >
                 <mat-form-field appearance="fill" class="w-full">
+                    <mat-label>Tipo de documento</mat-label>
+                    <mat-select appearance="fill" formControlName="tipoDocumento">
+                        <mat-option value="1">Boleta</mat-option>
+                        <mat-option value="2">Factura</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="w-full">
                     <mat-label>RUT</mat-label>
                     <input matInput id="rut" type="text" formControlName="rut" class="w-full">
                     @if (orderFormGroup.get('client.rut')?.hasError('pattern')){

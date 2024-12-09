@@ -11,11 +11,12 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { DeliveryService } from '@order/services/delivery.service';
-import { Adress, Ciudad, Client, Comuna, payMethod} from '@shared/interfaces/interfaces';
+import { Adress, Ciudad, Client, Comuna, payMethod, User} from '@shared/interfaces/interfaces';
 import { RutPipePipe } from '@order/utils/rut-pipe.pipe';
 import { CartStateService } from '@shared/data-access/cart-state.service';
 import { PhonePipePipe } from '@order/utils/phone-pipe.pipe';
 import { Router } from '@angular/router';
+import { AuthService } from '@auth/auth.service'; 
 
 @Component({
   selector: 'app-stepper',
@@ -42,9 +43,11 @@ export class StepperComponent implements OnInit {
   private _rutPipe = inject(RutPipePipe);
   private _phonePipe = inject(PhonePipePipe);
   private _cart = inject(CartStateService).state;
+  private _auth = inject(AuthService);
 
   cities: Ciudad[] = [];
   comunas: Comuna[] = [];
+  user: User | null = null;
 
   selectedPaymentMethodId: number | null = null;
 
@@ -59,6 +62,14 @@ export class StepperComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
+    this._auth.getUserData().subscribe((user) => {
+      if (user) {
+        this.user = user;
+        this.orderFormGroup.get('client.email')?.setValue(user.email);
+        this.orderFormGroup.get('client.nombre')?.setValue(user.nombre);
+      }
+    })
+
     this._deliveryService.getCiudades().subscribe((cities: Ciudad[]) => {
       this.cities = cities;
       cities.sort((a, b) => a.nombre.localeCompare(b.nombre));
@@ -130,6 +141,7 @@ export class StepperComponent implements OnInit {
   onSubmit() {
 
     const client: Client = {
+      usuario_id: this.user?.id ?? undefined,
       tipoDocumento: this.orderFormGroup.get('client.tipoDocumento')?.value ?? '',
       nombre: this.orderFormGroup.get('client.nombre')?.value ?? '',
       apellido: this.orderFormGroup.get('client.apellido')?.value ?? '',
@@ -167,6 +179,10 @@ export class StepperComponent implements OnInit {
         comunas.sort((a, b) => a.nombre.localeCompare(b.nombre));
         this.orderFormGroup.get('delivery.comuna')?.enable();
       });
+  }
+
+  getUserData() {
+    this._auth.getToken()
   }
 
   setPaymentMethod(method: string, id: number) {

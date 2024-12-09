@@ -1,0 +1,9 @@
+.pendent{
+    @apply !text-gray-900 dark:!text-gray-100
+}
+.delivered{
+    @apply !bg-green-600 dark:!bg-green-400
+}
+.cancelled{
+    @apply !bg-red-600 dark:!bg-red-400
+}

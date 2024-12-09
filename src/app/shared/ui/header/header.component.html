@@ -51,10 +51,11 @@
 
         <mat-menu #menu="matMenu" class="menu">
             @if(isLoggedIn){
-            <p mat-menu-item>{{ user?.nombre }}</p>
-            <p mat-menu-item>{{ user?.email }}</p>
-            <p mat-menu-item>{{ user?.rol }}</p>
-            <a mat-menu-item>
+            <a mat-menu-item [routerLink]="['/account']">
+                <mat-icon>account_circle</mat-icon>
+                Mi Perfil
+            </a>
+            <a mat-menu-item routerLink="/account/orders">
                 <mat-icon>local_shipping</mat-icon>
                 Mis Compras
             </a>

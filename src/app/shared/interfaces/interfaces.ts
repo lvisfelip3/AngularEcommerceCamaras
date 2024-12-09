@@ -22,6 +22,7 @@ export interface ProductItemOrder {
   nombre: string;
   imagen: string;
   precio: string;
+  slug?: string;
 }
 
 export interface Category {
@@ -54,6 +55,7 @@ export interface Comuna {
 }
 
 export interface Client {
+  usuario_id?: User['id'];
   tipoDocumento: string;
   rut: string;
   nombre: string | User['nombre'];
@@ -97,5 +99,25 @@ export interface Order {
   client: Client;
   address: Adress;
   payment: Payment;
+  productos: ProductItemOrder[];
+}
+
+interface Venta {
+  fecha: string;
+  estado_envio: number;
+  estado_pago: number;
+  total: number;
+}
+
+interface DetalleVenta {
+  direccion: string;
+  ciudad: string;
+  comuna: string;
+  depto: number;
+}
+export interface userOrder {
+  id: number;
+  venta: Venta;
+  user: DetalleVenta;
   productos: ProductItemOrder[];
 }

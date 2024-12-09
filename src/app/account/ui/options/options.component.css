@@ -1,0 +1,8 @@
+.accountItem {
+    @apply w-[calc(100%-8px)] p-4 bg-transparent text-gray-900 dark:text-gray-100 rounded-lg font-medium text-xl
+    hover:bg-gray-900 hover:text-gray-100 dark:hover:text-gray-900 dark:hover:bg-gray-100 transition-colors
+}
+
+.accountItemActive {
+    @apply bg-gray-900 text-gray-100 dark:bg-gray-100 dark:text-gray-900
+}

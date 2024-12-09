@@ -1,0 +1,5 @@
+@for (order of userOrders; track order.id) {
+    <app-user-order-item [order]="order"></app-user-order-item>
+} @empty {
+<app-empty-orders></app-empty-orders>
+}

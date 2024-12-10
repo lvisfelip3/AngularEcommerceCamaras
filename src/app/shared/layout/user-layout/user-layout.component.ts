@@ -12,6 +12,7 @@ import { ThemeTogglerComponent } from "@account/ui/theme-toggler/theme-toggler.c
 import { MatDialog } from '@angular/material/dialog';
 import { AuthDialogComponent } from '@auth/index';
 import { UserMenuComponent } from '@shared/layout/user-menu/user-menu.component';
+import { DialogSearchSaleComponent } from '@shared/components/dialog-search-sale/dialog-search-sale.component';
 
 @Component({
   selector: 'app-user-layout',
@@ -62,6 +63,12 @@ export class UserLayoutComponent implements OnInit {
 
   openAuthDialog(): void {
     this.dialog.open(AuthDialogComponent, {
+      width: '500px',
+    });
+  }
+
+  openOrderDialog(): void {
+    this.dialog.open(DialogSearchSaleComponent, {
       width: '500px',
     });
   }

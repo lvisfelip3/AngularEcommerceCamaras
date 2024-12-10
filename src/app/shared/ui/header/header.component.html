@@ -56,7 +56,7 @@
                 Mi Perfil
             </a>
             <a mat-menu-item routerLink="/account/orders">
-                <mat-icon>local_shipping</mat-icon>
+                <mat-icon>shopping_bag</mat-icon>
                 Mis Compras
             </a>
             <mat-divider></mat-divider>
@@ -69,11 +69,11 @@
                 <mat-icon>logout</mat-icon>
                 Iniciar sesión
             </button>
-            <a mat-menu-item>
+            }
+            <button mat-menu-item (click)="openOrderDialog()">
                 <mat-icon>local_shipping</mat-icon>
                 Estado de Compra
-            </a>
-            }
+            </button>
         </mat-menu>
         <app-theme-toggler class="!hidden lg:!block"></app-theme-toggler>
     </div>

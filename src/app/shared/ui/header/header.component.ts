@@ -11,6 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { AuthDialogComponent } from '@auth/index'
 import { MatDialog } from '@angular/material/dialog';
+import { DialogSearchSaleComponent } from '@shared/components/dialog-search-sale/dialog-search-sale.component';
 
 @Component({
   selector: 'app-header',
@@ -52,6 +53,12 @@ export class HeaderComponent implements OnInit{
 
   openAuthDialog(): void {
     this.dialog.open(AuthDialogComponent, {
+      width: '500px',
+    });
+  }
+
+  openOrderDialog(): void {
+    this.dialog.open(DialogSearchSaleComponent, {
       width: '500px',
     });
   }

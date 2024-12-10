@@ -1,0 +1,30 @@
+<section class="h-80 w-full flex flex-col justify-between items-center p-8 bg-gray-800">
+    <header class="flex justify-start items-start text-start">
+        <h1 class="text-2xl !font-bold text-start text-gray-100">Buscar venta</h1>
+    </header>
+    <form class="w-full flex gap-1 items-start" [formGroup]="searchForm">
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Buscar venta</mat-label>
+            <input matInput autocomplete="off" id="search" type="text" formControlName="search" class="w-full" placeholder="Ingresar código de venta">
+            @if (
+                searchForm.get('search')?.hasError('pattern') ||
+                searchForm.get('search')?.hasError('maxlength') ||
+                searchForm.get('search')?.hasError('minlength')
+                ) {
+                    <mat-error>Código Inválido</mat-error>
+                }
+        </mat-form-field>
+        <button mat-fab matSuffix
+            class="!rounded-lg !bg-slate-100 !text-gray-900 focus:!scale-95 focus:!bg-slate-300 !transition-all disabled:!bg-slate-400 disabled:!text-gray-600"
+            [disabled]="!searchForm.valid"
+            (click)="search()"
+            >
+            <mat-icon>search</mat-icon>
+            <span class="sr-only">Buscar venta</span>
+        </button>
+    </form>
+    <footer class="flex justify-start items-start text-start gap-2">
+        <mat-icon class="text-gray-300">info</mat-icon>
+        <span class="text-sm text-gray-300 max-w-[260px]">Puedes encontrar el código de la venta en el correo de confirmación.</span>
+    </footer>
+</section>

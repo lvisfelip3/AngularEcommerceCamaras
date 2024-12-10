@@ -107,6 +107,7 @@ interface Venta {
   estado_envio: number;
   estado_pago: number;
   total: number;
+  referencia: string;
 }
 
 interface DetalleVenta {

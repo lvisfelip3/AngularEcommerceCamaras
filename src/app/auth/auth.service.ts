@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { BaseHttpService } from '../shared/data-access/base-http.service';
-import { User } from '../shared/interfaces/interfaces';
+import { Client, User } from '../shared/interfaces/interfaces';
 import { CookieService } from 'ngx-cookie-service';
 
 interface response {
@@ -66,5 +66,9 @@ export class AuthService extends BaseHttpService{
   logout(): void {
     this.cookie.delete(this.tokenKey, '/');
     this.userData.next(null);
+  }
+
+  getClientDataFromUserId(id: number): Observable<Client> {
+    return this.http.get<Client>(this.apiUrl + 'auth/client.php', { params: { id } });
   }
 }

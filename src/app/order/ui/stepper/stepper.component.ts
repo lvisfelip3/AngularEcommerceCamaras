@@ -67,6 +67,7 @@ export class StepperComponent implements OnInit {
         this.user = user;
         this.orderFormGroup.get('client.email')?.setValue(user.email);
         this.orderFormGroup.get('client.nombre')?.setValue(user.nombre);
+        this.getClientIfUser(user.id);
       }
     })
 
@@ -166,7 +167,7 @@ export class StepperComponent implements OnInit {
     this._deliveryService.saveClientForPayment(client, address, payment, cartProducts).subscribe(
       (response) => {
         this._cart.clear();
-        this.router.navigate([`pedidos/confirmed/${response.orderId}`]);
+        this.router.navigate([`pedidos/confirmed/${response.orderRef}`]);
       }
     );
   }
@@ -190,6 +191,18 @@ export class StepperComponent implements OnInit {
     this.orderFormGroup.get('payment.method')?.markAsDirty();
     this.orderFormGroup.get('payment.method')?.updateValueAndValidity();
     this.selectedPaymentMethodId = id;
+  }
 
+  getClientIfUser(userId: number) {
+    this._auth.getClientDataFromUserId(userId).subscribe({
+      next: (client) => {
+        this.orderFormGroup.get('client.apellido')?.setValue(client.apellido);
+        this.orderFormGroup.get('client.rut')?.setValue(client.rut);
+        this.orderFormGroup.get('client.telefono')?.setValue(client.telefono);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
   }
 }

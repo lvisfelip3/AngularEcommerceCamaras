@@ -20,5 +20,5 @@ mat-sidenav{
 }
 
 .activeLink {
-    @apply !text-blue-600 dark:!text-green-400 hover:!text-gray-900 dark:hover:!text-gray-900
+    @apply !text-blue-600 dark:!text-green-400 !bg-gray-200 dark:!bg-gray-600
 }

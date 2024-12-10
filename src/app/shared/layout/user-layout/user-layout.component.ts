@@ -2,16 +2,16 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from '@shared/ui/footer/footer.component';
 import { HeaderComponent } from '@shared/ui/header/header.component';
-import { RouterOutlet, RouterLink, Router } from '@angular/router';
+import { RouterOutlet, RouterLink, Router, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '@auth/auth.service';
 import { ThemeService } from '@account/services/theme.service';
 import { ThemeTogglerComponent } from "@account/ui/theme-toggler/theme-toggler.component";
 import { MatDialog } from '@angular/material/dialog';
 import { AuthDialogComponent } from '@auth/index';
+import { UserMenuComponent } from '@shared/layout/user-menu/user-menu.component';
 
 @Component({
   selector: 'app-user-layout',
@@ -21,12 +21,13 @@ import { AuthDialogComponent } from '@auth/index';
     MatIconModule,
     MatSidenavModule,
     MatButtonModule,
-    MatMenuModule,
     FooterComponent,
     RouterOutlet,
     RouterLink,
     CommonModule,
-    ThemeTogglerComponent
+    ThemeTogglerComponent,
+    RouterLinkActive,
+    UserMenuComponent
 ],
   templateUrl: './user-layout.component.html',
   styleUrl: './user-layout.component.css',

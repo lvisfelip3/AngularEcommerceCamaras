@@ -39,8 +39,7 @@ export class OrdersComponent implements OnInit {
     if (this.user) {
       return this.userService.getUserOrders(this.user.id).subscribe((orders) => {
         this.userOrders = orders;
-        this.cdr.detectChanges(); // manually trigger change detection
-        console.log(this.userOrders);
+        this.cdr.detectChanges();
       });
     }
     return [];

@@ -25,14 +25,14 @@ export class ConfirmedComponent implements OnInit {
   paymentData: Payment | null = null;
   products: ProductItemOrder[] = [];
 
-  readonly orderId = input.required<string>();
+  readonly orderRef = input.required<string>();
 
   constructor( private router: ActivatedRoute, private orderService: DeliveryService) { }
 
   ngOnInit() {
-    const orderId = this.router.snapshot.paramMap.get('orderId');
-    if (orderId) {
-      this.orderService.getOrderDetails(orderId).subscribe((data) => {
+    const orderRef = this.router.snapshot.paramMap.get('orderRef');
+    if (orderRef) {
+      this.orderService.getOrderDetails(orderRef).subscribe((data) => {
           const { client, address, payment, productos } = data;
           this.clientData = client;
           this.addressData = address;

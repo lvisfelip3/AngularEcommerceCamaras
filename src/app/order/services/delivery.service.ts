@@ -6,7 +6,7 @@ import { HttpParams } from '@angular/common/http';
 
 interface response {
   message: string,
-  orderId: string
+  orderRef: string
 }
 
 @Injectable({
@@ -32,8 +32,8 @@ export class DeliveryService extends BaseHttpService {
     return this.http.post<response>(this.apiUrl + 'clientes/cliente.php', body);
   }
 
-  getOrderDetails(orderId: string): Observable<Order> {
-    return this.http.get<Order>(this.apiUrl + 'pedidos/pedido.php', { params: { id: orderId } });
+  getOrderDetails(orderRef: string): Observable<Order> {
+    return this.http.get<Order>(this.apiUrl + 'pedidos/pedido.php', { params: { id: orderRef } });
   }
 
 }

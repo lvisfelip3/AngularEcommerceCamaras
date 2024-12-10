@@ -6,7 +6,7 @@ export default [
         loadComponent: () => import('./order.component').then(m => m.OrderComponent)
     },
     {
-        path: 'confirmed/:orderId',
+        path: 'confirmed/:orderRef',
         loadComponent: () => import('./confirmed/confirmed.component').then(m => m.ConfirmedComponent)
     }
 ] as Routes;

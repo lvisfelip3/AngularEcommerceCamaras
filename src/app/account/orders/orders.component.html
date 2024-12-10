@@ -1,5 +1,7 @@
+<div class="flex flex-col gap-5">
 @for (order of userOrders; track order.id) {
     <app-user-order-item [order]="order"></app-user-order-item>
 } @empty {
 <app-empty-orders></app-empty-orders>
 }
+</div>

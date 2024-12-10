@@ -7,3 +7,7 @@
 .cancelled{
     @apply !bg-red-600 dark:!bg-red-400
 }
+
+::ng-deep .mat-expansion-indicator svg {
+    @apply !fill-gray-900 dark:!fill-gray-100
+}

@@ -5,37 +5,36 @@
     <mat-sidenav class="!rounded-none !bg-white dark:!bg-gray-800 transition-colors !fixed !left-0 !top-14" [(opened)]="opened" [mode]="mode">
       <div class="flex flex-col justify-between h-full overflow-hidden">
         <div>
-        <button mat-button [routerLink]="['/dashboard']"
+        <button mat-button [routerLink]="['/dashboard']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
           class="!bg-transparent !rounded-lg !text-gray-900 dark:!text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
           Dashboard
           <mat-icon>dashboard</mat-icon>
         </button>
-        <button mat-button [matMenuTriggerFor]="menu"
+        <button mat-button [matMenuTriggerFor]="menu" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
           class="!bg-transparent !rounded-lg !text-gray-900 dark:!text-white !w-full !p-8 !text-lg !flex !items-center !justify-start relative">
           Mantenedores
           <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu #menu="matMenu" class="menu">
-          <a mat-menu-item [routerLink]="['categorias']" route
-          rLinkActive="active">
+          <a mat-menu-item [routerLink]="['categorias']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             Categorias
             <mat-icon>category</mat-icon>
           </a>
-          <a mat-menu-item [routerLink]="['productos']" routerLinkActive="active">
+          <a mat-menu-item [routerLink]="['productos']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             Productos
             <mat-icon>inventory_2</mat-icon>
           </a>
-          <a mat-menu-item [routerLink]="['usuarios']" routerLinkActive="active">
+          <a mat-menu-item [routerLink]="['usuarios']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             Usuarios
             <mat-icon>person</mat-icon>
           </a>
         </mat-menu>
-        <button mat-button [routerLink]="['envios']"
+        <button mat-button [routerLink]="['envios']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
           class="!bg-transparent !rounded-lg !text-gray-900 dark:!text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
           Envios
           <mat-icon>local_shipping</mat-icon>
         </button>
-        <button mat-button [routerLink]="['pagos']"
+        <button mat-button [routerLink]="['pagos']"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
           class="!bg-transparent !rounded-lg !text-gray-900 dark:!text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
           Pagos
           <mat-icon>payments</mat-icon>

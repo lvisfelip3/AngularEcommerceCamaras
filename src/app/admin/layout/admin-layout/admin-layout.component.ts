@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { HeaderAdminComponent } from '../header/header.component';
 import { FooterAdminComponent } from '../footer/footer.component';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,7 +23,8 @@ import { ThemeTogglerComponent } from '@account/ui/theme-toggler/theme-toggler.c
     MatButtonModule, 
     MatMenuModule, 
     RouterLink,
-    ThemeTogglerComponent
+    ThemeTogglerComponent,
+    RouterLinkActive
   ],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.css',

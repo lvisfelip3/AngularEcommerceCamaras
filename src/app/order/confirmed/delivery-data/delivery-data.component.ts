@@ -1,10 +1,19 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { Adress, Payment } from '@shared/interfaces/interfaces';
+import { PreparingOrderIconComponent } from '@order/utils/icons/preparing-order-icon.component';
+import { ShippingOrderIconComponent } from '@order/utils/icons/shipping-order-icon.component';
+import { ShippedOrderIconComponent } from '@order/utils/icons/shipped-order-icon.component';
 
 @Component({
   selector: 'app-delivery-data',
   standalone: true,
-  imports: [],
+  imports: [
+    MatIconModule,
+    PreparingOrderIconComponent,
+    ShippingOrderIconComponent,
+    ShippedOrderIconComponent
+  ],
   templateUrl: './delivery-data.component.html',
   styleUrl: './delivery-data.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

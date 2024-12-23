@@ -1,4 +1,22 @@
 @if(delivery){
+    <section class="flex flex-col lg:px-20 py-8">
+        <h2 class="text-xl !font-semibold text-gray-900 dark:text-gray-100">Detalles del envío</h2>
+        <div class="flex flex-col gap-2 py-2 lg:flex-row lg:justify-around text-gray-400 dark:text-gray-500 font-medium">
+            <div class="flex flex-col items-center p-5" [class.actual-state]="payment?.shipping_state === 1">
+                <app-preparing-order-icon class="icons"></app-preparing-order-icon>
+                <span>En Preparación</span>
+            </div>
+            <div class="flex flex-col items-center p-5" [class.actual-state]="payment?.shipping_state === 2">
+                <app-shipping-order-icon class="icons"></app-shipping-order-icon>
+                <span>Asignado</span>
+            </div>
+            <div class="flex flex-col items-center p-5" [class.actual-state]="payment?.shipping_state === 3">
+                <app-shipped-order-icon class="icons"></app-shipped-order-icon>
+                <span>Enviado</span>
+            </div>
+        </div>
+    </section>
+
     <article class="w-full lg:px-20 flex flex-col py-5 text-gray-900 dark:text-gray-100">
         <p><strong>Direccion:</strong> {{ delivery.direccion }}</p>
         <p><strong>Ciudad:</strong> {{ delivery.ciudad }}</p>

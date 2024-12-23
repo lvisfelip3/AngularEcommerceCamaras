@@ -1,0 +1,7 @@
+.icons {
+    @apply !w-20 !h-20
+}
+
+.actual-state {
+    @apply !text-gray-100 dark:!text-gray-900 !bg-gray-900 dark:!bg-gray-100 rounded-lg
+}

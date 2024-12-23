@@ -79,10 +79,10 @@ export class PaymentComponent implements OnInit{
     }
   }
 
-  openDialog(saleId?: number): void{
+  openDialog(saleRef?: number): void{
     this.dialog.open(SaleInfoDialogComponent, {
       width: '500px',
-      data: saleId ?? null
+      data: saleRef ?? null
     });
   }
 

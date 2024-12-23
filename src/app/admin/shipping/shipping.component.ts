@@ -35,7 +35,7 @@ import { Shipping } from '@shared/interfaces/interfaces';
 })
 export class ShippingComponent implements OnInit {
   selected = '0';
-  displayColumns: string[] = ['id', 'nombre_cliente', 'rut_cliente', 'direccion', 'depto', 'ciudad', 'comuna', 'status', 'actions'];
+  displayColumns: string[] = ['id', 'nombre_cliente', 'rut_cliente', 'direccion', 'depto', 'ciudad', 'comuna','reference', 'status', 'actions'];
   dataSource = new MatTableDataSource<Shipping>();
   private readonly _snackBar = inject(SnackBarService);
 
@@ -80,7 +80,7 @@ export class ShippingComponent implements OnInit {
   openDialog(shipping?: Shipping): void{
     this.dialog.open(SaleInfoDialogComponent, {
       width: '500px',
-      data: shipping ? shipping.id : null
+      data: shipping ? shipping.reference : null
     });
   }
 

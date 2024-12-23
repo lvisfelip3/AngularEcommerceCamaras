@@ -92,6 +92,7 @@ export interface Shipping {
   direccion: Adress['direccion'];
   ciudad: Adress['ciudad'];
   comuna: Adress['comuna'];
+  reference: string;
   status: number;
 }
 

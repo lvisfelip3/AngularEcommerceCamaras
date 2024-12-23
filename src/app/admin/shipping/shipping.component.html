@@ -54,6 +54,11 @@
             <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element.address.comuna}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="reference">
+            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Referencia </th>
+            <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element.reference}} </td>
+        </ng-container>
+
         <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> Estado Envío </th>
             <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{status(element.status)}} </td>

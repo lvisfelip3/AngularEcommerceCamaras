@@ -30,7 +30,7 @@ import { ThemeTogglerComponent } from '@account/ui/theme-toggler/theme-toggler.c
   styleUrl: './admin-layout.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AdminLayoutComponent implements OnInit{
+export default class AdminLayoutComponent implements OnInit{
   opened = true;
   mode: 'side' | 'over' = 'side';
 

@@ -1,12 +1,10 @@
 import { Routes } from '@angular/router';
-import { UserLayoutComponent } from '@shared/layout/user-layout/user-layout.component';
-import { AdminLayoutComponent } from '@admin/layout/admin-layout/admin-layout.component';
 import { authGuard } from '@auth/auth.guard';
 
 export const routes: Routes = [
     {
         path: '',
-        component: UserLayoutComponent,
+        loadComponent: () => import('@shared/layout/user-layout/user-layout.component'),
         children: [
             { path: 'home', loadChildren: () => import('./home/home.routes') },
             { path: 'catalogo', loadChildren: () => import('./products/product.routes') },
@@ -18,7 +16,7 @@ export const routes: Routes = [
     },
     {
         path: 'dashboard',
-        component: AdminLayoutComponent,
+        loadComponent: () => import('@admin/layout/admin-layout/admin-layout.component'),
         children: [
             { path: '', loadChildren: () => import('./admin/admin.routes') },
         ],

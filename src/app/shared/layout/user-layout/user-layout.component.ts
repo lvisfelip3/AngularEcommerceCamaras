@@ -34,7 +34,7 @@ import { DialogSearchSaleComponent } from '@shared/components/dialog-search-sale
   styleUrl: './user-layout.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserLayoutComponent implements OnInit {
+export default class UserLayoutComponent implements OnInit {
   opened = false;
   isLoggedIn = false;
   userName = '';

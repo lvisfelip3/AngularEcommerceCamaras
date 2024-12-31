@@ -53,7 +53,7 @@ export class StepperComponent implements OnInit {
 
   payMethod: payMethod[] = [
     // {id: 1, name:'Webpay' , imageUrl:'img/payMethod/webpay.webp'},
-    // {id: 2, name:'Flow' , imageUrl:'img/payMethod/flow.webp'},
+    {id: 2, name:'Flow' , imageUrl:'img/payMethod/flow.webp'},
     // {id: 3, name:'Paypal' , imageUrl:'img/payMethod/paypal.webp'},
     {id: 4, name:'Transferencia' , imageUrl:'img/payMethod/transferencia.webp'},
     {id: 5, name:'Contra Pago' , imageUrl:'img/payMethod/contraentrega.webp'}
@@ -163,13 +163,24 @@ export class StepperComponent implements OnInit {
     };
 
     const cartProducts = this._cart.products();
+
+    if (payment.method === 'Flow') {
+      this._deliveryService.handleFlowPayment(client, address, payment ,cartProducts).subscribe(
+        (response) => {
+          this._cart.clear();
+          window.location.href = response.urlFlow
+        }
+      );
+
+    } else {
     
-    this._deliveryService.saveClientForPayment(client, address, payment, cartProducts).subscribe(
-      (response) => {
-        this._cart.clear();
-        this.router.navigate([`pedidos/confirmed/${response.orderRef}`]);
-      }
-    );
+      this._deliveryService.saveClientForPayment(client, address, payment, cartProducts).subscribe(
+        (response) => {
+          this._cart.clear();
+          this.router.navigate([`pedidos/confirmed/${response.orderRef}`]);
+        }
+      );
+    }
   }
 
   getComunas(event: MatSelectChange) {

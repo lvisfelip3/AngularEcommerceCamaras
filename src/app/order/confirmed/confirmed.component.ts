@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, input, OnInit } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ClientDataComponent, DeliveryDataComponent, ProductsDataComponent } from '@order/confirmed';
 import { DeliveryService } from '@order/services/delivery.service';
 import { ProductItemOrder, Client, Adress, Payment } from "@shared/interfaces/interfaces";
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-confirmed',
@@ -12,7 +13,9 @@ import { ProductItemOrder, Client, Adress, Payment } from "@shared/interfaces/in
     MatTabsModule,
     ClientDataComponent,
     DeliveryDataComponent,
-    ProductsDataComponent
+    ProductsDataComponent,
+    RouterModule,
+    MatButtonModule
   ],
   templateUrl: './confirmed.component.html',
   styleUrl: './confirmed.component.css',
@@ -24,12 +27,21 @@ export class ConfirmedComponent implements OnInit {
   addressData: Adress | null = null;
   paymentData: Payment | null = null;
   products: ProductItemOrder[] = [];
+  errorMessage: string | undefined;
 
   readonly orderRef = input.required<string>();
 
-  constructor( private router: ActivatedRoute, private orderService: DeliveryService) { }
+  constructor( 
+    private router: ActivatedRoute, 
+    private orderService: DeliveryService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
+    this.requestOrder();
+  }
+
+  requestOrder(): void {
     const orderRef = this.router.snapshot.paramMap.get('orderRef');
     if (orderRef) {
       this.orderService.getOrderDetails(orderRef).subscribe((data) => {
@@ -38,7 +50,20 @@ export class ConfirmedComponent implements OnInit {
           this.addressData = address;
           this.paymentData = payment;
           this.products = productos;
+          this.requestFlowStatus(orderRef)
       });
+    }
   }
+
+  requestFlowStatus(orderRef:string): void { 
+    this.orderService.checkPaymentStatus(orderRef).subscribe({
+      next: (data) => {
+        this.errorMessage = data.message;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
   }
 }

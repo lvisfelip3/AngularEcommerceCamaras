@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
-import { Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { Comuna, Ciudad, Client, Adress, ProductItemCart, Order } from '@shared/interfaces/interfaces';
 import { HttpParams } from '@angular/common/http';
 
@@ -9,10 +9,15 @@ interface response {
   orderRef: string
 }
 
-interface flowResponse {
-  url: string,
-  token: string,
-  flowOrder: number
+interface FlowResponse {
+  success: boolean;
+  message?: string;
+  flowError?: {
+    code: string;
+    message: string;
+    mediaCode: string;
+  };
+  saleId?: number;
 }
 
 @Injectable({
@@ -44,7 +49,25 @@ export class DeliveryService extends BaseHttpService {
 
   handleFlowPayment(client: Client, Adress: Adress, payment: { method: string }, cart: ProductItemCart[]): Observable<any> {
     const body = JSON.stringify({ ...client, ...Adress, ...payment, products: cart });
-    return this.http.post<any>(this.apiUrl + 'flow/handlePayment.php', body);
+    return this.http.post<any>(this.apiUrl + 'flow/handlePayment.php', body).pipe(
+      tap(response => {
+        if (response.urlFlow) {
+          window.location.href = response.urlFlow
+        }
+      })
+    );
+  }
+
+  checkPaymentStatus(saleRef: string | null): Observable<FlowResponse> {
+    return this.http.post<FlowResponse>(`${this.apiUrl}flow/angularConfirmation.php`, { saleRef }).pipe(
+      catchError(error => {
+        console.error('Error en pago:', error);
+        return throwError(() => ({
+          success: false,
+          message: error.error?.message || 'Error en el proceso de pago'
+        } as FlowResponse));
+      })
+    );
   }
 
 }

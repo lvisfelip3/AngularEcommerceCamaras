@@ -166,9 +166,8 @@ export class StepperComponent implements OnInit {
 
     if (payment.method === 'Flow') {
       this._deliveryService.handleFlowPayment(client, address, payment ,cartProducts).subscribe(
-        (response) => {
+        () => {
           this._cart.clear();
-          window.location.href = response.urlFlow
         }
       );
 

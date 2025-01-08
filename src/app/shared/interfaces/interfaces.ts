@@ -123,3 +123,10 @@ export interface userOrder {
   user: DetalleVenta;
   productos: ProductItemOrder[];
 }
+
+export interface formValue {
+  name?: string;
+  apellido?: string;
+  telefono?: string;
+  rut?: string;
+}

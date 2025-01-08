@@ -1,0 +1,38 @@
+<form [formGroup]="profileGroup" class="flex flex-col gap-3">
+    <h3>Información Personal</h3>
+    <div class="row">
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Nombre</mat-label>
+            <input matInput id="name" type="text" formControlName="name" class="w-full">
+            <mat-icon matPrefix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Apellido</mat-label>
+            <input matInput id="apellido" type="text" formControlName="apellido" class="w-full">
+            <mat-icon matPrefix>person</mat-icon>
+        </mat-form-field>
+    </div>
+
+    <div class="row">
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Teléfono</mat-label>
+            <input matInput id="telefono" type="tel" formControlName="telefono" class="w-full">
+            <mat-icon matPrefix>phone</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Rut</mat-label>
+            <input matInput id="rut" type="text" formControlName="rut" class="w-full">
+            <mat-icon matPrefix>badge</mat-icon>
+        </mat-form-field>
+    </div>
+    
+    <button
+        mat-flat-button
+        [disabled]="!profileGroup.valid"
+        (click)="onSubmit()"
+        class="!bg-blue-600 !w-full md:!w-40 !text-white !text-lg dark:!bg-green-600 !rounded-lg disabled:!bg-blue-300 disabled:dark:!bg-green-900 disabled:dark:!text-gray-400 !p-7"
+        >Guardar
+    </button>
+</form>

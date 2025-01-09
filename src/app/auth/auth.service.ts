@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, catchError, throwError } from 'rxjs';
 import { BaseHttpService } from '../shared/data-access/base-http.service';
 import { Client, User } from '../shared/interfaces/interfaces';
 import { CookieService } from 'ngx-cookie-service';
@@ -69,6 +69,10 @@ export class AuthService extends BaseHttpService{
   }
 
   getClientDataFromUserId(id: number): Observable<Client> {
-    return this.http.get<Client>(this.apiUrl + 'auth/client.php', { params: { id } });
+    return this.http.get<Client>(this.apiUrl + 'auth/client.php', { params: { id } }).pipe(
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
   }
 }

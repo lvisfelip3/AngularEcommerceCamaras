@@ -17,6 +17,7 @@ import { CartStateService } from '@shared/data-access/cart-state.service';
 import { PhonePipePipe } from '@order/utils/phone-pipe.pipe';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth/auth.service'; 
+import { SnackBarService } from '@shared/ui/snack-bar.service';
 
 @Component({
   selector: 'app-stepper',
@@ -44,6 +45,7 @@ export class StepperComponent implements OnInit {
   private _phonePipe = inject(PhonePipePipe);
   private _cart = inject(CartStateService).state;
   private _auth = inject(AuthService);
+  private readonly _snackBar = inject(SnackBarService);
 
   cities: Ciudad[] = [];
   comunas: Comuna[] = [];
@@ -165,11 +167,11 @@ export class StepperComponent implements OnInit {
     const cartProducts = this._cart.products();
 
     if (payment.method === 'Flow') {
-      this._deliveryService.handleFlowPayment(client, address, payment ,cartProducts).subscribe(
-        () => {
-          this._cart.clear();
+      this._deliveryService.handleFlowPayment(client, address, payment ,cartProducts).subscribe({
+        error: (error) => {
+          console.log(error);
         }
-      );
+      });
 
     } else {
     
@@ -206,12 +208,14 @@ export class StepperComponent implements OnInit {
   getClientIfUser(userId: number) {
     this._auth.getClientDataFromUserId(userId).subscribe({
       next: (client) => {
+        this.orderFormGroup.get('client.nombre')?.setValue(client.nombre);
         this.orderFormGroup.get('client.apellido')?.setValue(client.apellido);
         this.orderFormGroup.get('client.rut')?.setValue(client.rut);
         this.orderFormGroup.get('client.telefono')?.setValue(client.telefono);
+        this._snackBar.showSnackBar('Datos rellenados automáticamente', 'OK');
       },
       error: (error) => {
-        console.log(error);
+        console.error(error.error.message);
       }
     });
   }

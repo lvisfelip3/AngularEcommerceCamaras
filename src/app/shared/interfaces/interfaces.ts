@@ -130,3 +130,31 @@ export interface formValue {
   telefono?: string;
   rut?: string;
 }
+
+export interface response {
+  message: string,
+  orderRef: string
+}
+
+interface FirstFlowResponse {
+  url: string,
+  token: string,
+  flowOrder: number
+}
+
+export interface ApiFlowResponse {
+  orderRef: string,
+  responseFlow: FirstFlowResponse,
+  urlFlow: string
+}
+
+export interface FinalFlowResponse {
+  success: boolean;
+  message?: string;
+  flowError?: {
+    code: string;
+    message: string;
+    mediaCode: string;
+  };
+  saleId?: number;
+}

@@ -54,7 +54,7 @@ export class CartStateService {
             update: (state, actions$: Observable<ProductItemCart>) => 
                 actions$.pipe(map((product) => this.update(state, product))),
             clear: (state, actions$: Observable<void>) => 
-                actions$.pipe(map(() => this.clear(state))),
+                actions$.pipe(map(() => this.clear())),
         }
     });
 
@@ -131,7 +131,7 @@ export class CartStateService {
         return { products: updatedProducts };
     }
 
-    private clear(state: Signal<State>): Partial<State> {
+    private clear(): Partial<State> {
         return { products: [] };
     }
 }

@@ -1,29 +1,18 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { Comuna, Ciudad, Client, Adress, ProductItemCart, Order } from '@shared/interfaces/interfaces';
-import { HttpParams } from '@angular/common/http';
-
-interface response {
-  message: string,
-  orderRef: string
-}
-
-interface FlowResponse {
-  success: boolean;
-  message?: string;
-  flowError?: {
-    code: string;
-    message: string;
-    mediaCode: string;
-  };
-  saleId?: number;
-}
+import { Comuna, Ciudad, Client, Adress, ProductItemCart, Order, response, ApiFlowResponse, FinalFlowResponse } from '@shared/interfaces/interfaces';
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { SnackBarService } from '@shared/ui/snack-bar.service';
+import { CartStateService } from '@shared/data-access/cart-state.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeliveryService extends BaseHttpService {
+
+  private readonly _snackbar = inject(SnackBarService);
+  private readonly cartService = inject(CartStateService).state;
 
   getCiudades(): Observable<Ciudad[]> {
     return this.http.get<Ciudad[]>(this.apiUrl + 'ciudades/ciudad.php');
@@ -47,25 +36,39 @@ export class DeliveryService extends BaseHttpService {
     return this.http.get<Order>(this.apiUrl + 'pedidos/pedido.php', { params: { id: orderRef } });
   }
 
-  handleFlowPayment(client: Client, Adress: Adress, payment: { method: string }, cart: ProductItemCart[]): Observable<any> {
+  handleFlowPayment(client: Client, Adress: Adress, payment: { method: string }, cart: ProductItemCart[]): Observable<ApiFlowResponse> {
     const body = JSON.stringify({ ...client, ...Adress, ...payment, products: cart });
-    return this.http.post<any>(this.apiUrl + 'flow/handlePayment.php', body).pipe(
-      tap(response => {
+
+    return this.http.post<ApiFlowResponse>(this.apiUrl + 'flow/handlePayment.php', body).pipe(
+      tap((response) => {
         if (response.urlFlow) {
           window.location.href = response.urlFlow
         }
+      }),
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'Error: ';
+            
+        if (error.error?.error) {
+            errorMessage = error.error.error;
+        }
+
+        this._snackbar.showSnackBar(errorMessage);
+        return throwError(() => errorMessage);
       })
     );
   }
 
-  checkPaymentStatus(saleRef: string | null): Observable<FlowResponse> {
-    return this.http.post<FlowResponse>(`${this.apiUrl}flow/angularConfirmation.php`, { saleRef }).pipe(
+  checkPaymentStatus(saleRef: string | null): Observable<FinalFlowResponse> {
+    return this.http.post<FinalFlowResponse>(`${this.apiUrl}flow/angularConfirmation.php`, { saleRef }).pipe(
+      tap(() => {
+        this.cartService.clear()
+      }), 
       catchError(error => {
         console.error('Error en pago:', error);
         return throwError(() => ({
           success: false,
           message: error.error?.message || 'Error en el proceso de pago'
-        } as FlowResponse));
+        } as FinalFlowResponse));
       })
     );
   }

@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '@auth/auth.service'; 
 import { SnackBarService } from '@shared/ui/snack-bar.service';
 
+
 @Component({
   selector: 'app-stepper',
   standalone: true,
@@ -46,6 +47,7 @@ export class StepperComponent implements OnInit {
   private _cart = inject(CartStateService).state;
   private _auth = inject(AuthService);
   private readonly _snackBar = inject(SnackBarService);
+  private router: Router = inject(Router);
 
   cities: Ciudad[] = [];
   comunas: Comuna[] = [];
@@ -53,15 +55,15 @@ export class StepperComponent implements OnInit {
 
   selectedPaymentMethodId: number | null = null;
 
+  flowImgUrl = window.matchMedia('(min-width: 501px)').matches ? 'img/payMethod/flow.webp' : 'img/payMethod/flow-mobile.webp'
+
   payMethod: payMethod[] = [
     // {id: 1, name:'Webpay' , imageUrl:'img/payMethod/webpay.webp'},
-    {id: 2, name:'Flow' , imageUrl:'img/payMethod/flow.webp'},
+    {id: 2, name:'Flow' ,  imageUrl: this.flowImgUrl},
     // {id: 3, name:'Paypal' , imageUrl:'img/payMethod/paypal.webp'},
     {id: 4, name:'Transferencia' , imageUrl:'img/payMethod/transferencia.webp'},
     {id: 5, name:'Contra Pago' , imageUrl:'img/payMethod/contraentrega.webp'}
   ]
-
-  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this._auth.getUserData().subscribe((user) => {

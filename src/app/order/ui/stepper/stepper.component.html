@@ -142,11 +142,11 @@
             </mat-step>
 
             <mat-step [stepControl]="orderFormGroup.controls.payment" label="Método de pago">
-                <div class="w-full flex flex-col gap-3 p-3">
+                <div class="w-full flex flex-col gap-3 py-3">
                     @for (method of payMethod; track method.id){
                     <div 
                     [class.onTouchPayment]="method.id === selectedPaymentMethodId"
-                    class="relative w-full h-32 object-cover rounded-lg outline outline-2 outline-gray-300 dark:outline-gray-600 cursor-pointer" 
+                    class="relative w-full h-36 object-cover rounded-lg outline outline-2 outline-gray-300 dark:outline-gray-600 cursor-pointer" 
                     tabindex="0"
                     (click)="setPaymentMethod(method.name, method.id)"
                     (keypress)="setPaymentMethod(method.name, method.id)"
@@ -156,7 +156,7 @@
                         [src]="method.imageUrl"
                         [alt]="'Metodo de pago: ' + method.name"
                         >
-                        <div class="absolute top-0 bottom-0 left-0 right-0 z-50 w-full h-32 bg-black bg-opacity-10 hover:bg-opacity-50 rounded-lg flex justify-center items-center transition-all duration-200">
+                        <div class="absolute top-0 bottom-0 left-0 right-0 z-50 w-full h-36 bg-black bg-opacity-10 hover:bg-opacity-50 rounded-lg flex justify-center items-center transition-all duration-200">
                             <span class="md:text-lg lg:text-2xl font-bold text-white bg-black bg-opacity-50 rounded-lg p-2">{{method.name}}</span>
                         </div>
                     </div>

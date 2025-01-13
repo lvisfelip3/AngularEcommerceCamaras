@@ -1,0 +1,61 @@
+<mat-dialog-content>
+    <section>
+        <header class="flex items-center justify-center">
+            <h1 class="!font-semibold">
+                Crear dirección
+            </h1>
+        </header>
+        <main>
+            <form [formGroup]="addressForm">
+                <div class="flex justify-between w-full item-center gap-2">
+                    <mat-form-field appearance="fill" class="w-3/4">
+                        <mat-label>Dirección</mat-label>
+                        <input matInput id="direccion" formControlName="direccion" class="w-full" placeholder="Calle 123">
+                        <mat-icon matPrefix>home</mat-icon>
+                        @if(addressForm.get('direccion')?.hasError('required')) {
+                            <mat-error>Ingresa una dirección</mat-error>
+                        }
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="w-1/4">
+                        <mat-label>Depto</mat-label>
+                        <input matInput id="depto" type="number" formControlName="depto" class="w-full" placeholder="1234">
+                        @if(addressForm.get('depto')?.hasError('pattern') || addressForm.get('depto')?.hasError('maxlength')) {
+                            <mat-error>Ingresa un depto Válido</mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+                <div class="flex justify-between w-full item-center gap-2">
+                    <mat-form-field class="w-full">
+                        <mat-label>Región</mat-label>
+                        <mat-select appearance="fill" formControlName="ciudad_id" (selectionChange)="getComunas($event)">
+                            @for (city of cities; track city.id) {
+                            <mat-option [value]="city.id">
+                                {{city.nombre}}
+                            </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="w-full">
+                        <mat-label>Comuna</mat-label>
+                        <mat-select appearance="fill" formControlName="comuna_id">
+                            <mat-option value="">Seleccione</mat-option>
+                            @for (comuna of comunas; track comuna.id) {
+                            <mat-option [value]="comuna.id">
+                                {{comuna.nombre}}
+                            </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </form>
+        </main>
+        <footer class="flex items-center justify-end gap-2">
+            <button mat-button (click)="onCancel()">Cancelar</button>
+            <button mat-flat-button 
+                (click)="onSubmit()"
+                [disabled]="!addressForm.valid"
+                class="!bg-blue-600 !text-white !rounded-lg disabled:!bg-gray-500 disabled:!text-gray-200"
+                >Crear</button>
+        </footer>
+    </section>
+</mat-dialog-content>

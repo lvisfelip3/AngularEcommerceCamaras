@@ -65,6 +65,7 @@ export interface Client {
 }
 
 export interface Adress {
+  id?: number;
   direccion: string;
   ciudad: string;
   comuna: string;

@@ -25,7 +25,11 @@ export class AuthService extends BaseHttpService{
   }
 
   login(email: string, password: string): Observable<User> {
-    return this.http.post<User>(this.apiUrl + 'auth/login.php', { email, password });
+    return this.http.post<User>(this.apiUrl + 'auth/login.php', { email, password }).pipe(
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
   }
 
   register(data: User): Observable<User> {

@@ -1,0 +1,26 @@
+<article class="relative flex flex-col gap-2 border border-gray-200 shadow-md dark:shadow-none dark:border-gray-700 rounded-lg p-4 !text-gray-800 dark:!text-gray-200">
+    <header>
+        <h5 class="!font-medium !text-4xl">{{ address().direccion }}</h5>
+    </header>
+    <main>
+        <h6 class="!m-0 !text-gray-700 dark:!text-gray-300">{{ address().ciudad }}, {{ address().comuna }}</h6>
+        @if(address().depto){
+            <h6 class="!m-0 !text-gray-600 dark:!text-gray-400">{{ address().depto }}</h6>
+        }
+    </main>
+    <button mat-button [matMenuTriggerFor]="menu" class="!absolute !top-3 !right-3 !flex !justify-center !items-center !text-black dark:!text-white">
+        <mat-icon class="!m-0">more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+            <mat-icon>edit</mat-icon>
+            <span>Editar</span>
+        </button>
+        <button mat-menu-item
+            (click)="remove.emit(address().id)"
+        >
+            <mat-icon>delete</mat-icon> 
+            <span>Eliminar</span>
+        </button>
+    </mat-menu>
+</article>

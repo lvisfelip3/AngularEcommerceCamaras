@@ -113,8 +113,10 @@ export class StepperComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.cdr.detectChanges();
     this.checkUserAddress();
   }
+  
 
   orderFormGroup = this._formBuilder.group({
     client: this._formBuilder.group({
@@ -249,7 +251,7 @@ export class StepperComponent implements OnInit, AfterViewInit {
     this.accountService.getUserAddress(userId).subscribe({
       next: (address) => {
         this.addresses = address;
-        this.cdr.detectChanges();
+        this.checkUserAddress();
       },
       error: (error) => {
         console.error(error.error.message);
@@ -314,6 +316,10 @@ export class StepperComponent implements OnInit, AfterViewInit {
       document.querySelector('#buttonsContainer')?.classList.add('!hidden');
       document.querySelector('#addresses')?.classList.add('!hidden');
       document.getElementById('addressCreator')?.classList.remove('!hidden');
+    } else {
+      document.querySelector('#buttonsContainer')?.classList.remove('!hidden');
+      document.querySelector('#addresses')?.classList.remove('!hidden');
+      document.getElementById('addressCreator')?.classList.add('!hidden');
     }
   }
 }

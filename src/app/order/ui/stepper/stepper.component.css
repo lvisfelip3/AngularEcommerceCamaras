@@ -25,3 +25,7 @@
 .onTouchPayment {
     @apply scale-105 transition-all dark:outline-green-500 outline-blue-600
 }
+
+::ng-deep .cdk-text-field-autofilled{
+    @apply !bg-gray-400 dark:!bg-gray-600 !rounded-lg !p-1
+}

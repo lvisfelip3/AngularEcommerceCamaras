@@ -70,6 +70,7 @@ export interface Adress {
   ciudad: string;
   comuna: string;
   depto?: string;
+  direccion_id?: number;
 }
 
 export interface payMethod {

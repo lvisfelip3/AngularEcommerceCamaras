@@ -96,43 +96,68 @@
 
             <mat-step formGroupName="delivery" [stepControl]="orderFormGroup.controls.delivery"
                 label="Opciones delivery">
-                <mat-form-field class="w-full">
-                    <mat-label>Región</mat-label>
-                    <mat-select appearance="fill" formControlName="ciudad" (selectionChange)="getComunas($event)">
-                        @for (city of cities; track city.id) {
-                        <mat-option [value]="city.id">
-                            {{city.nombre}}
-                        </mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="w-full">
-                    <mat-label>Comuna</mat-label>
-                    <mat-select appearance="fill" formControlName="comuna">
-                        <mat-option value="">Seleccione</mat-option>
-                        @for (comuna of comunas; track comuna.id) {
-                        <mat-option [value]="comuna.id">
-                            {{comuna.nombre}}
-                        </mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="w-full">
-                    <mat-label>Dirección</mat-label>
-                    <input matInput id="direccion" formControlName="direccion" class="w-full">
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="w-full">
-                    <mat-label>Nro. Depto (opcional)</mat-label>
-                    <input matInput id="depto" type="text" formControlName="depto" class="w-full">
-                    @if (
-                    orderFormGroup.get('delivery.depto')?.hasError('pattern')) {
-                        <mat-error>Nro. Depto inválido</mat-error>
+                @if (addresses) {
+                    <div class="flex flex-col gap-2 my-2" id="addresses">
+                    @for(address of addresses; track address.id) {
+                        <mat-radio-button [value]="address.id" (click)="setAddress(address.id ?? 0)"
+                            class="!w-full bg-slate-200 dark:bg-gray-700 !py-5 !px-3 !flex !flex-col !gap-2 !rounded-lg"
+                        >
+                            <div class="flex gap-2">
+                                <span class="font-semibold">{{address.direccion}}</span>
+                                @if(address.depto) {
+                                    <span>{{address.depto}}</span>
+                                }
+                            </div>
+                            <div>
+                                {{address.ciudad}}, {{address.comuna}}
+                            </div>
+                        </mat-radio-button>
                     }
-                    @else if (
-                    orderFormGroup.get('delivery.depto')?.hasError('maxlength')) {
-                        <mat-error>Nro. Depto inválido</mat-error>
-                    }
-                </mat-form-field>
+                    </div>
+                    <div class="w-full flex flex-col gap-2 my-2" id="buttonsContainer">
+                        <button mat-button id="addressCreatorButton" (click)="showAddressCreator()">Usar otra direccion</button>
+                        <button mat-button id="backButton" (click)="goBack()" class="!hidden">Volver</button>
+                    </div>
+                }
+                <div class="!hidden" id="addressCreator">
+                    <mat-form-field class="w-full">
+                        <mat-label>Región</mat-label>
+                        <mat-select appearance="fill" formControlName="ciudad" (selectionChange)="getComunas($event)">
+                            @for (city of cities; track city.id) {
+                            <mat-option [value]="city.id">
+                                {{city.nombre}}
+                            </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="w-full">
+                        <mat-label>Comuna</mat-label>
+                        <mat-select appearance="fill" formControlName="comuna">
+                            <mat-option value="">Seleccione</mat-option>
+                            @for (comuna of comunas; track comuna.id) {
+                            <mat-option [value]="comuna.id">
+                                {{comuna.nombre}}
+                            </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="w-full">
+                        <mat-label>Dirección</mat-label>
+                        <input matInput id="direccion" formControlName="direccion" class="w-full">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="w-full">
+                        <mat-label>Nro. Depto (opcional)</mat-label>
+                        <input matInput id="depto" type="text" formControlName="depto" class="w-full">
+                        @if (
+                        orderFormGroup.get('delivery.depto')?.hasError('pattern')) {
+                            <mat-error>Nro. Depto inválido</mat-error>
+                        }
+                        @else if (
+                        orderFormGroup.get('delivery.depto')?.hasError('maxlength')) {
+                            <mat-error>Nro. Depto inválido</mat-error>
+                        }
+                    </mat-form-field>
+                </div>
 
                 <div class="w-full flex gap-3">
                     <button mat-button matStepperPrevious type="button" class="stepperButton">Atrás</button>

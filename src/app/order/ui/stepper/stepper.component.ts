@@ -1,5 +1,7 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   inject,
   OnInit,
@@ -18,6 +20,8 @@ import { PhonePipePipe } from '@order/utils/phone-pipe.pipe';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth/auth.service'; 
 import { SnackBarService } from '@shared/ui/snack-bar.service';
+import { AccountDataService } from '@account/services/account-data.service';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 @Component({
@@ -29,7 +33,8 @@ import { SnackBarService } from '@shared/ui/snack-bar.service';
     MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatRadioModule
   ],
   templateUrl: './stepper.component.html',
   styleUrl: './stepper.component.css',
@@ -39,7 +44,7 @@ import { SnackBarService } from '@shared/ui/snack-bar.service';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StepperComponent implements OnInit {
+export class StepperComponent implements OnInit, AfterViewInit {
   private _formBuilder = inject(FormBuilder);
   private _deliveryService = inject(DeliveryService);
   private _rutPipe = inject(RutPipePipe);
@@ -48,9 +53,12 @@ export class StepperComponent implements OnInit {
   private _auth = inject(AuthService);
   private readonly _snackBar = inject(SnackBarService);
   private router: Router = inject(Router);
+  private readonly accountService = inject(AccountDataService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   cities: Ciudad[] = [];
   comunas: Comuna[] = [];
+  addresses: Adress[] = [];
   user: User | null = null;
 
   selectedPaymentMethodId: number | null = null;
@@ -72,6 +80,7 @@ export class StepperComponent implements OnInit {
         this.orderFormGroup.get('client.email')?.setValue(user.email);
         this.orderFormGroup.get('client.nombre')?.setValue(user.nombre);
         this.getClientIfUser(user.id);
+        this.getUserAddress(user.id);
       }
     })
 
@@ -93,6 +102,18 @@ export class StepperComponent implements OnInit {
         .get('client.telefono')
         ?.setValue(formattedTelefono, { emitEvent: false });
     });
+
+    this.orderFormGroup.get('delivery.direccion_id')?.valueChanges.subscribe(value => {
+      if (value !== 0) {
+        this.removeAddressValidators();
+      } else {
+        this.restoreAddressValidators();
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.checkUserAddress();
   }
 
   orderFormGroup = this._formBuilder.group({
@@ -137,6 +158,7 @@ export class StepperComponent implements OnInit {
         Validators.maxLength(4),
         ]
       ],
+      direccion_id: [0],
     }),
     payment: this._formBuilder.group({
       method: ['', Validators.required],
@@ -160,6 +182,7 @@ export class StepperComponent implements OnInit {
       ciudad: this.orderFormGroup.get('delivery.ciudad')?.value ?? '',
       comuna: this.orderFormGroup.get('delivery.comuna')?.value ?? '',
       depto: this.orderFormGroup.get('delivery.depto')?.value ?? '',
+      direccion_id: this.orderFormGroup.get('delivery.direccion_id')?.value ?? 0,
     };
 
     const payment = {
@@ -220,5 +243,77 @@ export class StepperComponent implements OnInit {
         console.error(error.error.message);
       }
     });
+  }
+
+  getUserAddress(userId: number) {
+    this.accountService.getUserAddress(userId).subscribe({
+      next: (address) => {
+        this.addresses = address;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error(error.error.message);
+      }
+    });
+  }
+
+  setAddress(addressId: number) {
+    this.orderFormGroup.get('delivery.direccion_id')?.setValue(addressId);
+    this.orderFormGroup.get('delivery.direccion_id')?.markAsDirty();
+    this.orderFormGroup.get('delivery.direccion_id')?.updateValueAndValidity();
+  }
+
+  private removeAddressValidators() {
+    const deliveryGroup = this.orderFormGroup.get('delivery');
+    
+    deliveryGroup?.get('ciudad')?.setValue('');
+    deliveryGroup?.get('comuna')?.setValue('');
+    deliveryGroup?.get('direccion')?.setValue('');
+    deliveryGroup?.get('depto')?.setValue('');
+
+    ['ciudad', 'comuna', 'direccion'].forEach(field => {
+      const control = deliveryGroup?.get(field);
+      control?.clearValidators();
+      control?.updateValueAndValidity();
+    });
+
+    document.getElementById('addressCreator')?.classList.add('!hidden');
+  }
+
+  private restoreAddressValidators() {
+    const deliveryGroup = this.orderFormGroup.get('delivery');
+
+    deliveryGroup?.get('ciudad')?.setValidators(Validators.required);
+    deliveryGroup?.get('comuna')?.setValidators(Validators.required);
+    deliveryGroup?.get('direccion')?.setValidators(Validators.required);
+
+    ['ciudad', 'comuna', 'direccion'].forEach(field => {
+      deliveryGroup?.get(field)?.updateValueAndValidity();
+    });
+
+    document.getElementById('addressCreator')?.classList.remove('!hidden');
+  }
+
+  showAddressCreator() {
+    this.orderFormGroup.get('delivery.direccion_id')?.setValue(0);
+
+    document.querySelector('#addressCreatorButton')?.classList.add('!hidden');
+    document.querySelector('#backButton')?.classList.remove('!hidden');
+    document.querySelector('#addresses')?.classList.add('!hidden');
+  }
+
+  goBack() {
+    document.querySelector('#addressCreatorButton')?.classList.remove('!hidden');
+    document.querySelector('#backButton')?.classList.add('!hidden');
+    document.querySelector('#addresses')?.classList.remove('!hidden');
+    document.querySelector('#addressCreator')?.classList.add('!hidden');
+  }
+
+  checkUserAddress() {
+    if (this.addresses.length <= 0) {
+      document.querySelector('#buttonsContainer')?.classList.add('!hidden');
+      document.querySelector('#addresses')?.classList.add('!hidden');
+      document.getElementById('addressCreator')?.classList.remove('!hidden');
+    }
   }
 }

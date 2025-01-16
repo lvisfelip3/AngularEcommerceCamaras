@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { Shipping } from '@shared/interfaces/interfaces';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -27,7 +28,8 @@ import { Shipping } from '@shared/interfaces/interfaces';
     MatInputModule,
     MatTooltipModule,
     MatSelectModule,
-    MatMenuModule
+    MatMenuModule,
+    DatePipe
   ],
   templateUrl: './shipping.component.html',
   styleUrl: './shipping.component.css',
@@ -35,7 +37,7 @@ import { Shipping } from '@shared/interfaces/interfaces';
 })
 export class ShippingComponent implements OnInit {
   selected = '0';
-  displayColumns: string[] = ['id', 'nombre_cliente', 'rut_cliente', 'direccion', 'depto', 'ciudad', 'comuna','reference', 'status', 'actions'];
+  displayColumns: string[] = ['id', 'nombre_cliente', 'rut_cliente', 'direccion', 'depto', 'ciudad', 'comuna','reference','date','status', 'actions'];
   dataSource = new MatTableDataSource<Shipping>();
   private readonly _snackBar = inject(SnackBarService);
 

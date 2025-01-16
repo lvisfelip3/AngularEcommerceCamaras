@@ -96,6 +96,7 @@ export interface Shipping {
   comuna: Adress['comuna'];
   reference: string;
   status: number;
+  date: string;
 }
 
 export interface Order {

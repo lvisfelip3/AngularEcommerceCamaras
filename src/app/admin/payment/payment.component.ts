@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SaleInfoDialogComponent } from '@admin/utils/sale-info-dialog/sale-info-dialog.component';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-payment',
@@ -27,7 +27,8 @@ import { CurrencyPipe } from '@angular/common';
     MatTooltipModule,
     MatSelectModule,
     MatMenuModule,
-    CurrencyPipe
+    CurrencyPipe,
+    DatePipe
   ],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css',
@@ -36,7 +37,7 @@ import { CurrencyPipe } from '@angular/common';
 export class PaymentComponent implements OnInit{
 
   selected = '0';
-  displayColumns: string[] = ['id', 'nombre_cliente', 'rut_cliente', 'amount', 'method', 'reference', 'venta', 'status', 'actions'];
+  displayColumns: string[] = ['id', 'nombre_cliente', 'rut_cliente', 'amount', 'method', 'reference', 'venta', 'date','status', 'actions'];
   dataSource = new MatTableDataSource<any>();
   private readonly _snackBar = inject(SnackBarService);
 

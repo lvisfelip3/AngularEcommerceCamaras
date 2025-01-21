@@ -104,8 +104,6 @@ export class FilterComponent implements OnInit {
 
     this.maxPriceControl.setValue(this.maxValue);
     this.maxPriceChange.emit(this.maxValue);
-    this.cdr.markForCheck();
-    this.cdr.detectChanges();
   }
 
   displayFormattedValue(value: number): string {

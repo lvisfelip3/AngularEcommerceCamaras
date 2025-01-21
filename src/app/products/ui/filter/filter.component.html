@@ -4,7 +4,7 @@
     [disabled]="isLargeScreen"
     (opened)="panelState.set(true)" 
     (closed)="panelState.set(false)"
-    class="!bg-slate-100 dark:!bg-gray-800 !flex !flex-col !justify-center !items-start !w-full !shadow-md !shadow-gray-400 dark:!shadow-none">
+    class="!bg-slate-100 dark:!bg-gray-800 !flex !flex-col !justify-center !items-start !w-full !shadow-md !shadow-gray-400 dark:!shadow-none !border !border-slate-200 dark:!border-gray-700">
         <mat-expansion-panel-header class="!w-full !py-8 !bg-slate-100 dark:!bg-gray-800">
             <h5 class="text-xl font-bold text-gray-900 dark:text-white !mb-0 w-full">Filtrar</h5>
             @if (isFiltered){

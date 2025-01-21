@@ -4,7 +4,7 @@
     class="h-full min-h-screen mt-14 flex flex-col justify-between items-center !bg-gray-100 dark:!bg-gray-900">
     <mat-sidenav class="!rounded-none !bg-white dark:!bg-gray-800 transition-colors !fixed !left-0 !top-14" [(opened)]="opened" [mode]="mode">
       <div class="flex flex-col justify-between h-full overflow-hidden">
-        <div>
+        <div class="flex flex-col gap-2">
         <button mat-button [routerLink]="['/dashboard']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
           class="!bg-transparent !rounded-lg !text-gray-900 dark:!text-white !w-full !p-8 !text-lg !flex !items-center !justify-start">
           Dashboard

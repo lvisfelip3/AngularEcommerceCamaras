@@ -19,8 +19,8 @@ export class HeroComponent implements OnInit{
   constructor(private productService: ProductsService) {}
 
   ngOnInit(): void {
-    this.productService.getProducts(1).subscribe((products: Product[]) => {
-      this.images = products;
+    this.productService.getProducts(1).subscribe((res) => {
+      this.images = res.products;
     });
   }
 }

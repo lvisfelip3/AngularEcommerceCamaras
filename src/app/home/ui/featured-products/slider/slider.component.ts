@@ -36,8 +36,8 @@ export class SliderComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.productService.getProducts(1).subscribe((products: Product[]) => {
-      this.products = of(products);
+    this.productService.getProducts(1).subscribe((res) => {
+      this.products = of(res.products);
       this.cdr.detectChanges();
     });
 

@@ -10,6 +10,16 @@ export interface Product {
   slug?: string;
 }
 
+export interface ProductResponse {
+  products: Product[];
+  pagination: {
+    totalItems: number;
+    limit: number;
+    page: number;
+    totalPages: number;
+  }
+}
+
 
 export interface ProductItemCart {
   product: Product;

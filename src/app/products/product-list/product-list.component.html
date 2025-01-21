@@ -9,40 +9,15 @@
         [maxValue]="maxValue()"       
         ></app-filter>
         <div class="flex flex-col flex-nowrap gap-4 w-full">
-            @switch(productState.state().status){
-                @case('error') {
-                    <p>Error</p>
-                }
-                @case('loading') {
-                    <app-product-list-skeleton></app-product-list-skeleton>
-                    <app-product-list-skeleton></app-product-list-skeleton>
-                    <app-product-list-skeleton></app-product-list-skeleton>
-                }
-                @default{
-                    @if(searchControl.value?.trim() !== '' || categoryControl.value !== null) {
-                        @if (filteredProducts.length === 0) {
-                            <app-empty-product></app-empty-product>
-                        } @else {
-                            @for(product of filteredProducts | sortProducts: orderByControl.value; track product.id; ) {
-                                @defer (on viewport) {
-                                    <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
-                                }@placeholder {
-                                    <app-product-list-skeleton></app-product-list-skeleton>
-                                }
-                                
-                            }
-                        }
-                    } @else {
-                        @for(product of productState.state().products | sortProducts: orderByControl.value; track product.id;) {
-                            @defer (on viewport) {
-                                <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
-                            }@placeholder {
-                                <app-product-list-skeleton></app-product-list-skeleton>
-                            }
-                        }
-                    }
-                }
+        @for(product of products$() | sortProducts: orderByControl.value; track product.id;) {
+            @defer (on viewport) {
+                <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
+            }@placeholder {
+                <app-product-list-skeleton></app-product-list-skeleton>
             }
+        } @empty {
+            <app-empty-product></app-empty-product>
+        }
             <!-- 
             <app-pagination></app-pagination> -->
         </div>

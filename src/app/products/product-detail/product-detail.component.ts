@@ -3,17 +3,17 @@ import {
   Component, 
   inject, 
   input, 
-  effect
+  effect,
+  computed
 } from '@angular/core';
-import { ProductDetailStateService } from '../service/product-list-state.service';
-import { CartStateService } from '../../shared/data-access/cart-state.service';
+import { CartStateService } from '@shared/data-access/cart-state.service';
 import { MatButtonModule } from '@angular/material/button';
 import { CurrencyPipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { SnackBarService } from '@shared/ui/snack-bar.service';
-import { ProductDetailSkeletonComponent } from './product-detail-skeleton/product-detail-skeleton.component';
 import { FavoriteStateService } from '@shared/data-access/fav-state.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ProductsService } from '@products/service/products.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -22,35 +22,33 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatButtonModule,
     CurrencyPipe,
     MatIconModule,
-    ProductDetailSkeletonComponent,
     MatTooltipModule
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css',
-  providers: [
-    ProductDetailStateService
-  ],
+  providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ProductDetailComponent {
-  readonly productDetailState = inject(ProductDetailStateService).state;
   private readonly cartState = inject(CartStateService).state;
   private readonly snackBar = inject(SnackBarService);
   private readonly favState = inject(FavoriteStateService).state;
+  private readonly productService = inject(ProductsService);
 
-  readonly name = input.required<string>();
+  slugProduct = input.required<string>();
+  currentProduct = computed(() => this.productService.selectedProduct$())
 
   constructor() {
     effect(() => {
-      const currentName = this.name();
+      const currentName = this.slugProduct();
       if (currentName) {
-        this.productDetailState.getByName(currentName);
+        this.productService.getProductByName(currentName).subscribe();
       }
-    }, { allowSignalWrites: true });
+    });
   }
 
   addToCart(): void {
-    const currentProduct = this.productDetailState.product();
+    const currentProduct = this.currentProduct();
     
     if (!currentProduct) {
       this.snackBar.showSnackBar('Error: Producto no disponible', 'OK');
@@ -64,7 +62,7 @@ export default class ProductDetailComponent {
   }
 
   addToFav(): void {
-    const currentProduct = this.productDetailState.product();
+    const currentProduct = this.currentProduct();
 
     if (!currentProduct) {
       this.snackBar.showSnackBar('Error: Producto no disponible', 'OK');

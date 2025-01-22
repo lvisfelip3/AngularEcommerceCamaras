@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy, computed, effect } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy, computed } from '@angular/core';
 import { ProductCardComponent } from '@products/ui/product-card/product-card.component';
 import { CartStateService } from '@shared/data-access/cart-state.service';
 import { Product } from '@shared/interfaces/interfaces';
@@ -40,10 +40,6 @@ export default class ProductListComponent implements OnInit {
   hasToLoad = computed(() => this.productService.hasToLoad());
   currentPage = computed(() => this.productService.currentPage());
   products$ = computed(() => this.productService.products$());
-
-  constructor() {
-    effect(() => console.log(this.products$()));
-  }
 
   // @HostListener('window:scroll')
   // onScroll(): void {

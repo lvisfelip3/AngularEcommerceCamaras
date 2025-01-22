@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { Product, ProductResponse } from '@shared/interfaces/interfaces';
 import { HttpParams } from '@angular/common/http';
 
@@ -10,6 +10,8 @@ import { HttpParams } from '@angular/common/http';
 export class ProductsService extends BaseHttpService {
 
   products$ = signal<Product[]>([])
+  selectedProduct$ = signal<Product | null>(null)
+
   limit = signal<number>(10)
   currentPage = signal<number>(1)
   hasToLoad = signal<boolean>(true);
@@ -23,9 +25,7 @@ export class ProductsService extends BaseHttpService {
 
         this.products$.set(res.products)
 
-        if (this.currentPage() >= totalPages) {
-          this.hasToLoad.set(false)
-        }
+        if (this.currentPage() >= totalPages) this.hasToLoad.set(false)
         
       })
     );
@@ -52,7 +52,15 @@ export class ProductsService extends BaseHttpService {
   }
 
   getProductByName(name: string): Observable<Product> {
-    return this.http.get<Product>(this.apiUrl, { params: { name } });
+    const params = new HttpParams().set('name', name);
+    return this.http.get<Product>(this.apiUrl, { params }).pipe(
+      tap((res) => {
+        this.selectedProduct$.set(res)
+      }),
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
   }
 
   getProductsByCategory(id: number ): Observable<ProductResponse> {

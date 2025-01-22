@@ -4,10 +4,10 @@
 
     <div class="flex justify-between items-start md:items-center flex-col md:flex-row p-2 md:p-4 w-full px-5 gap-10 md:gap-0">
         <div
-            class="w-full md:w-max md:max-w-96 h-full flex md:flex-col justify-between md:justify-evenly items-center md:items-start">
+            class="w-full md:max-w-72 lg:max-w-96 h-full flex md:flex-col justify-between md:justify-evenly items-center md:items-start">
             <a [routerLink]="['/catalogo/producto/', productCartItem().product.slug]"
                 routerLinkActive="router-link-active"
-                class="text-lg max-w-32 md:max-w-60 overflow-clip md:text-2xl font-medium text-gray-900 hover:underline text-wrap dark:text-white"
+                class="text-lg max-w-32 md:max-w-60 min-h-20 overflow-clip md:text-2xl font-medium text-gray-900 hover:underline text-wrap dark:text-white"
                 matTooltip="Ver producto"
                 >
                 {{productCartItem().product.nombre }}</a>

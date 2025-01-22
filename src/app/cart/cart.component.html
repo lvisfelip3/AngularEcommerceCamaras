@@ -7,15 +7,15 @@
             } @else {
                 <div class="flex w-full flex-wrap gap-5">
                     <div class="flex-1 w-full flex flex-col gap-5">
+                    @for(cartItem of state.products(); track cartItem.product.id;){
                         @defer (on viewport) {
-                            @for(cartItem of state.products(); track cartItem.product.id;){
-                                <app-cart-item class="inline-block w-full" [productCartItem]="cartItem" (onRemove)="onRemove($event)"
-                                    (onDecrease)="onDecrease($event)" (onIncrease)="onIncrease($event)" (onFav)="onFav($event)">
-                                </app-cart-item>
-                            }
+                        <app-cart-item class="inline-block w-full" [productCartItem]="cartItem" (onRemove)="onRemove($event)"
+                            (onDecrease)="onDecrease($event)" (onIncrease)="onIncrease($event)" (onFav)="onFav($event)">
+                        </app-cart-item>
                         } @placeholder {
-                            <app-cart-item-skeleton></app-cart-item-skeleton>
+                            <app-cart-item-skeleton></app-cart-item-skeleton> 
                         }
+                    }
                     </div>
                     <app-checkout class="w-full lg:w-80 lg:min-w-64"></app-checkout>
                 </div>

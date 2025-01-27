@@ -5,6 +5,7 @@ import { Comuna, Ciudad, Client, Adress, ProductItemCart, Order, response, ApiFl
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { CartStateService } from '@shared/data-access/cart-state.service';
+import { EmailService } from './email.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class DeliveryService extends BaseHttpService {
 
   private readonly _snackbar = inject(SnackBarService);
   private readonly cartService = inject(CartStateService).state;
+  private readonly _email = inject(EmailService);
 
   getCiudades(): Observable<Ciudad[]> {
     return this.http.get<Ciudad[]>(this.apiUrl + 'ciudades/ciudad.php');
@@ -60,9 +62,6 @@ export class DeliveryService extends BaseHttpService {
 
   checkPaymentStatus(saleRef: string | null): Observable<FinalFlowResponse> {
     return this.http.post<FinalFlowResponse>(`${this.apiUrl}flow/angularConfirmation.php`, { saleRef }).pipe(
-      tap(() => {
-        this.cartService.clear()
-      }), 
       catchError(error => {
         console.error('Error en pago:', error);
         return throwError(() => ({

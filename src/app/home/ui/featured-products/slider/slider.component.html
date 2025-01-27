@@ -1,25 +1,25 @@
-@if (products | async) {
-    <p-carousel
-    [value]="(products | async) || []"
-    [circular]="true"
-    [numVisible]="3"
-    [numScroll]="1"
-    [showNavigators]="true"
-    [showIndicators]="true"
-    [responsiveOptions]="responsiveOptions"
-    >   
-        
-        <ng-template let-product pTemplate="item">
-            <div class="w-full flex justify-evenly">
-            @defer (on viewport) {
-                <app-card-item [product]="product"></app-card-item>
-            } @placeholder {
-                <app-card-item-skeleton></app-card-item-skeleton>
-            }
-            </div>
-        </ng-template>
-    </p-carousel>
-} @else {
+<p-carousel
+[value]="(products$()) || []"
+[circular]="true"
+[numVisible]="3"
+[numScroll]="1"
+[showNavigators]="true"
+[showIndicators]="true"
+[responsiveOptions]="responsiveOptions"
+>   
+    
+    <ng-template let-product pTemplate="item">
+        <div class="w-full flex justify-evenly">
+        @defer (on viewport) {
+            <app-card-item [product]="product"></app-card-item>
+        } @placeholder {
+            <app-card-item-skeleton></app-card-item-skeleton>
+        }
+        </div>
+    </ng-template>
+</p-carousel>
+
+@if (isLoading()) {
     <div class="w-full flex justify-evenly">
         <app-card-item-skeleton></app-card-item-skeleton>
         <app-card-item-skeleton class="hidden lg:block"></app-card-item-skeleton>

@@ -24,7 +24,9 @@ import { CartMobileButtonComponent } from '@shared/components/cart-mobile-button
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
-  providers: [SortProductsPipe],
+  providers: [
+    SortProductsPipe
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ProductListComponent implements OnInit {
@@ -40,6 +42,7 @@ export default class ProductListComponent implements OnInit {
   hasToLoad = computed(() => this.productService.hasToLoad());
   currentPage = computed(() => this.productService.currentPage());
   products$ = computed(() => this.productService.products$());
+  isLoading = computed(() => this.productService.isLoading());
 
   // @HostListener('window:scroll')
   // onScroll(): void {
@@ -52,12 +55,12 @@ export default class ProductListComponent implements OnInit {
   // }
 
   ngOnInit(): void {
-    this.productService.getProducts(undefined).subscribe();
+    this.productService.getProducts(undefined)?.subscribe();
 
     this.searchControl.valueChanges.pipe(
         debounceTime(200),
         tap((searchTerm: string | null) => {
-          if (!searchTerm || searchTerm === null) this.productService.getProducts(undefined)
+          if (!searchTerm || searchTerm === null) this.productService.getProducts(undefined)?.subscribe();
           this.productService.searchProducts(searchTerm as string).subscribe();
         })
       ).subscribe();
@@ -65,7 +68,7 @@ export default class ProductListComponent implements OnInit {
     this.categoryControl.valueChanges.pipe(
       debounceTime(300),
       tap((categoryId) => {
-        if (!categoryId || categoryId === null) this.productService.getProducts(undefined)
+        if (!categoryId || categoryId === null) this.productService.getProducts(undefined)?.subscribe();
         this.productService.getProductsByCategory(categoryId as number).subscribe();
       })
     )
@@ -74,7 +77,7 @@ export default class ProductListComponent implements OnInit {
     this.orderByControl.valueChanges.pipe(
       debounceTime(300),
       tap((orderBy) => {
-        if (!orderBy || orderBy === null) this.productService.getProducts(undefined)
+        if (!orderBy || orderBy === null) this.productService.getProducts(undefined)?.subscribe();
         const sortedProducts = this.sortProducts_.transform(this.products$(), orderBy);
         this.productService.setProducts(sortedProducts);
       })
@@ -84,7 +87,7 @@ export default class ProductListComponent implements OnInit {
     this.maxPriceControl.valueChanges.pipe(
       debounceTime(300),
       tap((maxPrice) => {
-        if (!maxPrice || maxPrice === null) this.productService.getProducts(undefined)
+        if (!maxPrice || maxPrice === null) this.productService.getProducts(undefined)?.subscribe();
         this.productService.getProductsByMaxPrice(maxPrice as number).subscribe();
       })
     )

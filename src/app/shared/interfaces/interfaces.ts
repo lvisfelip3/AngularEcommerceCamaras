@@ -164,10 +164,26 @@ export interface ApiFlowResponse {
 export interface FinalFlowResponse {
   success: boolean;
   message?: string;
+  status: number;
   flowError?: {
     code: string;
     message: string;
     mediaCode: string;
   };
   saleId?: number;
+}
+
+export interface PaymentResponse {
+  id: number;
+  status: boolean;
+  date: string;
+  client: {
+    nombre: string;
+    rut: string;
+  };
+  referencia_venta: string;
+  referencia: string;
+  monto: number;
+  metodo_pago?: string;
+  venta_id: number;
 }

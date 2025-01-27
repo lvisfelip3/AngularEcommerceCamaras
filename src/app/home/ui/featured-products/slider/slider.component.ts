@@ -1,10 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { CarouselModule } from 'primeng/carousel';
 import { ProductsService } from '@products/service/products.service';
-import { Product } from '@shared/interfaces/interfaces';
 import { CardItemComponent, CardItemSkeletonComponent } from '@home/ui/card-item';
-import { AsyncPipe } from '@angular/common';
-import { Observable, of } from 'rxjs';
 
 interface ResponsiveOption {
   breakpoint: string;
@@ -18,28 +15,23 @@ interface ResponsiveOption {
   imports: [
     CarouselModule,
     CardItemComponent,
-    CardItemSkeletonComponent,
-    AsyncPipe
+    CardItemSkeletonComponent
   ],
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SliderComponent implements OnInit {
+  
+  private readonly productService = inject(ProductsService);
 
   responsiveOptions: ResponsiveOption[] | undefined;
-  
-  products: Observable<Product[]> | undefined;
 
-  productService = inject(ProductsService);
-
-  constructor(private cdr: ChangeDetectorRef) {}
+  isLoading = computed(() => this.productService.isLoading());
+  products$ = computed(() => this.productService.products$());
 
   ngOnInit(): void {
-    this.productService.getProducts(1).subscribe((res) => {
-      this.products = of(res.products);
-      this.cdr.detectChanges();
-    });
+    this.productService.getProducts(1)?.subscribe();
 
     this.responsiveOptions = [
       {

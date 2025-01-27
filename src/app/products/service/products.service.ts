@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, finalize, Observable, tap, throwError } from 'rxjs';
 import { Product, ProductResponse } from '@shared/interfaces/interfaces';
 import { HttpParams } from '@angular/common/http';
 
@@ -16,7 +16,9 @@ export class ProductsService extends BaseHttpService {
   currentPage = signal<number>(1)
   hasToLoad = signal<boolean>(true);
 
-  getProducts(page: number | undefined): Observable<ProductResponse> {
+  getProducts(page: number | undefined): Observable<ProductResponse> | undefined {
+    if (this.isLoading()) return;
+    this.isLoading.set(true)
     const pages = page ? page : this.currentPage();
     const params = new HttpParams().set('limit', this.limit().toString()).set('page', pages.toString());
     return this.http.get<ProductResponse>(this.apiUrl, { params }).pipe(
@@ -26,8 +28,8 @@ export class ProductsService extends BaseHttpService {
         this.products$.set(res.products)
 
         if (this.currentPage() >= totalPages) this.hasToLoad.set(false)
-        
-      })
+      }),
+      finalize(() => this.isLoading.set(false))
     );
   }
 

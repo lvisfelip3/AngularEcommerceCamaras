@@ -85,15 +85,15 @@
                 </button>
 
                 <mat-menu #statusMenu="matMenu">
-                    <button [disabled]="element.status === 1" mat-menu-item (click)="switchStatus(element.id, 1)">
+                    <button [disabled]="element.status === 1" mat-menu-item (click)="switchStatus(element.id, 1, element.client.nombre)">
                         <mat-icon>done</mat-icon>
                         <span>Realizado</span>
                     </button>
-                    <button [disabled]="element.status === 2" mat-menu-item (click)="switchStatus(element.id, 2)">
+                    <button [disabled]="element.status === 2" mat-menu-item (click)="switchStatus(element.id, 2, element.client.nombre)">
                         <mat-icon>pending</mat-icon>
                         <span>Pendiente</span>
                     </button>
-                    <button [disabled]="element.status === 3" mat-menu-item (click)="switchStatus(element.id, 3)">
+                    <button [disabled]="element.status === 3" mat-menu-item (click)="switchStatus(element.id, 3, element.client.nombre)">
                         <mat-icon>error</mat-icon>
                         <span>Fallido</span>
                     </button>
@@ -106,7 +106,7 @@
     </table>
     }@placeholder {
     <h1>Cargando...</h1>
-    }
+    }<
     } @else {
     <h1>No hay Productos</h1>
     }

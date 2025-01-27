@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, OnInit } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ClientDataComponent, DeliveryDataComponent, ProductsDataComponent } from '@order/confirmed';
 import { DeliveryService } from '@order/services/delivery.service';
 import { ProductItemOrder, Client, Adress, Payment } from "@shared/interfaces/interfaces";
 import { MatButtonModule } from '@angular/material/button';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-confirmed',
@@ -27,43 +28,29 @@ export class ConfirmedComponent implements OnInit {
   addressData: Adress | null = null;
   paymentData: Payment | null = null;
   products: ProductItemOrder[] = [];
-  errorMessage: string | undefined;
 
   readonly orderRef = input.required<string>();
 
-  constructor( 
-    private router: ActivatedRoute, 
+  constructor(
     private orderService: DeliveryService,
-    private cdr: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.requestOrder();
   }
 
   requestOrder(): void {
-    const orderRef = this.router.snapshot.paramMap.get('orderRef');
-    if (orderRef) {
-      this.orderService.getOrderDetails(orderRef).subscribe((data) => {
+    if (this.orderRef()) {
+      this.orderService.getOrderDetails(this.orderRef()).pipe(
+        tap((data) => {
           const { client, address, payment, productos } = data;
           this.clientData = client;
           this.addressData = address;
           this.paymentData = payment;
           this.products = productos;
-          this.requestFlowStatus(orderRef)
-      });
+        })
+      )
+      .subscribe();
     }
-  }
-
-  requestFlowStatus(orderRef:string): void { 
-    this.orderService.checkPaymentStatus(orderRef).subscribe({
-      next: (data) => {
-        this.errorMessage = data.message;
-        this.cdr.detectChanges();
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
   }
 }

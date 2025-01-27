@@ -13,6 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SaleInfoDialogComponent } from '@admin/utils/sale-info-dialog/sale-info-dialog.component';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { ConfirmationDialogComponent } from '@admin/ui/confirmation-dialog/confirmation-dialog.component';
+import { EmailService } from '@order/services/email.service';
 
 @Component({
   selector: 'app-payment',
@@ -32,13 +34,16 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
   ],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ConfirmationDialogComponent]
 })
 export class PaymentComponent implements OnInit{
 
-  selected = '0';
+  _email = inject(EmailService);
+
+  selected: string | number = '0';
   displayColumns: string[] = ['id', 'nombre_cliente', 'rut_cliente', 'amount', 'method', 'reference', 'venta', 'date','status', 'actions'];
-  dataSource = new MatTableDataSource<any>();
+  dataSource = new MatTableDataSource<PaymentResponse>();
   private readonly _snackBar = inject(SnackBarService);
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
@@ -89,16 +94,23 @@ export class PaymentComponent implements OnInit{
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource.filter = filterValue.trim();
   }
 
-  switchStatus(shipping_id: number, status: number): void {
-    this.paymentService.switchStatus(shipping_id, status).subscribe(() => {
-      this.statusFilter(Number(this.selected));
-      this.cdr.detectChanges();
-      this.cdr.markForCheck();
-      this._snackBar.showSnackBar('Estado actualizado');
-    });
+  switchStatus(shipping_id: number, status: number, data: string): void {
+    this.dialog.open(ConfirmationDialogComponent, {
+      width: '400px',
+      data: { nombre: data, status: this.status(status) }
+    }).afterClosed().subscribe(res => {
+      if (res) {
+        this.paymentService.switchStatus(shipping_id, status).subscribe(() => {
+          this.statusFilter(this.selected as number);
+          this.cdr.detectChanges();
+          this.cdr.markForCheck();
+          this._snackBar.showSnackBar('Estado actualizado');
+        });
+      }
+    })
   } 
 
   statusFilter(status: number): void {

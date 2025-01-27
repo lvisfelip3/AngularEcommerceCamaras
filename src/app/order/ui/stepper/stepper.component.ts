@@ -22,6 +22,8 @@ import { AuthService } from '@auth/auth.service';
 import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { AccountDataService } from '@account/services/account-data.service';
 import { MatRadioModule } from '@angular/material/radio';
+import { tap } from 'rxjs';
+import { EmailService } from '@order/services/email.service';
 
 
 @Component({
@@ -55,6 +57,7 @@ export class StepperComponent implements OnInit, AfterViewInit {
   private router: Router = inject(Router);
   private readonly accountService = inject(AccountDataService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly _email = inject(EmailService);
 
   cities: Ciudad[] = [];
   comunas: Comuna[] = [];
@@ -194,20 +197,20 @@ export class StepperComponent implements OnInit, AfterViewInit {
     const cartProducts = this._cart.products();
 
     if (payment.method === 'Flow') {
-      this._deliveryService.handleFlowPayment(client, address, payment ,cartProducts).subscribe({
-        error: (error) => {
-          console.log(error);
-        }
-      });
+      this._deliveryService.handleFlowPayment(client, address, payment ,cartProducts).subscribe();
 
     } else {
     
-      this._deliveryService.saveClientForPayment(client, address, payment, cartProducts).subscribe(
-        (response) => {
-          this._cart.clear();
-          this.router.navigate([`pedidos/confirmed/${response.orderRef}`]);
-        }
-      );
+      this._deliveryService.saveClientForPayment(client, address, payment, cartProducts).pipe(
+        tap(
+          (response) => {
+            this._cart.clear();
+            this._email.sendMail({ ...client, ...address, ...payment, ...cartProducts, ...response }).subscribe();
+            this.router.navigate([`pedidos/confirmed/${response.orderRef}`]);
+          }
+        )
+      )
+      .subscribe();
     }
   }
 

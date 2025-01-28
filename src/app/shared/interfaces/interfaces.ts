@@ -99,8 +99,11 @@ export interface Payment {
 
 export interface Shipping {
   id: number;
-  nombre_cliente: Client['nombre'];
-  rut_cliente: Client['rut'];
+  cliente: {
+    nombre: Client['nombre'];
+    rut: Client['rut'];
+    email: Client['email'];
+  };
   direccion: Adress['direccion'];
   ciudad: Adress['ciudad'];
   comuna: Adress['comuna'];
@@ -180,10 +183,12 @@ export interface PaymentResponse {
   client: {
     nombre: string;
     rut: string;
+    email: string;
   };
   referencia_venta: string;
   referencia: string;
   monto: number;
   metodo_pago?: string;
+  tipo_pago?: string;
   venta_id: number;
 }

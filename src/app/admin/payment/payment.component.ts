@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { PaymentService } from './payment.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
@@ -14,7 +13,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { SaleInfoDialogComponent } from '@admin/utils/sale-info-dialog/sale-info-dialog.component';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { ConfirmationDialogComponent } from '@admin/ui/confirmation-dialog/confirmation-dialog.component';
-import { EmailService } from '@order/services/email.service';
+import { clientData, EmailService, Type } from '@order/services/email.service';
+import { PaymentResponse } from '@shared/interfaces/interfaces';
+import { SnackBarService } from '@shared/ui/snack-bar.service';
+import { Action } from '@order/services/email.service';
 
 @Component({
   selector: 'app-payment',
@@ -39,23 +41,19 @@ import { EmailService } from '@order/services/email.service';
 })
 export class PaymentComponent implements OnInit{
 
-  _email = inject(EmailService);
+  private readonly paymentService = inject(PaymentService);
+  private readonly dialog = inject(MatDialog);
+  private readonly _email = inject(EmailService);
+  private readonly _snackbar = inject(SnackBarService);
 
   selected: string | number = '0';
-  displayColumns: string[] = ['id', 'nombre_cliente', 'rut_cliente', 'amount', 'method', 'reference', 'venta', 'date','status', 'actions'];
+  displayColumns: string[] = ['id', 'nombre_cliente', 'rut_cliente', 'amount', 'method','submethod', 'reference', 'venta', 'date','status', 'actions'];
   dataSource = new MatTableDataSource<PaymentResponse>();
-  private readonly _snackBar = inject(SnackBarService);
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
-  constructor(
-    private paymentService: PaymentService,
-    private dialog: MatDialog,
-    private cdr: ChangeDetectorRef
-  ) { }
-
   ngOnInit(): void {
-    this.getSales();    
+    this.getSales();
   }
 
   getSales() {
@@ -97,21 +95,24 @@ export class PaymentComponent implements OnInit{
     this.dataSource.filter = filterValue.trim();
   }
 
-  switchStatus(shipping_id: number, status: number, data: string): void {
+  openConfirmation(shipping_id: number, status: number, clientData: clientData): void {
     this.dialog.open(ConfirmationDialogComponent, {
       width: '400px',
-      data: { nombre: data, status: this.status(status) }
+      data: { 
+        nombre: clientData.nombre, 
+        status: this.status(status),
+        email: clientData.email
+      }
     }).afterClosed().subscribe(res => {
       if (res) {
         this.paymentService.switchStatus(shipping_id, status).subscribe(() => {
           this.statusFilter(this.selected as number);
-          this.cdr.detectChanges();
-          this.cdr.markForCheck();
-          this._snackBar.showSnackBar('Estado actualizado');
+          this._email.sendMail(clientData).subscribe();
+          this._snackbar.showSnackBar('Estado actualizado');
         });
       }
     })
-  } 
+  }
 
   statusFilter(status: number): void {
     this.paymentService.getSalesByStatus(status).subscribe({
@@ -125,6 +126,14 @@ export class PaymentComponent implements OnInit{
         this.dataSource.paginator = this.paginator;
       }
     })
+  }
+
+  getAction(): Action {
+    return Action.UPDATE
+  }
+
+  getType() : Type {
+    return Type.PAYMENT
   }
 
 }

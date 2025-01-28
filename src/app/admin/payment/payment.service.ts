@@ -1,5 +1,5 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
@@ -8,8 +8,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PaymentService extends BaseHttpService {
-  constructor( private cookie: CookieService) {
+  private readonly cookie = inject(CookieService);
+  
+  sales = signal<any[]>([]);
+
+  constructor() {
     super();
+    this.getSales();
   }
 
   getSales(): Observable<any[]> {

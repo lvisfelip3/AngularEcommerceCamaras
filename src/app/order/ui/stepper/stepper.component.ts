@@ -23,7 +23,7 @@ import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { AccountDataService } from '@account/services/account-data.service';
 import { MatRadioModule } from '@angular/material/radio';
 import { tap } from 'rxjs';
-import { EmailService } from '@order/services/email.service';
+import { Action, EmailService, Type } from '@order/services/email.service';
 
 
 @Component({
@@ -205,7 +205,7 @@ export class StepperComponent implements OnInit, AfterViewInit {
         tap(
           (response) => {
             this._cart.clear();
-            this._email.sendMail({ ...client, ...address, ...payment, ...cartProducts, ...response }).subscribe();
+            this._email.sendMail({ ...client, ...address, ...payment, ...cartProducts, ...response, action: Action.CREATE, type: Type.DELIVERY}).subscribe();
             this.router.navigate([`pedidos/confirmed/${response.orderRef}`]);
           }
         )

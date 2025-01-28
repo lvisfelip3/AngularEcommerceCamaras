@@ -14,6 +14,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { Shipping } from '@shared/interfaces/interfaces';
 import { DatePipe } from '@angular/common';
+import { Action, clientData, EmailService, Type } from '@order/services/email.service';
+import { ConfirmationDialogComponent } from '@admin/ui/confirmation-dialog/confirmation-dialog.component';
 
 
 @Component({
@@ -36,17 +38,16 @@ import { DatePipe } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShippingComponent implements OnInit {
-  selected = '0';
+  private readonly shipping = inject(ShippingService);
+  private readonly dialog = inject(MatDialog);
+  private readonly _snackBar = inject(SnackBarService);
+  private readonly _email = inject(EmailService);
+  
+  selected: string | number = '0';
   displayColumns: string[] = ['id', 'nombre_cliente', 'rut_cliente', 'direccion', 'depto', 'ciudad', 'comuna','reference','date','status', 'actions'];
   dataSource = new MatTableDataSource<Shipping>();
-  private readonly _snackBar = inject(SnackBarService);
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
-
-  constructor(
-    private shipping: ShippingService,
-    private dialog: MatDialog
-  ) { }
 
   ngOnInit(): void {
     this.getShipping();    
@@ -91,10 +92,22 @@ export class ShippingComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  switchStatus(shipping_id: number, status: number): void {
-    this.shipping.switchStatus(shipping_id, status).subscribe(() => {
-      this.statusFilter(Number(this.selected));
-      this._snackBar.showSnackBar('Estado actualizado');
+  switchStatus(shipping_id: number, status: number, clientData: clientData): void {
+    this.dialog.open(ConfirmationDialogComponent, {
+      width: '400px',
+      data: { 
+        nombre: clientData.nombre, 
+        status: this.status(status),
+        email: clientData.email
+      }
+    }).afterClosed().subscribe(res => {
+      if (res) {
+        this.shipping.switchStatus(shipping_id, status).subscribe(() => {
+          this.statusFilter(this.selected as number);
+          this._email.sendMail(clientData).subscribe();
+          this._snackBar.showSnackBar('Estado actualizado');
+        });
+      }
     });
   } 
 
@@ -110,5 +123,13 @@ export class ShippingComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
       }
     })
+  }
+
+  getAction(): Action {
+    return Action.UPDATE
+  }
+
+  getType() : Type {
+    return Type.DELIVERY
   }
 }

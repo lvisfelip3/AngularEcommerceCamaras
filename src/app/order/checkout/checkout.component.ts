@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DeliveryService } from '@order/services/delivery.service';
-import { EmailService } from '@order/services/email.service';
+import { Action, EmailService, Type } from '@order/services/email.service';
 import { CartStateService } from '@shared/data-access/cart-state.service';
 import { catchError, EMPTY, switchMap, tap, throwError } from 'rxjs';
 
@@ -45,7 +45,9 @@ export class CheckoutComponent implements OnInit {
               email: data.client.email,
               nombre: data.client.nombre,
               apellido: data.client.apellido,
-              orderRef: this.orderRef()
+              orderRef: this.orderRef(),
+              action: Action.CREATE,
+              type: Type.DELIVERY
             };
             
             return this._email.sendMail(clientData).pipe(

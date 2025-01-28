@@ -90,15 +90,15 @@
                 </button>
 
                 <mat-menu #statusMenu="matMenu">
-                    <button [disabled]="element.status === 1" mat-menu-item (click)="switchStatus(element.id, 1, { nombre: element.client.nombre, orderRef: element.venta_referencia, email: element.client.email, action: getAction(), status: 'Entregado', type : getType()})">
+                    <button [disabled]="element.status === 1" mat-menu-item (click)="switchStatus(element.id, 1, { nombre: element.client.nombre, orderRef: element.reference, email: element.client.email, action: getAction(), status: 'Entregado', type : getType()})">
                         <mat-icon>done</mat-icon>
                         <span>Entregado</span>
                     </button>
-                    <button [disabled]="element.status === 2" mat-menu-item (click)="switchStatus(element.id, 2, { nombre: element.client.nombre, orderRef: element.venta_referencia, email: element.client.email, action: getAction(), status: 'Asignado', type : getType()})">
+                    <button [disabled]="element.status === 2" mat-menu-item (click)="switchStatus(element.id, 2, { nombre: element.client.nombre, orderRef: element.reference, email: element.client.email, action: getAction(), status: 'Asignado', type : getType()})">
                         <mat-icon>person_check</mat-icon>
                         <span>Asignado</span>
                     </button>
-                    <button [disabled]="element.status === 3" mat-menu-item (click)="switchStatus(element.id, 3, { nombre: element.client.nombre, orderRef: element.venta_referencia, email: element.client.email, action: getAction(), status: 'Pendiente', type : getType()})">
+                    <button [disabled]="element.status === 3" mat-menu-item (click)="switchStatus(element.id, 3, { nombre: element.client.nombre, orderRef: element.reference, email: element.client.email, action: getAction(), status: 'Pendiente', type : getType()})">
                         <mat-icon>pending</mat-icon>
                         <span>Pendiente</span>
                     </button>

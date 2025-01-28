@@ -65,7 +65,7 @@ export class EmailService extends BaseHttpService {
             return `Pedido recibido ${orderRef}`;
         }
 
-        const subjectPrefix = type === Type.PAYMENT ? 'Actualizacion de pago' : 'Actualizacion de envío';
+        const subjectPrefix = type === Type.PAYMENT ? 'Actualizacion de pago' : 'Actualizacion de envio';
         return `${subjectPrefix} - Pedido ${orderRef}`;
     }
 
@@ -83,7 +83,7 @@ export class EmailService extends BaseHttpService {
         return this.getEmailTemplate({
             fullName,
             orderRef,
-            mainMessage: 'Tu pedido ha sido recibido y se encuentra en preparación',
+            mainMessage: 'Tu pedido ha sido recibido y se encuentra en preparacion',
             showProductsLink: true
         });
     }
@@ -109,18 +109,18 @@ export class EmailService extends BaseHttpService {
 
     private getPaymentStatusMessage(status: PaymentStatus): string {
         const messages = {
-            [PaymentStatus.PENDING]: 'Tu pago está pendiente de confirmación',
-            [PaymentStatus.COMPLETED]: 'Tu pago ha sido confirmado exitosamente',
-            [PaymentStatus.FAILED]: 'Hubo un problema con tu pago, por favor contáctanos'
+            [PaymentStatus.PENDING]: 'Tu pago está <strong>pendiente de confirmación</strong>',
+            [PaymentStatus.COMPLETED]: 'Tu pago ha sido <strong>confirmado exitosamente</strong>',
+            [PaymentStatus.FAILED]: 'Hubo un <strong>problema con tu pago, por favor contáctanos</strong>'
         };
         return messages[status] || 'Estado de pago actualizado';
     }
 
     private getDeliveryStatusMessage(status: DeliveryStatus): string {
         const messages = {
-            [DeliveryStatus.PENDING]: 'Tu pedido está pendiente de envío',
-            [DeliveryStatus.ASSIGNED]: 'Tu pedido ha sido asignado para entrega',
-            [DeliveryStatus.COMPLETED]: 'Tu pedido ha sido entregado exitosamente'
+            [DeliveryStatus.PENDING]: 'Tu pedido está <strong>pendiente de envío</strong>',
+            [DeliveryStatus.ASSIGNED]: 'Tu pedido ha sido <strong>asignado para entrega</strong>',
+            [DeliveryStatus.COMPLETED]: 'Tu pedido ha sido <strong>entregado exitosamente</strong>'
         };
         return messages[status] || 'Estado de envío actualizado';
     }

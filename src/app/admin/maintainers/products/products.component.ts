@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { ProductosService } from './productos.service';
@@ -14,6 +14,7 @@ import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-products',
@@ -27,32 +28,32 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSnackBarModule,
     MatPaginatorModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressSpinnerModule
     ],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductComponent implements OnInit {
+  private readonly _snackBar = inject(SnackBarService);
+  private readonly dialog = inject(MatDialog);
+  private readonly crudService = inject(ProductosService);
+  private readonly categoryService = inject(CategoriasService);
+  private readonly fb = inject(FormBuilder);
 
   categorias: Category[] = [];
+  dataSource = new MatTableDataSource<Product>();
+  isLoading = computed(() => this.crudService.isLoading());
   categoriasMap: Record<number, string> = {};
-  products: Product[] = [];
   formAdd: FormGroup;
   isEdit = false;
   selectedProductId: number | null = null;
   displayColumns: string[] = ['id', 'nombre', 'descripcion', 'precio', 'stock', 'creado_en', 'categoria_id', 'actions'];
-  dataSource = new MatTableDataSource<Product>();
-  private readonly _snackBar = inject(SnackBarService);
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
-  constructor(
-    private crudService: ProductosService, 
-    private categoryService: CategoriasService,
-    private fb: FormBuilder,
-    private dialog: MatDialog,
-  ) {
+  constructor() {
     this.formAdd = this.fb.group({
       nombre: ['', Validators.required],
       descripcion: ['', Validators.required],
@@ -68,6 +69,18 @@ export class ProductComponent implements OnInit {
     this.getProductos();
     this.setupModalReset();
     this.getCategorias();
+  }
+
+  getProductos(): void {
+    this.crudService.getProducts()?.subscribe({
+      next: (data) => {
+        this.dataSource.data = data;
+        this.dataSource.paginator = this.paginator;
+      },
+      error: (error) => {
+        console.error('Error al obtener productos:', error);
+      },
+    });
   }
 
   openDialog(productos?: Product): void{
@@ -129,20 +142,6 @@ export class ProductComponent implements OnInit {
 
   getNombreCategoria(id: number): string {
     return this.categoriasMap[id] || 'Desconocido';
-  }
-
-  getProductos(): void {
-    this.crudService.getProducts().subscribe({
-      next: (response) => {
-        this.dataSource.data = response;
-      },
-      error: (error) => {
-        console.error('Error al obtener categorías:', error);
-      },
-      complete: () => {
-        this.dataSource.paginator = this.paginator;
-      }
-    });
   }
 
   deleteProducto(id: number): void {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, signal } from '@angular/core';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -13,9 +13,9 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Category, Product } from '../../../shared/interfaces/interfaces';
+import { Category, Product } from '@shared/interfaces/interfaces';
 import { MatSelectModule } from '@angular/material/select';
-import { CategoriasService } from '../category/category.service';
+import { CategoriasService } from '@admin/maintainers/category/category.service';
 
 @Component({
   selector: 'app-product-dialog',
@@ -40,7 +40,7 @@ import { CategoriasService } from '../category/category.service';
             <input
               matInput
               formControlName="nombre"
-              placeholder="Nombre de la categoría"
+              placeholder="Nombre del producto"
             />
           </mat-form-field>
           <mat-form-field appearance="fill">
@@ -69,24 +69,24 @@ import { CategoriasService } from '../category/category.service';
               }
             </mat-select>
           </mat-form-field>
-          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          <label class="block mb-2 text-sm font-medium text-white"
             >Imagen
             <input
               formControlName="imagen"
-              class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-slate-200 focus:outline-none file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gray-900 file:text-gray-100 hover:file:bg-slate-700 file:transition-colors file:duration-100 file:cursor-pointer"
               type="file"
               (change)="onChangeImage($event)"
               accept="image/png, image/jpeg, image/webp"
             />
           </label>
-          @if (imagePreview) {
-            <img class="image-preview" [src]="imagePreview" alt="vista previa" />
+          @if (this.imagePreview()) {
+            <img class="image-preview" [src]="this.imagePreview()" alt="vista previa" />
           }
         </form>
       </div>
       <div mat-dialog-actions class="footer">
         <button mat-button (click)="onCancel()">Cancelar</button>
-        <button mat-button [disabled]="!productForm.valid" (click)="onSubmit()">
+        <button mat-flat-button [disabled]="!productForm.valid" (click)="onSubmit()">
           Guardar
         </button>
       </div>
@@ -98,8 +98,8 @@ import { CategoriasService } from '../category/category.service';
 export class ProductDialogComponent implements OnInit {
   productForm: FormGroup;
   categorias: Category[] = [];
-  selectedImage: File | null = null;
-  imagePreview: string | undefined;
+  selectedImage = signal<File | null>(null);
+  imagePreview = signal<string | null>(null);
 
   constructor(
     private fb: FormBuilder,
@@ -117,7 +117,7 @@ export class ProductDialogComponent implements OnInit {
     });
 
     if (data) {
-      this.imagePreview = data.imagen;
+      this.imagePreview.set(data.imagen);
     }
   }
 
@@ -131,7 +131,7 @@ export class ProductDialogComponent implements OnInit {
 
   onSubmit(): void {
     if (this.productForm.valid) {
-      this.productForm.value.imagen = this.selectedImage;
+      this.productForm.value.imagen = this.selectedImage();
       this.dialogRef.close(this.productForm.value);
     }
   }
@@ -143,19 +143,19 @@ export class ProductDialogComponent implements OnInit {
   }
 
   onChangeImage(event: Event): void {
-    const input = event.target as HTMLInputElement; // Asegura que el target es un HTMLInputElement
+    const input = event.target as HTMLInputElement;
     if (input?.files && input.files[0]) {
       const file = input.files[0];
-      this.selectedImage = file;
+      this.selectedImage.set(file);
 
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
-        this.imagePreview = e.target?.result as string; // Asegura que el target es un FileReader y el result es string
+        this.imagePreview.set(e.target?.result as string);
       };
       reader.readAsDataURL(file);
     } else {
-      this.selectedImage = null;
-      this.imagePreview = undefined;
+      this.selectedImage.set(null);
+      this.imagePreview.set(null);
     }
   }
 }

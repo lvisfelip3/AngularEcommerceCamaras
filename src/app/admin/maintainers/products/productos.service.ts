@@ -1,17 +1,27 @@
-import { Injectable } from '@angular/core';
-import { Product } from '../../../shared/interfaces/interfaces';
+import { inject, Injectable } from '@angular/core';
+import { Product } from '@shared/interfaces/interfaces';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { BaseHttpService } from '../../../shared/data-access/base-http.service';
+import { finalize, Observable } from 'rxjs';
+import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductosService extends BaseHttpService {
+  private readonly cookie = inject(CookieService);
 
-  constructor(private cookie: CookieService) {
+  constructor() {
     super();
+  }
+
+  getProducts(): Observable<Product[]> | undefined {
+    if (this.isLoading()) return;
+    this.isLoading.set(true)
+    const params = new HttpParams().set('action', 'maintainer')
+    return this.http.get<Product[]>(this.apiUrl, { params }).pipe(
+      finalize(() => this.isLoading.set(false))
+    );
   }
 
   addProduct(product: Omit<Product, 'id'>, image: File): Observable<Product> {
@@ -27,10 +37,6 @@ export class ProductosService extends BaseHttpService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     return this.http.post<Product>(this.apiUrl, formData, { headers });
-  }
-
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
   }
 
   deleteProduct(id: number): Observable<Product> {

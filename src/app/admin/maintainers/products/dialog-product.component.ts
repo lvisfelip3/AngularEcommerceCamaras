@@ -146,6 +146,14 @@ export class ProductDialogComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input?.files && input.files[0]) {
       const file = input.files[0];
+
+      if (file.size > 2 * 1024 * 1024) {
+        alert('La imagen no debe superar los 2 MB.');
+        this.selectedImage.set(null);
+        this.imagePreview.set(null);
+        return;
+      }
+
       this.selectedImage.set(file);
 
       const reader = new FileReader();

@@ -86,11 +86,50 @@ $my-material-app-theme: mat.define-theme(
   @include mat.system-level-typography($my-material-app-theme);
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    background-color: #1b1b21;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    background-color: white;
+  }
+}
+
 html,
 body {
   height: 100%;
+  @apply bg-gray-100 dark:bg-gray-900
 }
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+::view-transition-old(root) {
+  animation: exit 200ms ease-in;
+}
+
+::view-transition-new(root) {
+  animation: enter 200ms ease-out;
+}
+
+@keyframes exit {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

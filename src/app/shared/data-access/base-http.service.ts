@@ -10,4 +10,9 @@ export class BaseHttpService {
   apiUrl = environment.API_URL;
 
   isLoading = signal<boolean>(false);
+  isError = signal<boolean>(false);
+
+  setError(error: boolean) {
+    this.isError.set(error);
+  }
 }

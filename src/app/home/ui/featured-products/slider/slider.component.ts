@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@a
 import { CarouselModule } from 'primeng/carousel';
 import { ProductsService } from '@products/service/products.service';
 import { CardItemComponent, CardItemSkeletonComponent } from '@home/ui/card-item';
+import { ErrorConexionComponent } from '@shared/components/error-conexion/error-conexion.component';
+import { BaseHttpService } from '@shared/data-access/base-http.service';
 
 interface ResponsiveOption {
   breakpoint: string;
@@ -15,7 +17,8 @@ interface ResponsiveOption {
   imports: [
     CarouselModule,
     CardItemComponent,
-    CardItemSkeletonComponent
+    CardItemSkeletonComponent,
+    ErrorConexionComponent
   ],
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.css',
@@ -24,10 +27,12 @@ interface ResponsiveOption {
 export class SliderComponent implements OnInit {
   
   private readonly productService = inject(ProductsService);
+  private readonly baseService = inject(BaseHttpService);
 
   responsiveOptions: ResponsiveOption[] | undefined;
 
   isLoading = computed(() => this.productService.isLoading());
+  isError = computed(() => this.baseService.isError());
   products$ = computed(() => this.productService.products$());
 
   ngOnInit(): void {

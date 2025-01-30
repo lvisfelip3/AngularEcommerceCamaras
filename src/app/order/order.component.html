@@ -1,7 +1,13 @@
-<section class="w-full">
+@if (isError()) {
+    <div class="min-h-screen">
+        <app-error-conexion></app-error-conexion>
+    </div>
+} @else {
+<section class="w-full min-h-screen">
     <h2 class="text-xl !font-semibold text-gray-900 dark:text-gray-100">Orden</h2>
     <div class="w-full flex flex-wrap lg:flex-nowrap gap-4">
         <app-stepper class="w-full"></app-stepper>
         <app-order-summary class="w-full md:w-[600px]"></app-order-summary>
     </div>
 </section>
+}

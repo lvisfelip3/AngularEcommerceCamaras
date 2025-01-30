@@ -1,26 +1,32 @@
-<section>
-    <h2 class="text-xl !font-semibold text-gray-900 dark:text-gray-100 w-full">Carrito</h2>
-    <div class="w-full flex flex-wrap gap-5">
-        <div class="w-full">
-            @if(state.products().length === 0){
-            <app-empty-cart class="block"></app-empty-cart>
-            } @else {
-                <div class="flex w-full flex-wrap gap-5">
-                    <div class="flex-1 w-full flex flex-col gap-5">
-                    @for(cartItem of state.products(); track cartItem.product.id;){
-                        @defer (on viewport) {
-                        <app-cart-item class="inline-block w-full" [productCartItem]="cartItem" (onRemove)="onRemove($event)"
-                            (onDecrease)="onDecrease($event)" (onIncrease)="onIncrease($event)" (onFav)="onFav($event)">
-                        </app-cart-item>
-                        } @placeholder {
-                            <app-cart-item-skeleton></app-cart-item-skeleton> 
-                        }
-                    }
-                    </div>
-                    <app-checkout class="w-full lg:w-80 lg:min-w-64"></app-checkout>
-                </div>
-            }
-        </div>
+@if (isError()) {
+    <div class="min-h-screen">
+        <app-error-conexion></app-error-conexion>
     </div>
-    <app-featured-products></app-featured-products>
-</section>
+} @else {
+    <section class="min-h-screen">
+        <h2 class="text-xl !font-semibold text-gray-900 dark:text-gray-100 w-full">Carrito</h2>
+        <div class="w-full flex flex-wrap gap-5">
+            <div class="w-full">
+                @if(state.products().length === 0){
+                <app-empty-cart class="block"></app-empty-cart>
+                } @else {
+                    <div class="flex w-full flex-wrap gap-5">
+                        <div class="flex-1 w-full flex flex-col gap-5">
+                        @for(cartItem of state.products(); track cartItem.product.id;){
+                            @defer (on viewport) {
+                            <app-cart-item class="inline-block w-full" [productCartItem]="cartItem" (onRemove)="onRemove($event)"
+                                (onDecrease)="onDecrease($event)" (onIncrease)="onIncrease($event)" (onFav)="onFav($event)">
+                            </app-cart-item>
+                            } @placeholder {
+                                <app-cart-item-skeleton></app-cart-item-skeleton> 
+                            }
+                        }
+                        </div>
+                        <app-checkout class="w-full lg:w-80 lg:min-w-64"></app-checkout>
+                    </div>
+                }
+            </div>
+        </div>
+        <app-featured-products></app-featured-products>
+    </section>
+}

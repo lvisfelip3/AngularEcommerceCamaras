@@ -44,7 +44,7 @@ export default class ProductDetailComponent {
       if (currentName) {
         this.productService.getProductByName(currentName).subscribe();
       }
-    });
+    }, { allowSignalWrites: true });
   }
 
   addToCart(): void {

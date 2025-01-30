@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { CartItemComponent } from './ui/cart-item/cart-item.component';
 import { CartStateService } from '../shared/data-access/cart-state.service';
 import { EmptyCartComponent } from './ui/empty-cart/empty-cart.component';
@@ -8,6 +8,8 @@ import { FeaturedProductsComponent } from '@home/ui/featured-products/featured-p
 import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { FavoriteStateService } from '@shared/data-access/fav-state.service';
 import { CartItemSkeletonComponent } from '@cart/ui/cart-item-skeleton/cart-item-skeleton.component';
+import { BaseHttpService } from '@shared/data-access/base-http.service';
+import { ErrorConexionComponent } from '@shared/components/error-conexion/error-conexion.component';
 
 @Component({
   selector: 'app-cart',
@@ -17,7 +19,8 @@ import { CartItemSkeletonComponent } from '@cart/ui/cart-item-skeleton/cart-item
     EmptyCartComponent, 
     CheckoutComponent,
     FeaturedProductsComponent,
-    CartItemSkeletonComponent
+    CartItemSkeletonComponent,
+    ErrorConexionComponent
   ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
@@ -27,6 +30,9 @@ export class CartComponent {
   state = inject(CartStateService).state;
   favState = inject(FavoriteStateService).state;
   private readonly _snackBar = inject(SnackBarService);
+  private readonly baseService = inject(BaseHttpService);
+
+  readonly isError = computed(() => this.baseService.isError());
 
   onRemove(id: number) {
     this.state.remove(id);

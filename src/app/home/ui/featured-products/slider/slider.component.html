@@ -1,12 +1,26 @@
+@if (isLoading()) {
+<div class="w-full flex justify-evenly">
+    <app-card-item-skeleton></app-card-item-skeleton>
+    
+    <!-- RESPONSIVIDAD -->
+
+    <app-card-item-skeleton></app-card-item-skeleton>
+    <app-card-item-skeleton></app-card-item-skeleton>
+</div>
+} @else if (isError()) {
+    <div class="w-full">
+        <app-error-conexion></app-error-conexion>
+    </div>
+} @else {
 <p-carousel
-[value]="(products$()) || []"
-[circular]="true"
-[numVisible]="3"
-[numScroll]="1"
-[showNavigators]="true"
-[showIndicators]="true"
-[responsiveOptions]="responsiveOptions"
->   
+    [value]="(products$()) || []"
+    [circular]="true"
+    [numVisible]="3"
+    [numScroll]="1"
+    [showNavigators]="true"
+    [showIndicators]="true"
+    [responsiveOptions]="responsiveOptions"
+    >   
     
     <ng-template let-product pTemplate="item">
         <div class="w-full flex justify-evenly">
@@ -18,12 +32,5 @@
         </div>
     </ng-template>
 </p-carousel>
-
-@if (isLoading()) {
-    <div class="w-full flex justify-evenly">
-        <app-card-item-skeleton></app-card-item-skeleton>
-        <app-card-item-skeleton></app-card-item-skeleton>
-        <app-card-item-skeleton></app-card-item-skeleton>
-    </div>
 }
 

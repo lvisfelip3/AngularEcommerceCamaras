@@ -10,6 +10,8 @@ import { ProductsService } from '@products/service/products.service';
 import { EmptyProductComponent } from '@products/ui/empty-product/empty-product.component';
 import { SortProductsPipe } from '@products/utils/sort-products.pipe';
 import { CartMobileButtonComponent } from '@shared/components/cart-mobile-button/cart-mobile-button.component';
+import { ErrorConexionComponent } from '@shared/components/error-conexion/error-conexion.component';
+import { BaseHttpService } from '@shared/data-access/base-http.service';
 
 @Component({
   selector: 'app-product-list',
@@ -20,12 +22,13 @@ import { CartMobileButtonComponent } from '@shared/components/cart-mobile-button
     ProductListSkeletonComponent,
     EmptyProductComponent,
     SortProductsPipe,
-    CartMobileButtonComponent
+    CartMobileButtonComponent,
+    ErrorConexionComponent
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
   providers: [
-    SortProductsPipe
+    SortProductsPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -33,6 +36,7 @@ export default class ProductListComponent implements OnInit {
   productService = inject(ProductsService);
   cartState = inject(CartStateService).state;
   sortProducts_ = inject(SortProductsPipe);
+  baseService = inject(BaseHttpService);
 
   searchControl = new FormControl('');
   categoryControl = new FormControl<number | null>(null);
@@ -43,27 +47,18 @@ export default class ProductListComponent implements OnInit {
   currentPage = computed(() => this.productService.currentPage());
   products$ = computed(() => this.productService.products$());
   isLoading = computed(() => this.productService.isLoading());
-
-  // @HostListener('window:scroll')
-  // onScroll(): void {
-  //   const scrollPosition = window.innerHeight + window.scrollY;
-  //   const scrollTreshold = document.documentElement.scrollHeight;
-
-  //   if (scrollPosition >= scrollTreshold) {
-  //     this.productService.getProducts();
-  //   }
-  // }
+  isError = computed(() => this.baseService.isError());
 
   ngOnInit(): void {
     this.productService.getProducts(undefined)?.subscribe();
 
     this.searchControl.valueChanges.pipe(
-        debounceTime(200),
-        tap((searchTerm: string | null) => {
-          if (!searchTerm || searchTerm === null) this.productService.getProducts(undefined)?.subscribe();
-          this.productService.searchProducts(searchTerm as string).subscribe();
-        })
-      ).subscribe();
+      debounceTime(200),
+      tap((searchTerm: string | null) => {
+        if (!searchTerm || searchTerm === null) this.productService.getProducts(undefined)?.subscribe();
+        this.productService.searchProducts(searchTerm as string).subscribe();
+      })
+    ).subscribe();
 
     this.categoryControl.valueChanges.pipe(
       debounceTime(300),

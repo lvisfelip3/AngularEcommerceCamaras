@@ -109,11 +109,11 @@ body {
 }
 
 ::view-transition-old(root) {
-  animation: exit 200ms ease-in;
+  animation: exit 120ms ease-in;
 }
 
 ::view-transition-new(root) {
-  animation: enter 200ms ease-out;
+  animation: enter 120ms ease-out;
 }
 
 @keyframes exit {

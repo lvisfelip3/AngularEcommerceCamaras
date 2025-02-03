@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { CategoriasService } from './category.service';
 import { Category } from '@shared/interfaces/interfaces';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -12,11 +11,12 @@ import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DataTableComponent } from '@admin/ui/data-table/data-table.component';
 
 @Component({
   selector: 'app-add-category',
   standalone: true,
-  imports: [MatTableModule, 
+  imports: [
     ReactiveFormsModule, 
     MatDialogModule, 
     MatButtonModule, 
@@ -24,7 +24,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSnackBarModule,
     MatPaginatorModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    DataTableComponent
   ],
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.css'],
@@ -32,21 +33,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class CategoryComponent implements OnInit {
 
-  categorias: Category[] = [];
   formAdd: FormGroup;
   isEdit = false;
   selectedCategoryId: number | null = null;
-  displayColumns: string[] = ['id', 'nombre', 'descripcion', 'actions'];
-  dataSource = new MatTableDataSource<Category>();
   private readonly _snackBar = inject(SnackBarService);
+  private readonly crudService = inject(CategoriasService);
+  private readonly dialog = inject(MatDialog);
+  private readonly fb = inject(FormBuilder);
+
+  categories$ = computed(() => this.crudService.categories$());
+  columns: string[] = ['id', 'nombre', 'descripcion'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
-  constructor(
-    private crudService: CategoriasService, 
-    private fb: FormBuilder,
-    private dialog: MatDialog,
-  ) {
+  constructor() {
     this.formAdd = this.fb.group({
       nombre: ['', Validators.required],
       descripcion: ['', Validators.required]
@@ -72,10 +72,7 @@ export class CategoryComponent implements OnInit {
             this.getCategorias();
           });
         } else {
-          this.crudService.addCategory(result).subscribe(() => {
-            this._snackBar.showSnackBar('Categoría agregada correctamente', 'OK');
-            this.getCategorias();
-          });
+          this.crudService.addCategory(result)
         }
       }
     });
@@ -91,17 +88,7 @@ export class CategoryComponent implements OnInit {
   }
 
   getCategorias(): void {
-    this.crudService.getCategories().subscribe({
-      next: (response) => {
-        this.dataSource.data = response;
-      },
-      error: (error) => {
-        console.error('Error al obtener categorías:', error);
-      },
-      complete: () => {
-        this.dataSource.paginator = this.paginator;
-      }
-    });
+    this.crudService.getCategories()
   }
 
   onSubmit(): void {
@@ -125,31 +112,14 @@ export class CategoryComponent implements OnInit {
   }
 
   private addCategory(): void {
-    this.crudService.addCategory(this.formAdd.value).subscribe({
-      next: (response) => {
-        console.log('Categoría agregada:', response);
-        this.getCategorias();
-      },
-      error: (error) => {
-        console.error('Error al agregar categoría:', error);
-      }
-    });
+    this.crudService.addCategory(this.formAdd.value)
   }
 
   deleteCategory(id: number): void {
-    this.crudService.deleteCategory(id).subscribe({
-      next: () => {
-        this._snackBar.showSnackBar('Producto eliminado', 'OK');
-        this.dataSource.data = this.dataSource.data.filter((category: Category) => category.id !== id);
-      },
-      error: (error) => {
-        console.error('Error al eliminar categoría:', error);
-      }
-    });
+    this.crudService.deleteCategory(id)
   }
 
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  reloadTable() {
+    this.getCategorias();
   }
 }

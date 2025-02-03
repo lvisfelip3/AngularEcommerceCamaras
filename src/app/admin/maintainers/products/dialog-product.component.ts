@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -13,7 +13,6 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Category, Product } from '@shared/interfaces/interfaces';
 import { MatSelectModule } from '@angular/material/select';
 import { CategoriasService } from '@admin/maintainers/category/category.service';
 
@@ -62,7 +61,7 @@ import { CategoriasService } from '@admin/maintainers/category/category.service'
           <mat-form-field appearance="fill">
             <mat-label class="!text-white">Categoria</mat-label>
             <mat-select formControlName="categoria_id">
-              @for (categoria of categorias; track categoria.id) {
+              @for (categoria of categories$(); track categoria.id) {
                 <mat-option [value]="categoria.id">
                   {{ categoria.nombre }}
                 </mat-option>
@@ -97,27 +96,29 @@ import { CategoriasService } from '@admin/maintainers/category/category.service'
 })
 export class ProductDialogComponent implements OnInit {
   productForm: FormGroup;
-  categorias: Category[] = [];
   selectedImage = signal<File | null>(null);
   imagePreview = signal<string | null>(null);
 
+  private readonly fb = inject(FormBuilder);
+  private readonly crud = inject(CategoriasService);
+  private readonly dialogRef = inject(MatDialogRef<ProductDialogComponent>);
+  readonly data = inject(MAT_DIALOG_DATA);
+
+  categories$ = computed(() => this.crud.categories$());
+
   constructor(
-    private fb: FormBuilder,
-    public dialogRef: MatDialogRef<ProductDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Product,
-    private crud: CategoriasService,
   ) {
     this.productForm = this.fb.group({
-      nombre: [data?.nombre || '', Validators.required],
-      descripcion: [data?.descripcion || '', Validators.required],
-      precio: [data?.precio || '', Validators.required],
-      stock: [data?.stock || '', Validators.required],
-      categoria_id: [data?.categoria_id || '', Validators.required],
-      imagen: [data?.imagen],
+      nombre: [this.data?.nombre || '', Validators.required],
+      descripcion: [this.data?.descripcion || '', Validators.required],
+      precio: [this.data?.precio || '', Validators.required],
+      stock: [this.data?.stock || '', Validators.required],
+      categoria_id: [this.data?.categoria_id || '', Validators.required],
+      imagen: [this.data?.imagen],
     });
 
-    if (data) {
-      this.imagePreview.set(data.imagen);
+    if (this.data) {
+      this.imagePreview.set(this.data.imagen);
     }
   }
 
@@ -137,9 +138,7 @@ export class ProductDialogComponent implements OnInit {
   }
 
   getCategories(): void {
-    this.crud.getCategories().subscribe((response) => {
-      this.categorias = response;
-    });
+    this.crud.getCategories()
   }
 
   onChangeImage(event: Event): void {

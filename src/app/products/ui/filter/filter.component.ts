@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
@@ -8,8 +8,6 @@ import { Category } from '@shared/interfaces/interfaces';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSliderModule } from '@angular/material/slider';
-import { Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { BreakpointObserver } from '@angular/cdk/layout';
 
@@ -24,7 +22,6 @@ import { BreakpointObserver } from '@angular/cdk/layout';
     MatIconModule,
     MatButtonModule,
     MatSliderModule,
-    AsyncPipe,
     MatExpansionModule
   ],
   templateUrl: './filter.component.html',
@@ -45,19 +42,14 @@ export class FilterComponent implements OnInit {
   categories: Category[] = [];
   isFiltered = false;
 
+  private readonly crudService = inject(CategoriasService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+
   readonly panelState = signal(false);
   isLargeScreen = false;
 
-  categories$: Observable<Category[]>
-
-  constructor (
-    private crudService: CategoriasService, 
-    private cdr: ChangeDetectorRef,
-    private breakpointObserver: BreakpointObserver
-  ) {
-
-    this.categories$ = this.crudService.getCategories();
-  }
+  categories$ = computed(() => this.crudService.categories$());
 
   ngOnInit(): void {
 

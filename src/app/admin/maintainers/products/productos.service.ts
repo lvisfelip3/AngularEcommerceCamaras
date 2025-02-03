@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Product } from '@shared/interfaces/interfaces';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { finalize, Observable } from 'rxjs';
+import { finalize, Observable, tap } from 'rxjs';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -11,17 +11,24 @@ import { CookieService } from 'ngx-cookie-service';
 export class ProductosService extends BaseHttpService {
   private readonly cookie = inject(CookieService);
 
+  products$ = signal<Product[]>([]);
+
   constructor() {
     super();
+    this.getProducts();
   }
 
-  getProducts(): Observable<Product[]> | undefined {
+  getProducts(): void {
     if (this.isLoading()) return;
     this.isLoading.set(true)
     const params = new HttpParams().set('action', 'maintainer')
-    return this.http.get<Product[]>(this.apiUrl, { params }).pipe(
+    this.http.get<Product[]>(this.apiUrl, { params }).pipe(
+      tap((res) => {
+        this.products$.set(res);
+      }),
       finalize(() => this.isLoading.set(false))
-    );
+    )
+    .subscribe();
   }
 
   addProduct(product: Omit<Product, 'id'>, image: File): Observable<Product> {

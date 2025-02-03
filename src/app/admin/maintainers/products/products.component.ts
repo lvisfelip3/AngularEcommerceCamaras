@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { ProductosService } from './productos.service';
-import { Category, Product } from '@shared/interfaces/interfaces';
+import { Product } from '@shared/interfaces/interfaces';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,12 +14,12 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DataTableComponent } from '@admin/ui/data-table/data-table.component';
 
 @Component({
   selector: 'app-products',
   standalone: true,
   imports: [
-    MatTableModule, 
     ReactiveFormsModule, 
     MatDialogModule, 
     MatButtonModule, 
@@ -29,7 +28,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatPaginatorModule,
     MatIconModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    DataTableComponent
     ],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css'],
@@ -42,14 +42,15 @@ export class ProductComponent implements OnInit {
   private readonly categoryService = inject(CategoriasService);
   private readonly fb = inject(FormBuilder);
 
-  categorias: Category[] = [];
-  dataSource = new MatTableDataSource<Product>();
+  categorias$ = computed(() => this.categoryService.categories$());
+  products$ = computed(() => this.crudService.products$());
   isLoading = computed(() => this.crudService.isLoading());
+
   categoriasMap: Record<number, string> = {};
   formAdd: FormGroup;
   isEdit = false;
   selectedProductId: number | null = null;
-  displayColumns: string[] = ['id', 'nombre', 'descripcion', 'precio', 'stock', 'creado_en', 'categoria_id', 'actions'];
+  columns: string[] = ['id', 'nombre', 'descripcion', 'precio', 'stock', 'categoria'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
@@ -63,6 +64,13 @@ export class ProductComponent implements OnInit {
       categoria_id: ['', Validators.required],
       imagen: [null, Validators.required],
     });
+
+    effect(() => {
+      this.categoriasMap = this.categorias$().reduce((map, categoria) => {
+        map[categoria.id] = categoria.nombre;
+        return map;
+      }, {} as Record<number, string>)
+     }, { allowSignalWrites: true });
   }
 
   ngOnInit(): void {
@@ -72,15 +80,7 @@ export class ProductComponent implements OnInit {
   }
 
   getProductos(): void {
-    this.crudService.getProducts()?.subscribe({
-      next: (data) => {
-        this.dataSource.data = data;
-        this.dataSource.paginator = this.paginator;
-      },
-      error: (error) => {
-        console.error('Error al obtener productos:', error);
-      },
-    });
+    this.crudService.getProducts();
   }
 
   openDialog(productos?: Product): void{
@@ -130,14 +130,7 @@ export class ProductComponent implements OnInit {
   }
 
   getCategorias(): void {
-    this.categoryService.getCategories().subscribe((data) => {
-      this.categorias = data;
-
-      this.categoriasMap = this.categorias.reduce((map, categoria) => {
-        map[categoria.id] = categoria.nombre;
-        return map;
-      }, {} as Record<number, string>);
-    });
+    this.categoryService.getCategories()
   }
 
   getNombreCategoria(id: number): string {
@@ -145,19 +138,10 @@ export class ProductComponent implements OnInit {
   }
 
   deleteProducto(id: number): void {
-    this.crudService.deleteProduct(id).subscribe({
-      next: () => {
-        this._snackBar.showSnackBar('Registro eliminado', 'OK');
-        this.dataSource.data = this.dataSource.data.filter((products: Product) => products.id !== id);
-      },
-      error: (error) => {
-        console.error('Error al eliminar producto:', error);
-      }
-    });
+    this.crudService.deleteProduct(id);
   }
 
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  reloadTable() {
+    this.getProductos();
   }
 }

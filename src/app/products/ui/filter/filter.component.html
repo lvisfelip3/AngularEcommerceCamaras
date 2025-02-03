@@ -33,7 +33,7 @@
         </mat-form-field>
 
         <!-- CATEGORY -->
-        @if (categories$ | async; as categories){
+        @if (this.categories$()){
             <mat-form-field class="!w-full" appearance="fill">
                 <mat-label>Categoría</mat-label>
                 <mat-select [formControl]="categoryControl">

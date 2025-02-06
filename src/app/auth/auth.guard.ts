@@ -10,7 +10,7 @@ export const authGuard: CanActivateFn = () => {
   if (authService.isLoggedIn()) {
     const user = authService.getCurrentUser();
     
-    if (user?.rol === 'admin') {
+    if (user?.rol === 1) {
       return true;
     } else {
       router.navigate(['/unauthorized']);

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from '@shared/ui/footer/footer.component';
 import { HeaderComponent } from '@shared/ui/header/header.component';
@@ -39,7 +39,7 @@ export default class UserLayoutComponent implements OnInit {
   isLoggedIn = false;
   userName = '';
   userPhoto: string | undefined = '';
-  userRol = '';
+  userRol = signal(0);
   mode: 'side' | 'over' = 'side';
 
   theme = inject(ThemeService);
@@ -56,7 +56,7 @@ export default class UserLayoutComponent implements OnInit {
       if (user) {
         this.userName = user.nombre;
         this.userPhoto = user.imagen;
-        this.userRol = user.rol;
+        this.userRol.set(user.rol);
       }
     });
   }
@@ -77,5 +77,16 @@ export default class UserLayoutComponent implements OnInit {
     this.auth.logout();
     this.router.navigate(['/home']);
     this.isLoggedIn = false;
+  }
+
+  renderUserRol(status: number): string {
+    switch (status) {
+      case 1:
+        return 'Administrador';
+      case 2:
+        return 'Cliente';
+      default:
+        return 'Desconocido';
+    }
   }
 }

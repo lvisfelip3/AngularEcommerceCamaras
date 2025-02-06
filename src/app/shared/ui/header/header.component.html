@@ -20,7 +20,7 @@
             class="link">
             Catálogo
         </a>
-        @if (isLoggedIn && user?.rol === 'admin'){
+        @if (isLoggedIn && user?.rol === 1){
         <a [routerLink]="['/dashboard']" routerLinkActive="activeLink"
             class="link">
             Dashboard

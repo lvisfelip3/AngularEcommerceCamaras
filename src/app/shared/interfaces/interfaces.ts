@@ -46,7 +46,7 @@ export interface User {
   nombre: string;
   email: string;
   password: string;
-  rol: string;
+  rol: number;
   token?: string;
   creado_en?: Date;
   imagen?: string;

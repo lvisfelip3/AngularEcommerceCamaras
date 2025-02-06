@@ -24,7 +24,7 @@
             <mat-icon>shopping_cart</mat-icon>
           </a>
           @if(isLoggedIn){
-          @if(userRol === 'admin'){
+          @if(userRol() === 1){
           <a mat-button [routerLink]="['/dashboard']"
             class="!bg-transparent !text-gray-900 dark:!text-white !rounded-md !w-full !p-8 !text-lg !flex !items-center !justify-start"
             (click)="opened = false">

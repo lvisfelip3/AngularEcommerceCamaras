@@ -1,55 +1,43 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from './users.service';
-import { User } from '../../../shared/interfaces/interfaces';
+import { User } from '@shared/interfaces/interfaces';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { UserDialogComponent } from './dialog-users.component';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { SnackBarService } from '../../../shared/ui/snack-bar.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DataTableComponent } from "@admin/ui/data-table/data-table.component";
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [MatTableModule, 
-    ReactiveFormsModule, 
-    MatDialogModule, 
+  imports: [
+    MatDialogModule,
     MatButtonModule,
-    MatInputModule,
-    MatPaginatorModule,
-    MatSortModule,
     MatIconModule,
-    MatTooltipModule
-  ],
+    MatTooltipModule,
+    DataTableComponent
+],
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserComponent implements OnInit{
+  private readonly crudService = inject(UsersService);
+  private readonly dialog = inject(MatDialog);
+  private readonly fb = inject(FormBuilder);
 
-  users: User[] = [];
+  users$ = computed(() => this.crudService.users$());
+
   formAdd: FormGroup;
   isEdit = false;
   selectedUserId: number | null = null;
-  displayColumns: string[] = ['id', 'nombre', 'email', 'rol', 'creado_en', 'actions'];
-  dataSource = new MatTableDataSource<User>();
+  columns: string[] = ['id', 'nombre', 'email', 'rol'];
   selectedImage: File | null = null;
   imagePreview: string | null = null;
-  private readonly _snackBar = inject(SnackBarService);
-  
-  @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
-  @ViewChild(MatSort) sort: MatSort | null = null;
 
-  constructor(
-    private crudService: UsersService,
-    private fb: FormBuilder,
-    private dialog: MatDialog,
-  ) {
+  constructor() {
     this.formAdd = this.fb.group({
       nombre: ['', Validators.required],
       email: ['', Validators.required],
@@ -77,15 +65,9 @@ export class UserComponent implements OnInit{
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (usuario) {
-          this.crudService.updateUser(usuario.id, result).subscribe(() => {
-            this._snackBar.showSnackBar('Usuario actualizado correctamente', 'OK');
-            this.getUsuarios();
-          });
+          this.crudService.updateUser(usuario.id, result)
         } else {
-          this.crudService.addUser(result).subscribe(() => {
-            this._snackBar.showSnackBar('Usuario agregado correctamente', 'OK');
-            this.getUsuarios();
-          });
+          this.crudService.addUser(result)
         }
       }
     });
@@ -101,34 +83,14 @@ export class UserComponent implements OnInit{
   }
 
   getUsuarios(): void {
-    this.crudService.getUsers().subscribe({
-      next: (response) => {
-        this.dataSource.data = response;
-      },
-      error: (error) => {
-        console.error('Error al obtener categorías:', error);
-      },
-      complete: () => {
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }
-    });
+    this.crudService.getUsers();
   }
 
   deleteUsuario(id: number): void {
-    this.crudService.deleteUser(id).subscribe({
-      next: () => {
-        this._snackBar.showSnackBar('Registro eliminado', 'OK');
-        this.dataSource.data = this.dataSource.data.filter((user: User) => user.id !== id);
-      },
-      error: (error) => {
-        console.error('Error al eliminar producto:', error);
-      }
-    });
+    this.crudService.deleteUser(id);
   }
 
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  reloadTable(): void {
+    this.getUsuarios();
   }
 }

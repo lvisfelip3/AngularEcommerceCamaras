@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, ContentChild, effect, input, OnInit, output, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ContentChild, effect, input, OnInit, output, TemplateRef, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-data-table',
@@ -52,28 +52,31 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         <table mat-table [dataSource]="dataSource"
         class="!bg-slate-100 dark:!bg-gray-900"
         >
-        @for (col of columns(); track $index;) {
-          <ng-container [matColumnDef]="col">
-            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> {{col.toUpperCase()}} </th>
-            <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100"> {{element[col]}} </td>
+          @for (col of columns(); track $index;) {
+            <ng-container [matColumnDef]="col">
+              <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100"> {{col}} </th>
+              <td mat-cell *matCellDef="let element" class="!text-gray-900 dark:!text-gray-100">
+                {{element[col]}}
+              </td>
+            </ng-container>
+          }
+
+          <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100 !text-center"> OPCIONES </th>
+              <td mat-cell *matCellDef="let element" class="!text-center">
+                <ng-container *ngTemplateOutlet="actionsTemplate; context: { $implicit: element }"></ng-container>
+              </td>
           </ng-container>
-        }
 
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef class="!text-gray-900 dark:!text-gray-100 !text-center"> OPCIONES </th>
-            <td mat-cell *matCellDef="let element" class="!text-center">
-              <ng-container *ngTemplateOutlet="actionsTemplate; context: { $implicit: element }"></ng-container>
-            </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns();"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns();"></tr>
         </table>
       </main>
       <footer class="flex items-center justify-end p-4">
         <mat-paginator 
-          [pageSizeOptions]="[5, 10, 15]" 
+          [pageSizeOptions]="[5, 10, 15 ,50]" 
           showFirstLastButtons
+          [length]="dataSource.data.length"
           class="!bg-slate-100 dark:!bg-gray-900 !text-gray-900 dark:!text-gray-100"
           ></mat-paginator>
       </footer>
@@ -97,9 +100,11 @@ export class DataTableComponent<T> implements OnInit {
   dataSource = new MatTableDataSource<T>();
 
   @ContentChild('actionsTemplate', { static: true }) actionsTemplate!: TemplateRef<any>;
+  @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
   constructor() {
     effect(() => {
+      this.dataSource.paginator = this.paginator;
       if (this.data() || !this.filter()) this.dataSource.data = this.data();
       if (this.filter()) this.dataSource.filter = this.filter()!.trim().toLowerCase();
     })

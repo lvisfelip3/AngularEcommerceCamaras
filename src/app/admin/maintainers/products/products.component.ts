@@ -9,7 +9,6 @@ import { ProductDialogComponent } from './dialog-product.component';
 import { ProductImageDialogComponent } from './dialog-product-image.component';
 import { CategoriasService } from '../category/category.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -36,7 +35,6 @@ import { DataTableComponent } from '@admin/ui/data-table/data-table.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductComponent implements OnInit {
-  private readonly _snackBar = inject(SnackBarService);
   private readonly dialog = inject(MatDialog);
   private readonly crudService = inject(ProductosService);
   private readonly categoryService = inject(CategoriasService);
@@ -46,11 +44,10 @@ export class ProductComponent implements OnInit {
   products$ = computed(() => this.crudService.products$());
   isLoading = computed(() => this.crudService.isLoading());
 
-  categoriasMap: Record<number, string> = {};
   formAdd: FormGroup;
   isEdit = false;
   selectedProductId: number | null = null;
-  columns: string[] = ['id', 'nombre', 'descripcion', 'precio', 'stock', 'categoria'];
+  columns: string[] = ['id', 'nombre', 'descripcion', 'precio', 'stock', 'categoria', 'sku'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
@@ -62,11 +59,12 @@ export class ProductComponent implements OnInit {
       stock: ['', Validators.required],
       creado_en: ['', Validators.required],
       categoria_id: ['', Validators.required],
+      sku: [''],
       imagen: [null, Validators.required],
     });
 
     effect(() => {
-      this.categoriasMap = this.categorias$().reduce((map, categoria) => {
+      this.categorias$().reduce((map, categoria) => {
         map[categoria.id] = categoria.nombre;
         return map;
       }, {} as Record<number, string>)
@@ -74,7 +72,6 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getProductos();
     this.setupModalReset();
     this.getCategorias();
   }
@@ -83,33 +80,20 @@ export class ProductComponent implements OnInit {
     this.crudService.getProducts();
   }
 
-  openDialog(productos?: Product): void{
-    const dialogRef = this.dialog.open(ProductDialogComponent, {
+  openDialog(productos?: Omit<Product, 'id'>, isEdit = false, id?: number): void{
+    this.dialog.open(ProductDialogComponent, {
       width: '500px',
-      data: productos ? { 
+      data: productos ? {
         nombre: productos.nombre, 
         descripcion: productos.descripcion,
         precio: productos.precio,
         stock: productos.stock,
         categoria_id: productos.categoria_id,
-        imagen: productos.imagen
+        imagen: productos.imagen,
+        sku: productos.sku,
+        isEdit,
+        id
       } : null
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (productos) {
-          this.crudService.updateProduct(productos.id, result, result.imagen).subscribe(() => {
-            this._snackBar.showSnackBar('Producto actualizado correctamente', 'OK');
-            this.getProductos();
-          });
-        } else {
-          this.crudService.addProduct(result, result.imagen).subscribe(() => {
-            this._snackBar.showSnackBar('Producto agregado correctamente', 'OK');
-            this.getProductos();
-          });
-        }
-      }
     });
   }
 
@@ -131,10 +115,6 @@ export class ProductComponent implements OnInit {
 
   getCategorias(): void {
     this.categoryService.getCategories()
-  }
-
-  getNombreCategoria(id: number): string {
-    return this.categoriasMap[id] || 'Desconocido';
   }
 
   deleteProducto(id: number): void {

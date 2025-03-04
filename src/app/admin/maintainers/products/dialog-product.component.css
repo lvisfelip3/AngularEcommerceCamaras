@@ -22,8 +22,8 @@
 }
 
 .footer {
-  margin-top: -2px;
   align-self: flex-end !important;
+  padding-bottom: 0 !important;
 }
 
 ::ng-deep mat-form-field {
@@ -74,4 +74,12 @@
   width: 100%;
   object-fit: cover;
   border-radius: 5px;
+}
+
+.mainContainer::-webkit-scrollbar-thumb{
+  @apply rounded-full bg-gray-900 dark:bg-slate-100 hover:bg-gray-800 dark:hover:bg-slate-300
+}
+
+.mainContainer::-webkit-scrollbar {
+  @apply h-1 w-2 bg-slate-300 dark:bg-gray-600 rounded-full;
 }

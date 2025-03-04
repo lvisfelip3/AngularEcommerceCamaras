@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { CategoriasService } from '@admin/maintainers/category/category.service';
+import { ProductosService } from './productos.service';
 
 @Component({
   selector: 'app-product-dialog',
@@ -32,9 +33,9 @@ import { CategoriasService } from '@admin/maintainers/category/category.service'
       <h1 mat-dialog-title class="title">
         {{ data ? 'Editar Producto' : 'Añadir Producto' }}
       </h1>
-      <div mat-dialog-content>
+      <div mat-dialog-content class="mainContainer">
         <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-          <mat-form-field appearance="fill">
+          <mat-form-field appearance="fill" class="lg:!w-1/2 !w-full">
             <mat-label class="!text-white">Nombre</mat-label>
             <input
               matInput
@@ -42,23 +43,7 @@ import { CategoriasService } from '@admin/maintainers/category/category.service'
               placeholder="Nombre del producto"
             />
           </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label class="!text-white">Descripción</mat-label>
-            <input
-              matInput
-              formControlName="descripcion"
-              placeholder="Descripción"
-            />
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label class="!text-white">Precio</mat-label>
-            <input matInput formControlName="precio" placeholder="$90.000" />
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label class="!text-white">Stock</mat-label>
-            <input matInput formControlName="stock" placeholder="100" />
-          </mat-form-field>
-          <mat-form-field appearance="fill">
+          <mat-form-field appearance="fill" class="lg:!w-1/2 !w-full">
             <mat-label class="!text-white">Categoria</mat-label>
             <mat-select formControlName="categoria_id">
               @for (categoria of categories$(); track categoria.id) {
@@ -67,6 +52,31 @@ import { CategoriasService } from '@admin/maintainers/category/category.service'
                 </mat-option>
               }
             </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="lg:!w-1/2 !w-full">
+            <mat-label class="!text-white">Precio</mat-label>
+            <input matInput formControlName="precio" placeholder="$90.000" type="number" />
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="lg:!w-1/2 !w-full">
+            <mat-label class="!text-white">Stock</mat-label>
+            <input matInput formControlName="stock" placeholder="100" type="number" />
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="!w-full">
+            <mat-label class="!text-white">Descripción</mat-label>
+            <textarea
+              matInput
+              formControlName="descripcion"
+              placeholder="Descripción"
+              rows="4"
+            >
+            </textarea>
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="!w-full">
+            <mat-label class="!text-white">SKU</mat-label>
+            <input
+              matInput
+              formControlName="sku"
+            />
           </mat-form-field>
           <label class="block mb-2 text-sm font-medium text-white"
             >Imagen
@@ -101,6 +111,7 @@ export class ProductDialogComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
   private readonly crud = inject(CategoriasService);
+  private readonly productsService = inject(ProductosService);
   private readonly dialogRef = inject(MatDialogRef<ProductDialogComponent>);
   readonly data = inject(MAT_DIALOG_DATA);
 
@@ -115,6 +126,7 @@ export class ProductDialogComponent implements OnInit {
       stock: [this.data?.stock || '', Validators.required],
       categoria_id: [this.data?.categoria_id || '', Validators.required],
       imagen: [this.data?.imagen],
+      sku: [this.data?.sku]
     });
 
     if (this.data) {
@@ -123,7 +135,7 @@ export class ProductDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getCategories();
+    this.getCategories()
   }
 
   onCancel(): void {
@@ -131,10 +143,23 @@ export class ProductDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.productForm.valid) {
-      this.productForm.value.imagen = this.selectedImage();
-      this.dialogRef.close(this.productForm.value);
+    if (!this.productForm.valid) {
+      return;
     }
+
+    if (!this.productForm.value.imagen){
+      this.productForm.value.imagen = this.data.imagen;
+    }
+
+    const imagen: File | string = this.selectedImage() ?? this.data.imagen;
+
+    if (this.data?.isEdit) { 
+      this.productsService.updateProduct(this.data.id, this.productForm.value, imagen) 
+    } else {
+      this.productsService.addProduct(this.productForm.value, imagen)
+    }
+
+    this.dialogRef.close();
   }
 
   getCategories(): void {

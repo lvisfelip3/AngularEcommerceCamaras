@@ -5,9 +5,10 @@ export interface Product {
   precio: number;
   stock: number;
   imagen: string;
-  categoria_id?: number;
+  categoria_id: Category['id'];
   creado_en?: Date;
   slug?: string;
+  sku?: string;
 }
 
 export interface ProductResponse {

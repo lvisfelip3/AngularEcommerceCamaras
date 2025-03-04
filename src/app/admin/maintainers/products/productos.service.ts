@@ -4,12 +4,20 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { finalize, Observable, tap } from 'rxjs';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { CookieService } from 'ngx-cookie-service';
+import { SnackBarService } from '@shared/ui/snack-bar.service';
+
+interface ProductResponse {
+  status: boolean;
+  message: string;
+  data: Product;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductosService extends BaseHttpService {
   private readonly cookie = inject(CookieService);
+  private readonly _snackBar = inject(SnackBarService);
 
   products$ = signal<Product[]>([]);
 
@@ -31,26 +39,41 @@ export class ProductosService extends BaseHttpService {
     .subscribe();
   }
 
-  addProduct(product: Omit<Product, 'id'>, image: File): Observable<Product> {
-    const formData = new FormData();
-    formData.append('nombre', product.nombre);
-    formData.append('descripcion', (product.descripcion ?? ''));
-    formData.append('precio', product.precio.toString());
-    formData.append('stock', product.stock.toString());
-    formData.append('categoria_id', (product.categoria_id ?? '').toString());
-    formData.append('imagen', image);
+  addProduct(product: Omit<Product, 'id'>, imagen: File | string): void {
+    const body = new FormData();
+
+    body.append('product', JSON.stringify(product));
+    body.append('imagen', imagen);
+    const params = new HttpParams().set('action', 'create');
 
     const token = this.cookie.get('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.post<Product>(this.apiUrl, formData, { headers });
+    this.http.post<ProductResponse>(this.apiUrl, body, { params, headers }).pipe(
+      tap((res) => {
+        if (!res.status) return;
+
+        this.products$.update(products => [...products, res.data]);
+
+        this._snackBar.showSnackBar('Producto Agregado', 'OK');
+      })
+    )
+    .subscribe();
   }
 
-  deleteProduct(id: number): Observable<Product> {
-    const params = new HttpParams().set('id', id.toString());
+  deleteProduct(id: number): void {
+    const params = new HttpParams().set('id', id.toString()).set('action', 'delete');
     const token = this.cookie.get('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.delete<Product>(this.apiUrl, { params, headers });
+
+    this.http.post<Product>(this.apiUrl, null, { params, headers }).pipe(
+      tap(() => {
+        this.products$.update(products => products.filter(product => product.id !== id));
+
+        this._snackBar.showSnackBar('Producto eliminado', 'OK');
+      })
+    )
+    .subscribe();
   }
 
   getProduct(id: number): Observable<Product> {
@@ -60,21 +83,26 @@ export class ProductosService extends BaseHttpService {
     });
   }
 
-  updateProduct(id: number, product: Omit<Product, 'id'>, image: File): Observable<Product> {
-    const formData = new FormData();
-    formData.append('id', id.toString());
-    formData.append('nombre', product.nombre);
-    formData.append('descripcion', (product.descripcion ?? ''));
-    formData.append('precio', product.precio.toString());
-    formData.append('stock', product.stock.toString());
-    formData.append('categoria_id', (product.categoria_id ?? '').toString());
-    if (image) {
-      formData.append('imagen', image);  
-    }
+  updateProduct(id: number, product: Omit<Product, 'id'>, imagen?: File | string): void {
+    const body = JSON.stringify({ ...product, id, imagen });
 
+    const params = new HttpParams().set('action', 'update');
     const token = this.cookie.get('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    
-    return this.http.post<Product>(this.apiUrl, formData, { headers });
-  }
+
+    this.http.post<ProductResponse>(this.apiUrl, body, { params, headers }).pipe(
+      tap((res) => {
+        if (!res.status) return;
+
+        this.products$.update(
+          products => products.map(
+            product => product.id === id ? res.data : product
+          )
+        );
+
+        this._snackBar.showSnackBar('Producto actualizado', 'OK');
+      })
+    )
+    .subscribe();
+}
 }

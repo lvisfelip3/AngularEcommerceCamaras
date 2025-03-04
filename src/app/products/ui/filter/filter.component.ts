@@ -4,7 +4,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { CategoriasService } from '@admin/maintainers/category/category.service';
-import { Category } from '@shared/interfaces/interfaces';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSliderModule } from '@angular/material/slider';
@@ -39,7 +38,7 @@ export class FilterComponent implements OnInit {
   categoryControl = new FormControl('');
   maxPriceControl = new FormControl(0);
   orderByControl = new FormControl('');
-  categories: Category[] = [];
+  categories$ = computed(() => this.crudService.categories$());
   isFiltered = false;
 
   private readonly crudService = inject(CategoriasService);
@@ -48,8 +47,6 @@ export class FilterComponent implements OnInit {
 
   readonly panelState = signal(false);
   isLargeScreen = false;
-
-  categories$ = computed(() => this.crudService.categories$());
 
   ngOnInit(): void {
 

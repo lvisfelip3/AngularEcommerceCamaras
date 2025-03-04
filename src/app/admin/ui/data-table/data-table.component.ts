@@ -48,7 +48,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
           </label>
         </div>
       </header>
-      <main class="pb-4">
+      <main class="pb-4 !overflow-auto">
         <table mat-table [dataSource]="dataSource"
         class="!bg-slate-100 dark:!bg-gray-900"
         >

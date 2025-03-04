@@ -1,3 +1,11 @@
 ::ng-deep .mat-mdc-paginator-range-actions {
     @apply !text-gray-800 dark:!text-slate-200 !stroke-gray-400 ;
 }
+
+main::-webkit-scrollbar-thumb{
+    @apply !w-1 rounded-full bg-gray-900 dark:bg-slate-100 hover:bg-gray-800 dark:hover:bg-slate-300
+}
+
+main::-webkit-scrollbar {
+    @apply h-2 bg-slate-300 dark:bg-gray-600 rounded-full;
+}

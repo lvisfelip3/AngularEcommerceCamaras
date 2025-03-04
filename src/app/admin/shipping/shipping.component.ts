@@ -56,7 +56,6 @@ export class ShippingComponent implements OnInit {
   getShipping() {
     this.shipping.getShipping().subscribe({
       next: (response) => {
-        console.log(response);
         this.dataSource.data = response;
       },
       error: (error) => {

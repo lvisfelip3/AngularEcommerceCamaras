@@ -79,7 +79,7 @@ export class UsersService extends BaseHttpService {
     .subscribe();
   }
 
-  private transformRol(rol: number): string {
+  public transformRol(rol: number): string {
     switch (rol) {
       case 1:
         return 'Administrador';

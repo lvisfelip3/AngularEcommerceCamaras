@@ -8,27 +8,14 @@
                 <span class="text-3xl font-medium lg:text-5xl text-gray-900 dark:text-white !m-0 !p-0 text-wrap overflow-clip min-h-52">
                     {{ currentProduct()?.nombre }}
                 </span>
-                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                    @if ((currentProduct()?.stock ?? 0) >= 10) {
-                    +10 unidades disponibles
-                    } @else if ((currentProduct()?.stock ?? 0) <= 0) { 
-                        Sin stock 
-                    } @else if ((currentProduct()?.stock ?? 0) >= 20){
-                    +20 unidades disponibles
-                    } @else if ((currentProduct()?.stock ?? 0) >= 30){
-                    +30 unidades disponibles
-                    } @else if ((currentProduct()?.stock ?? 0) >= 50){
-                    +50 unidades disponibles
-                    } @else if ((currentProduct()?.stock ?? 0) >= 100){
-                    +100 unidades disponibles
-                    } @else if ((currentProduct()?.stock ?? 0) >= 200){
-                    +200 unidades disponibles
-                    } @else if ((currentProduct()?.stock ?? 0) >= 500){
-                    +500 unidades disponibles
-                    } @else if ((currentProduct()?.stock ?? 0) <= 10){ 
-                        Pocas unidades 
-                    }
-                </p>
+
+                <app-star-rating-readonly
+                    [rating]="currentProduct()?.rating ?? 0"
+                    [totalRatings]="currentProduct()?.total_ratings ?? 0"
+                    [isMain]="true"
+                />
+                <app-product-stock [stock]="currentProduct()?.stock ?? 0" />
+
                 <div class="sm:items-center sm:gap-4 sm:flex">
                     <p class="text-2xl font-extrabold sm:text-3xl text-gray-900 dark:text-white min-h-9">
                         {{ currentProduct()?.precio | currency:'CLP' }}
@@ -57,11 +44,16 @@
             </div>
         </div>
     </div>
-    <div class="w-full flex flex-col min-h-[458px]">
+    <div class="w-full flex flex-col min-h-[208px]">
         <hr class="my-6 md:my-8 border-gray-300 dark:border-gray-700 w-full" />
 
         <p class="mb-6 text-gray-600 dark:text-gray-300">
             {{ currentProduct()?.descripcion }}
         </p>
     </div>
+    @defer(on idle) {
+        <app-product-comments class="mt-10"
+        [productId]="currentProduct()?.id!" 
+    />
+    }
 </section>

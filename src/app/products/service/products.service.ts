@@ -18,9 +18,15 @@ export class ProductsService extends BaseHttpService {
 
   getProducts(page: number | undefined): Observable<ProductResponse> | undefined {
     if (this.isLoading()) return;
+
     this.isLoading.set(true)
+
     const pages = page ? page : this.currentPage();
-    const params = new HttpParams().set('limit', this.limit().toString()).set('page', pages.toString());
+
+    const params = new HttpParams()
+      .set('limit', this.limit().toString())
+      .set('page', pages.toString())
+      .set('action', 'getAll');
     return this.http.get<ProductResponse>(this.apiUrl, { params }).pipe(
       tap((res) => {
         const totalPages = res.pagination.totalPages
@@ -34,11 +40,18 @@ export class ProductsService extends BaseHttpService {
   }
 
   getProduct(id: string): Observable<Product> {
-    return this.http.get<Product>(this.apiUrl, { params: { id } });
+    const params = new HttpParams()
+      .set('id', id)
+      .set('action', 'getById');
+    return this.http.get<Product>(this.apiUrl, { params });
   }
 
   searchProducts(search: string): Observable<ProductResponse> {
-    const params = new HttpParams().set('search', search).set('limit', this.limit().toString()).set('page', this.currentPage().toString());
+    const params = new HttpParams()
+      .set('search', search)
+      .set('limit', this.limit().toString())
+      .set('page', this.currentPage().toString())
+      .set('action', 'getBySearch');
     return this.http.get<ProductResponse>(this.apiUrl, { params }).pipe(
       tap((res) => {
         const totalPages = res.pagination.totalPages
@@ -53,20 +66,27 @@ export class ProductsService extends BaseHttpService {
     );
   }
 
-  getProductByName(name: string): Observable<Product> {
-    const params = new HttpParams().set('name', name);
-    return this.http.get<Product>(this.apiUrl, { params }).pipe(
+  getProductByName(name: string): void {
+    const params = new HttpParams()
+      .set('name', name)
+      .set('action', 'getByName');
+    this.http.get<Product>(this.apiUrl, { params }).pipe(
       tap((res) => {
         this.selectedProduct$.set(res)
       }),
       catchError((error) => {
         return throwError(() => error);
       })
-    );
+    )
+    .subscribe();
   }
 
   getProductsByCategory(id: number ): Observable<ProductResponse> {
-    const params = new HttpParams().set('category_id', id.toString()).set('limit', this.limit().toString()).set('page', this.currentPage().toString());
+    const params = new HttpParams()
+      .set('category_id', id.toString())
+      .set('limit', this.limit().toString())
+      .set('page', this.currentPage().toString())
+      .set('action', 'getByCategory');
     return this.http.get<ProductResponse>(this.apiUrl, { params }).pipe(
       tap((res) => {
         const totalPages = res.pagination.totalPages
@@ -82,7 +102,11 @@ export class ProductsService extends BaseHttpService {
   }
 
   getProductsByMaxPrice(maxPrice:number): Observable<ProductResponse> {
-    const params = new HttpParams().set('maxPrice', maxPrice.toString()).set('limit', this.limit().toString()).set('page', this.currentPage().toString());
+    const params = new HttpParams()
+      .set('maxPrice', maxPrice.toString())
+      .set('limit', this.limit().toString())
+      .set('page', this.currentPage().toString())
+      .set('action', 'getByMaxPrice');
     return this.http.get<ProductResponse>(this.apiUrl, { params }).pipe(
       tap((res) => {
         const totalPages = res.pagination.totalPages

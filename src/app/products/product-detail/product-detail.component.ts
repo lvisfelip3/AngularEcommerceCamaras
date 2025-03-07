@@ -14,6 +14,9 @@ import { SnackBarService } from '@shared/ui/snack-bar.service';
 import { FavoriteStateService } from '@shared/data-access/fav-state.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ProductsService } from '@products/service/products.service';
+import { ProductStockComponent } from '@products/ui/product-stock/product-stock.component';
+import { ProductCommentsComponent } from "./product-comments/product-comments.component";
+import { StarRatingReadonlyComponent } from '@products/ui/star-rating-readonly/star-rating-readonly.component';
 
 @Component({
   selector: 'app-product-detail',
@@ -22,8 +25,11 @@ import { ProductsService } from '@products/service/products.service';
     MatButtonModule,
     CurrencyPipe,
     MatIconModule,
-    MatTooltipModule
-  ],
+    MatTooltipModule,
+    StarRatingReadonlyComponent,
+    ProductStockComponent,
+    ProductCommentsComponent
+],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css',
   providers: [],
@@ -42,7 +48,7 @@ export default class ProductDetailComponent {
     effect(() => {
       const currentName = this.slugProduct();
       if (currentName) {
-        this.productService.getProductByName(currentName).subscribe();
+        this.productService.getProductByName(currentName);
       }
     }, { allowSignalWrites: true });
   }

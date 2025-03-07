@@ -20,8 +20,10 @@
             <app-product-list-skeleton></app-product-list-skeleton>
         }
         @for(product of products$() | sortProducts: orderByControl.value; track product.id;) {
-            @defer (on viewport) {
+            @defer (on viewport; prefetch on idle) {
                 <app-product-card [product]="product" (add)="addToCart($event)"></app-product-card>
+            }@loading(minimum 500ms) {
+                <app-product-list-skeleton></app-product-list-skeleton>
             }@placeholder {
                 <app-product-list-skeleton></app-product-list-skeleton>
             }

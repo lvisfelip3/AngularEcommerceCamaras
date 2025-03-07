@@ -9,6 +9,8 @@ export interface Product {
   creado_en?: Date;
   slug?: string;
   sku?: string;
+  rating?: number;
+  total_ratings?: number;
 }
 
 export interface ProductResponse {
@@ -192,4 +194,20 @@ export interface PaymentResponse {
   metodo_pago?: string;
   tipo_pago?: string;
   venta_id: number;
+}
+
+export interface Comment {
+  id: number;
+  usuario: User['nombre'];
+  usuario_id: User['id'];
+  comentario: string;
+  rating: number;
+  fecha: string;
+  likes?: number;
+}
+
+export interface CommentsResponse {
+  status: boolean;
+  message?: string;
+  comments?: Comment[] | Comment; 
 }
